@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "4801ee4a705d87e2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "- Indice.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -69,7 +82,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 277.5
   },
   "right": {
     "id": "0fec571283889d94",
@@ -146,10 +159,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "cfb429ba96bf8369",
+  "active": "4801ee4a705d87e2",
   "lastOpenFiles": [
-    "Welcome.md",
+    "Features.md",
     "- Indice.md",
-    "Untitled"
+    "Untitled",
+    "Welcome.md"
   ]
 }
