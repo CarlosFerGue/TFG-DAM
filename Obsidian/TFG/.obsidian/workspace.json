@@ -4,27 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "01fe2063ed172b4b",
+        "id": "470518518926fb91",
         "type": "tabs",
         "children": [
           {
-            "id": "21345490820a17b0",
+            "id": "724a9a767cd51f28",
             "type": "leaf",
             "state": {
-              "type": "log-log",
-              "state": {}
-            }
-          },
-          {
-            "id": "317523061c2543fb",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -150,7 +141,7 @@
       "obsidian-livesync:Show Customization sync": false
     }
   },
-  "active": "6d78b1435f1ba279",
+  "active": "724a9a767cd51f28",
   "lastOpenFiles": [
     "NETHER",
     "BACK",
