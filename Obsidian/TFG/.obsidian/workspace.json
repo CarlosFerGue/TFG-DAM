@@ -4,19 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "5fc16fe1a50fe088",
+        "id": "470518518926fb91",
         "type": "tabs",
         "children": [
           {
-            "id": "cfb429ba96bf8369",
+            "id": "724a9a767cd51f28",
             "type": "leaf",
             "state": {
+<<<<<<< HEAD
+              "type": "empty",
+              "state": {}
+=======
               "type": "markdown",
               "state": {
                 "file": "Features.md",
                 "mode": "source",
                 "source": false
               }
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
             }
           }
         ]
@@ -85,7 +90,10 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< HEAD
+=======
                 "file": "Features.md",
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +110,10 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< HEAD
+=======
                 "file": "Features.md",
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +135,13 @@
             "type": "leaf",
             "state": {
               "type": "outline",
+<<<<<<< HEAD
+              "state": {}
+=======
               "state": {
                 "file": "Features.md"
               }
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
             }
           }
         ]
@@ -149,11 +164,25 @@
       "obsidian-livesync:Show Customization sync": false
     }
   },
+<<<<<<< HEAD
+  "active": "724a9a767cd51f28",
+  "lastOpenFiles": [
+    "NETHER",
+    "BACK",
+    "FRONT",
+    "BBDD",
+    "- Indice.md",
+    "BBDD/Base de datos.canvas",
+    "Features.md",
+    "2024-04-24.md",
+    "Welcome.md"
+=======
   "active": "cfb429ba96bf8369",
   "lastOpenFiles": [
     "- Indice.md",
     "Features.md",
     "Welcome.md",
     "Untitled"
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   ]
 }

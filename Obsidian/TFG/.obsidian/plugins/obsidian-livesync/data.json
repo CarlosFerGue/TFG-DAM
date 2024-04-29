@@ -3,7 +3,11 @@
   "couchDB_USER": "",
   "couchDB_PASSWORD": "",
   "couchDB_DBNAME": "",
+<<<<<<< HEAD
+  "liveSync": true,
+=======
   "liveSync": false,
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   "syncOnSave": false,
   "syncOnStart": false,
   "savingDelay": 200,
@@ -46,6 +50,15 @@
   "syncInternalFilesBeforeReplication": false,
   "syncInternalFilesIgnorePatterns": "\\/node_modules\\/, \\/\\.git\\/, \\/obsidian-livesync\\/",
   "syncInternalFilesInterval": 60,
+<<<<<<< HEAD
+  "additionalSuffixOfDatabaseName": "7b6ecd57170469f3",
+  "ignoreVersionCheck": false,
+  "lastReadUpdates": 22,
+  "deleteMetadataOfDeletedFiles": false,
+  "syncIgnoreRegEx": "",
+  "syncOnlyRegEx": "",
+  "customChunkSize": 50,
+=======
   "additionalSuffixOfDatabaseName": "3721cfa670c826ff",
   "ignoreVersionCheck": false,
   "lastReadUpdates": 0,
@@ -53,6 +66,7 @@
   "syncIgnoreRegEx": "",
   "syncOnlyRegEx": "",
   "customChunkSize": 0,
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   "readChunksOnline": true,
   "watchInternalFileChanges": true,
   "automaticallyDeleteMetadataOfDeletedFiles": 0,
@@ -62,7 +76,11 @@
   "syncAfterMerge": false,
   "configPassphraseStore": "",
   "encryptedPassphrase": "",
+<<<<<<< HEAD
+  "encryptedCouchDBConnection": "%a0ae7a7e146862e74e7987802800000028fe93a801f1788a0f5320eff7d6f93cx4ebYse0VX6CtL3pHUJejzujGuNR6T0nV2xFh5AlKdYX4m++UnTsNPbYPSkcAbFBn2xAp83m3STUYeBwqgJO0Ld+EdgD+qFMWoq5h8Q/mz99gKRwfRigr4FNpMQLQPgL8I70ZAzvRC7XknBpuUJf",
+=======
   "encryptedCouchDBConnection": "",
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   "permitEmptyPassphrase": false,
   "useIndexedDBAdapter": true,
   "useTimeouts": false,
@@ -70,8 +88,13 @@
   "doNotPaceReplication": false,
   "hashCacheMaxCount": 300,
   "hashCacheMaxAmount": 50,
+<<<<<<< HEAD
+  "concurrencyOfReadChunksOnline": 30,
+  "minimumIntervalOfReadChunksOnline": 25,
+=======
   "concurrencyOfReadChunksOnline": 40,
   "minimumIntervalOfReadChunksOnline": 50,
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   "hashAlg": "xxhash64",
   "suspendParseReplicationResult": false,
   "doNotSuspendOnFetching": false,
