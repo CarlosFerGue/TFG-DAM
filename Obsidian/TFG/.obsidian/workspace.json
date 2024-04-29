@@ -11,8 +11,17 @@
             "id": "724a9a767cd51f28",
             "type": "leaf",
             "state": {
+<<<<<<< HEAD
               "type": "empty",
               "state": {}
+=======
+              "type": "markdown",
+              "state": {
+                "file": "Features.md",
+                "mode": "source",
+                "source": false
+              }
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
             }
           }
         ]
@@ -65,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 277.5
+    "width": 300
   },
   "right": {
     "id": "0fec571283889d94",
@@ -81,6 +90,10 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< HEAD
+=======
+                "file": "Features.md",
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +110,10 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< HEAD
+=======
+                "file": "Features.md",
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +135,13 @@
             "type": "leaf",
             "state": {
               "type": "outline",
+<<<<<<< HEAD
               "state": {}
+=======
+              "state": {
+                "file": "Features.md"
+              }
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
             }
           }
         ]
@@ -141,6 +164,7 @@
       "obsidian-livesync:Show Customization sync": false
     }
   },
+<<<<<<< HEAD
   "active": "724a9a767cd51f28",
   "lastOpenFiles": [
     "NETHER",
@@ -152,5 +176,13 @@
     "Features.md",
     "2024-04-24.md",
     "Welcome.md"
+=======
+  "active": "cfb429ba96bf8369",
+  "lastOpenFiles": [
+    "- Indice.md",
+    "Features.md",
+    "Welcome.md",
+    "Untitled"
+>>>>>>> c1f9a3d5008149b81238afb861001dc44cae1583
   ]
 }
