@@ -53,5 +53,27 @@ export default [
       ratingAverage: 0,
       reviewCount: 0,
       ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4'
+    },
+    {
+      id: 'reduxjs.redux',
+      fullName: 'reduxjs/redux',
+      description: 'Predictable state container for JavaScript apps',
+      language: 'TypeScript',
+      forksCount: 13902,
+      stargazersCount: 52869,
+      ratingAverage: 0,
+      reviewCount: 0,
+      ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4'
+    },
+    {
+      id: 'reduxjs.redux',
+      fullName: 'reduxjs/redux',
+      description: 'Predictable state container for JavaScript apps',
+      language: 'TypeScript',
+      forksCount: 13902,
+      stargazersCount: 52869,
+      ratingAverage: 0,
+      reviewCount: 0,
+      ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4'
     }
   ]

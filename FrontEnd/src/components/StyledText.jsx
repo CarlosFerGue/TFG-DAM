@@ -9,31 +9,36 @@ const styles = StyleSheet.create({
         fontFamily: theme.fonts.main,
         fontWeight: theme.fontWeights.normal
     },
+    colorPrimary: {
+        color: theme.colors.primary
+    },
+    colorSecondary: {
+        color: theme.colors.textSecondary
+    },
     bold: {
         fontWeight: theme.fontWeights.bold
     },
-    blue: {
-        color: "#09f",
+    subheading: {
+        fontSize: theme.fontWeights.subheading
     },
-    big: {
-        fontSize: 20,
-    },
-    small: {
-        fontSize: 8,
+    textAlignCenter: {
+        textAlign: theme.align.center
     }
 });
 
 
-export default function StyledText({ bold, blue, big, small, children }) {
+export default function StyledText({ align, color, children, fontSize, fontWeight, style, ...restOfProps }) {
     const textStyles = [
         styles.text,
-        blue && styles.blue,
-        big && styles.big,
-        small && styles.small,
-        bold && styles.bold
+        align === 'center' && styles.textAlignCenter,
+        color === 'primary' && styles.colorPrimary,
+        color === 'secondary' && styles.colorPrimary,
+        fontSize === 'subheading' && styles.subheading,
+        fontWeight === 'bold' && styles.bold,
+        style
     ]
     return (
-        <Text style={textStyles}>
+        <Text style={textStyles} {...restOfProps}>
             {children}
         </Text>
     )

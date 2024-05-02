@@ -1,14 +1,15 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Text, View} from 'react-native';
-import RepositoryList from './RepositoryList';
+import { Text, View, ImageBackground } from 'react-native';
+import Background from './Background'
 
 const Main = () => {
     return (
-        <View style={{marginTop: Constants.statusBarHeight, flexGrow: 1}}>
-            <Text>Hola Mundo!!</Text>
-            <RepositoryList />
-        </View>
+        <ImageBackground style={{flex: 1}} source={require('../assets/bg.png')}>
+            <View style={{marginTop: Constants.statusBarHeight, flexGrow: 1}}>
+                <Text>Main</Text>
+            </View>
+        </ImageBackground>
     )
 };
 

@@ -1,8 +1,9 @@
 const theme = {
     colors: {
-        textPrimary: 'blue',
+        textPrimary: 'black',
         textSecondary: 'green',
-        primary: 'black'
+        primary: '#09f',
+        white: '#fff'
     },
     fontSizes: {
         body: 14,
@@ -14,6 +15,9 @@ const theme = {
     fontWeights: {
         normal: '400',
         bold: '700'
+    },
+    align: {
+        center: 'center'
     }
 }
 
