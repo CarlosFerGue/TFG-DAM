@@ -51,6 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-=======
->>>>>>> Stashed changes
 export default Main;
