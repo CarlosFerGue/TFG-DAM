@@ -2,13 +2,11 @@ import React from "react";
 import Constants from "expo-constants";
 import Background from "./Background"; // Asegúrate de que la ruta de importación es correcta
 import { View, Text, StyleSheet, Image } from "react-native";
-import Login from "./Login";
 
 
 const Main = () => {
   return (
     <Background>
-<<<<<<< Updated upstream
       <View style={styles.container}>
         <View style={styles.logo}> 
           <Image
@@ -24,14 +22,10 @@ const Main = () => {
         </View>
         <Text style={{ color: "#fff", fontSize: 24 }}>Main</Text>
       </View>
-=======
-      <Login/>
->>>>>>> Stashed changes
     </Background>
   );
 };
 
-<<<<<<< Updated upstream
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
