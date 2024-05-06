@@ -1,29 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import Constants from "expo-constants";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
-
-// Ruta correcta al archivo de la fuente
-const loadFonts = async () => {
-  await Font.loadAsync({
-    "lobster-two": require("../../assets/lobster-two.regular.ttf"),
-  });
-};
+import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 
 const Login = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  if (!fontLoaded) {
-    return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setFontLoaded(true)}
-        onError={console.warn}
-      />
-    );
-  }
-
   return (
     <View style={styles.container}>
       <Image
@@ -57,7 +36,6 @@ const styles = StyleSheet.create({
   bienvenido: {
     fontSize: 24,
     color: "#fff",
-    fontFamily: "lobster-two",
   },
   subtitulo: {
     fontSize: 24,
