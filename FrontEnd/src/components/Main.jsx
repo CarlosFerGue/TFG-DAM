@@ -1,17 +1,16 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Text, View, ImageBackground } from 'react-native';
-import Background from './Background'
+import Background from './Background';  // Asegúrate de que la ruta de importación es correcta
+import { View, Text } from 'react-native';
 
 const Main = () => {
     return (
-        <ImageBackground style={{flex: 1}} source={require('../assets/bg.png')}>
-            <View 
-            style={{marginTop: Constants.statusBarHeight, flexGrow: 1}}>
-                <Text>Main</Text>
+        <Background>
+            <View style={{marginTop: Constants.statusBarHeight, flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{color: '#fff', fontSize: 24}}>Main</Text>
             </View>
-        </ImageBackground>
-    )
+        </Background>
+    );
 };
 
 export default Main;

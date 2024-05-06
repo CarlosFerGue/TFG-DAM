@@ -1,33 +1,20 @@
-// Background.js
-import React from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import React from "react";
+import { ImageBackground, StyleSheet } from 'react-native';
 
 const Background = ({ children }) => {
-  return (
-    <LinearGradient
-      // Colores y puntos de parada especificados
-      colors={['#000547', '#000000', '#000000', '#2E0027']}
-      start={{ x: 0, y: 0 }}    // Inicio del gradiente en la esquina superior izquierda
-      end={{ x: 1, y: 1 }}      // Fin del gradiente en la esquina inferior derecha
-      locations={[0, 0.38, 0.66, 1]}  // Puntos de parada para los colores
-      style={styles.background}
-    >
-      {children}
-    </LinearGradient>
-  );
+    return (
+        <ImageBackground style={styles.background} source={require('../../assets/bg.png')}>
+            {children}
+        </ImageBackground>
+    );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    width: width,
-    height: height,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  },
+    background: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    }
 });
 
 export default Background;
