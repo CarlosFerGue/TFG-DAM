@@ -1,3 +1,7 @@
+import React from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
+
 const Login = () => {
   return (
     <View style={styles.container}>
@@ -18,7 +22,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
-    flexG: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: "5%",
