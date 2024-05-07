@@ -66,7 +66,7 @@ const Register1 = ({ navigation }) => {
     }
   
     // Si todas las validaciones son correctas
-    navigation.navigate("NextScreen");
+    navigation.navigate("Register2");
   };
   
 
