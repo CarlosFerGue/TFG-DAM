@@ -3,8 +3,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import Login from "./src/screens/Login.jsx";
-import Register1 from "./src/screens/Register1.jsx";
+import Login from "./src/screens/LoginScreen.jsx";
+import Register1 from "./src/screens/Register1Screen.jsx";
 
 const Stack = createNativeStackNavigator();
 

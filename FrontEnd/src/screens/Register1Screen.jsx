@@ -4,7 +4,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image 
 import Constants from "expo-constants";
 
 const Register1 = ({ navigation }) => {
-  // Estados para gestionar las entradas de los usuarios
   const [username, setUsername] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [email, setEmail] = useState('');
@@ -62,10 +61,8 @@ const Register1 = ({ navigation }) => {
 const styles = StyleSheet.create({
   logo: {
     width: "100%",
-    maxHeight: "100%",
-    justifyContent: "center",
-    alignSelf: "flex-start",
-    bottom: "5%",
+    maxHeight: "20%",  // Adjusted for better proportion
+    marginBottom: "5%", // Added space below logo
   },
   container: {
     flexGrow: 1,
@@ -78,35 +75,46 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
     marginBottom: 20,
-    textAlign: "center"
+    textAlign: "center",
+    fontWeight: "bold",  // Making text bolder for better visibility
   },
   input: {
     width: "80%",
-    backgroundColor: "#333",
-    borderRadius: 10,
+    backgroundColor: "#222", // Darker background for inputs
+    borderRadius: 8,       // More rounded corners
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: "#5f5fc4",  // Brighter border color
     color: "#ffffff",
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 15,   // Increased vertical padding for better touch area
     fontSize: 16,
     marginVertical: 10,
   },
   button: {
     backgroundColor: "#6200ee",
     padding: 15,
-    borderRadius: 15,
+    borderRadius: 25,  // More rounded button
     width: "60%",
     alignItems: "center",
-    margin: 30,
+    margin: 20,         // Adjusted margin
+    shadowColor: "#000",  // Adding shadow for depth
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "bold",  // Bold text for readability
   },
   linkText: {
     color: "#BB86FC",
     textDecorationLine: 'underline',
+    marginTop: 10,      // Added top margin for spacing
   }
 });
 
