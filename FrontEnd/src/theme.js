@@ -1,12 +1,11 @@
 const theme = {
+    //Categoria colores, id anadiendo los necesarios
     colors: {
-        textPrimary: 'black',
-        textSecondary: 'green',
-        primary: '#09f',
         white: '#fff'
     },
+    //Categoria tamanos de letra
     fontSizes: {
-        body: 14,
+        titulo: 35,
         subheading: 16
     },
     fonts: {
