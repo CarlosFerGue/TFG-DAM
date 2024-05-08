@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontWeight: "bold",
     textAlign: "center",
-    top: "7%",
+    top: "3%",
   },
 });
 
