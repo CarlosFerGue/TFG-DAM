@@ -12,57 +12,32 @@ import {
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
-// import * as Font from 'expo-font';
-// import LobsterTwoRegular from '../assets/fonts/lobster-two.regular.ttf';
 
-const Login = ({ navigation }) => {
+const PassOlvidada = ({ navigation }) => {
   return (
     <Background>
       <ScrollView>
         <View style={styles.container}>
-          
           <Image
             style={styles.logo}
             source={require("../../assets/MyEventz.png")}
             resizeMode="contain"
           />
 
-          <Text style={styles.bienvenido}>¡Bienvenid@!</Text>
-          <Text style={styles.subtitulo}>
-            Tu portal de actividades y experiencias en Zaragoza.
-          </Text>
+          <Text style={styles.bienvenido}>Recuperación de contraseñas</Text>
 
-          <Text style={styles.inputText}>Nombre de usuario</Text>
+          <Text style={styles.inputText}>Introduce tu correo electrónico</Text>
           <TextInput
             style={styles.inputs}
-            placeholder="Ingresa tu nombre de usuario"
+            placeholder="unprofessional@svalero.com"
             placeholderTextColor="#ccc"
-          />
-
-          <Text style={styles.inputText}>Contraseña</Text>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Ingresa tu contraseña"
-            placeholderTextColor="#ccc"
-            secureTextEntry
           />
 
           <TouchableOpacity
             style={styles.crearcuenta}
-            onPress={() => navigation.navigate("PassOlvidada")}
+            onPress={() => navigation.navigate("Login")}
           >
-          <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={validateForm}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.crearcuenta}
-            onPress={() => navigation.navigate("Register1")}
-          >
-            <Text style={styles.crearcuenta}>Crear Una Nueva Cuenta</Text>
+            <Text style={styles.crearcuenta}>Volver a Inicio de sesión</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -115,12 +90,13 @@ const styles = StyleSheet.create({
     bottom: "5%",
     marginBottom: "1%",
   },
+  inputPass: {},
   olvidona: {
     fontSize: 15,
     color: "#ccc",
     bottom: "3%",
     textAlign: "center",
-    bottom: "250%",
+    bottom: "4%",
   },
   button: {
     alignSelf: "center",
@@ -154,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default PassOlvidada;
