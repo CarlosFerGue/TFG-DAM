@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
+// import * as Font from 'expo-font';
+// import LobsterTwoRegular from '../assets/fonts/lobster-two.regular.ttf';
 
 const Login = ({ navigation }) => {
   return (
@@ -32,7 +34,8 @@ const Login = ({ navigation }) => {
         />
         <Text style={styles.inputText}>Contraseña</Text>
 
-        <TextInput style={styles.inputs} placeholder="Ingresa tu contraseña" />
+        <TextInput style={styles.inputs} placeholder="Ingresa tu contraseña" 
+        secureTextEntry={true}/>
 
         <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
 
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textAlign: "center",
     bottom: "14%",
+    fontFamily: 'Lobster Two Regular',
   },
   subtitulo: {
     fontSize: 20,
@@ -82,9 +86,13 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   inputs: {
-    borderWidth: 1,
-    borderColor: "black",
+    borderWidth: 2,
+    borderColor: "white",
+    borderRadius: 7,
+    color: 'white',
+    height: 50,
     padding: 8,
+    fontSize: 17,
     width: "100%",
     bottom: "5%",
     marginBottom: "1%",
