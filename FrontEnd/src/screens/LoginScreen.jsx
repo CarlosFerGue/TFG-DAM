@@ -8,6 +8,7 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  validateForm,
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
@@ -27,19 +28,27 @@ const Login = ({ navigation }) => {
         <Text style={styles.subtitulo}>
           Tu portal de actividades y experiencias en Zaragoza.
         </Text>
+
         <Text style={styles.inputText}>Nombre de usuario</Text>
         <TextInput
           style={styles.inputs}
           placeholder="Ingresa tu nombre de usuario"
+          placeholderTextColor="#ccc"
         />
-        <Text style={styles.inputText}>Contraseña</Text>
 
-        <TextInput style={styles.inputs} placeholder="Ingresa tu contraseña" 
-        secureTextEntry={true}/>
+        <Text style={styles.inputText}>Contraseña</Text>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Ingresa tu contraseña"
+          placeholderTextColor="#ccc"
+          secureTextEntry
+        />
 
         <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
 
-        <Button title="Iniciar Sesión" />
+        <TouchableOpacity style={styles.button} onPress={validateForm}>
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.crearcuenta}
@@ -71,7 +80,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textAlign: "center",
     bottom: "14%",
-    fontFamily: 'Lobster Two Regular',
+    fontFamily: "Lobster Two Regular",
   },
   subtitulo: {
     fontSize: 20,
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
     borderRadius: 7,
-    color: 'white',
+    color: "white",
     height: 50,
     padding: 8,
     fontSize: 17,
@@ -97,18 +106,43 @@ const styles = StyleSheet.create({
     bottom: "5%",
     marginBottom: "1%",
   },
+  inputPass: {},
   olvidona: {
-    fontSize: 13,
+    fontSize: 15,
     color: theme.colors.white,
     bottom: "3%",
     textAlign: "center",
     bottom: "4%",
   },
+  button: {
+    alignSelf: "center",
+    backgroundColor: "#6200ee",
+    padding: 15,
+    borderRadius: 18,
+    width: "80%",
+    alignItems: "center",
+    margin: 20, // Adjusted margin
+    shadowColor: "#000", // Adding shadow for depth
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold", // Bold text for readability
+  },
   crearcuenta: {
     fontSize: 20,
-    color: theme.colors.white,
+    color: "#8000FF",
+    textDecorationLine: "underline",
+    fontWeight: "bold",
     textAlign: "center",
-    top: "13%",
+    top: "7%",
   },
 });
 

@@ -1,8 +1,8 @@
 const theme = {
     //Categoria colores, id anadiendo los necesarios
     colors: {
-        azullMEZ:'000547',
-        moradoMEZ: '30002A', 
+        azullMEZ:'#000547',
+        moradoMEZ: '#30002A', 
         white: '#fff',
        gradienteBotones: 'linear-gradient(to right, #000547, #30002A)'
     },
