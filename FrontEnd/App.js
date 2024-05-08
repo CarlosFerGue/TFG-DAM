@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import Login from "./src/screens/LoginScreen.jsx";
 import Register1 from "./src/screens/Register1Screen.jsx";
+import Register2 from './src/screens/Register2Screen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ export default class App extends React.Component {
           EN CASO DE QUERER MANTENER LA BARRA DE ENCABEZADO POR SCREENS/>*/}
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register1" component={Register1} />
+          <Stack.Screen name="Register2" component={Register2} />
         </Stack.Navigator>
       </NavigationContainer>
     )
