@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
   validateForm,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
@@ -18,45 +18,47 @@ import theme from "../theme";
 const Login = ({ navigation }) => {
   return (
     <Background>
-      <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/MyEventz.png")}
-          resizeMode="contain"
-        />
-        <Text style={styles.bienvenido}>¡Bienvenid@!</Text>
-        <Text style={styles.subtitulo}>
-          Tu portal de actividades y experiencias en Zaragoza.
-        </Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require("../../assets/MyEventz.png")}
+            resizeMode="contain"
+          />
+          <Text style={styles.bienvenido}>¡Bienvenid@!</Text>
+          <Text style={styles.subtitulo}>
+            Tu portal de actividades y experiencias en Zaragoza.
+          </Text>
 
-        <Text style={styles.inputText}>Nombre de usuario</Text>
-        <TextInput
-          style={styles.inputs}
-          placeholder="Ingresa tu nombre de usuario"
-          placeholderTextColor="#ccc"
-        />
+          <Text style={styles.inputText}>Nombre de usuario</Text>
+          <TextInput
+            style={styles.inputs}
+            placeholder="Ingresa tu nombre de usuario"
+            placeholderTextColor="#ccc"
+          />
 
-        <Text style={styles.inputText}>Contraseña</Text>
-        <TextInput
-          style={styles.inputs}
-          placeholder="Ingresa tu contraseña"
-          placeholderTextColor="#ccc"
-          secureTextEntry
-        />
+          <Text style={styles.inputText}>Contraseña</Text>
+          <TextInput
+            style={styles.inputs}
+            placeholder="Ingresa tu contraseña"
+            placeholderTextColor="#ccc"
+            secureTextEntry
+          />
 
-        <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
+          <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
 
-        <TouchableOpacity style={styles.button} onPress={validateForm}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={validateForm}>
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.crearcuenta}
-          onPress={() => navigation.navigate("Register1")}
-        >
-          <Text style={styles.crearcuenta}>Crear Una Nueva Cuenta</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.crearcuenta}
+            onPress={() => navigation.navigate("Register1")}
+          >
+            <Text style={styles.crearcuenta}>Crear Una Nueva Cuenta</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </Background>
   );
 };
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: theme.colors.white,
     bottom: "3%",
-    marginBottom: "5%",
+    marginBottom: "6%",
   },
   inputs: {
     borderWidth: 2,
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
   inputPass: {},
   olvidona: {
     fontSize: 15,
-    color: theme.colors.white,
+    color: "#ccc",
     bottom: "3%",
     textAlign: "center",
     bottom: "4%",
