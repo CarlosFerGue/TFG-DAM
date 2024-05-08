@@ -16,7 +16,6 @@ import theme from "../theme";
 const PassOlvidada = ({ navigation }) => {
   return (
     <Background>
-      <ScrollView>
         <View style={styles.container}>
           <Image
             style={styles.logo}
@@ -33,14 +32,14 @@ const PassOlvidada = ({ navigation }) => {
             placeholderTextColor="#ccc"
           />
 
-          <TouchableOpacity
-            style={styles.crearcuenta}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={styles.crearcuenta}>Volver a Inicio de sesión</Text>
+          <TouchableOpacity style={styles.button} onPress={validateForm}>
+            <Text style={styles.buttonText}>Enviar correo</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.volverInicio}>Volver a Inicio de sesión</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </Background>
   );
 };
@@ -48,7 +47,7 @@ const PassOlvidada = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
-    flexGrow: 1,
+    flex: 1,
     padding: "5%",
     display: "flex",
   },
@@ -66,17 +65,11 @@ const styles = StyleSheet.create({
     bottom: "14%",
     fontFamily: "Lobster Two Regular",
   },
-  subtitulo: {
-    fontSize: 20,
-    color: theme.colors.white,
-    textAlign: "center",
-    bottom: "12%",
-  },
   inputText: {
     fontSize: 20,
     color: theme.colors.white,
     bottom: "3%",
-    marginBottom: "6%",
+    marginBottom: "8%",
   },
   inputs: {
     borderWidth: 2,
@@ -89,14 +82,6 @@ const styles = StyleSheet.create({
     width: "100%",
     bottom: "5%",
     marginBottom: "1%",
-  },
-  inputPass: {},
-  olvidona: {
-    fontSize: 15,
-    color: "#ccc",
-    bottom: "3%",
-    textAlign: "center",
-    bottom: "4%",
   },
   button: {
     alignSelf: "center",
@@ -120,13 +105,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold", // Bold text for readability
   },
-  crearcuenta: {
+  volverInicio: {
     fontSize: 20,
     color: "#8000FF",
     textDecorationLine: "underline",
     fontWeight: "bold",
     textAlign: "center",
-    top: "3%",
+    top: "600%",
   },
 });
 

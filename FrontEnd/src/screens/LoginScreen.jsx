@@ -9,18 +9,20 @@ import {
   TouchableOpacity,
   validateForm,
   ScrollView,
+  useState
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
-// import * as Font from 'expo-font';
-// import LobsterTwoRegular from '../assets/fonts/lobster-two.regular.ttf';
+import * as Font from "../../assets/fonts/LobsterRegular.ttf";
+
 
 const Login = ({ navigation }) => {
+
+
   return (
     <Background>
       <ScrollView>
         <View style={styles.container}>
-          
           <Image
             style={styles.logo}
             source={require("../../assets/MyEventz.png")}
@@ -51,7 +53,7 @@ const Login = ({ navigation }) => {
             style={styles.crearcuenta}
             onPress={() => navigation.navigate("PassOlvidada")}
           >
-          <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
+            <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={validateForm}>
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textAlign: "center",
     bottom: "14%",
-    fontFamily: "Lobster Two Regular",
+    fontFamily: Font.LobsterRegular,
   },
   subtitulo: {
     fontSize: 20,

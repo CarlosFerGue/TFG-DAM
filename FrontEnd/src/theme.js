@@ -11,7 +11,6 @@ const theme = {
         titulo: 35,
         subtitulo: 20,
         inputText: 20,
-
     },
     fonts: {
        lobster2: 'Lobster Two Regular, sans-serif'
