@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Login from "./src/screens/LoginScreen.jsx";
 import Register1 from "./src/screens/Register1Screen.jsx";
 import Register2 from './src/screens/Register2Screen.jsx';
+import PassOlvidada from './src/screens/PassOlvidadaScreen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default class App extends React.Component {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register1" component={Register1} />
           <Stack.Screen name="Register2" component={Register2} />
+          <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
         </Stack.Navigator>
       </NavigationContainer>
     )

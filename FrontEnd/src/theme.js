@@ -1,16 +1,20 @@
 const theme = {
+    //Categoria colores, id anadiendo los necesarios
     colors: {
-        textPrimary: 'black',
-        textSecondary: 'green',
-        primary: '#09f',
-        white: '#fff'
+        azullMEZ:'#000547',
+        moradoMEZ: '#30002A', 
+        white: '#fff',
+       gradienteBotones: 'linear-gradient(to right, #000547, #30002A)'
     },
+    //Categoria tamanos de letra
     fontSizes: {
-        body: 14,
-        subheading: 16
+        titulo: 35,
+        subtitulo: 20,
+        inputText: 20,
+
     },
     fonts: {
-        main: 'System'
+       lobster2: 'Lobster Two Regular, sans-serif'
     },
     fontWeights: {
         normal: '400',
