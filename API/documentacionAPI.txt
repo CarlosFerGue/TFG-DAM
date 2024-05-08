@@ -1,0 +1,21 @@
+Instalamos el conector de MySQL desde la terminal: pip install mysql-connector-python
+
+Instalamos FastAPI: pip install fastapi
+
+Ejecutamos el main: uvicorn main:app --reload
+
+Archivo "main.py": archivo de ejecución del programa.
+
+Archivo "mysql.py": contiene las funciones de conexión y ejecución de consultas/modificaciones en la base de datos.
+        Al ejecutar modificaciones, devuelve los siguientes resultados:
+                1+    ->  La ejecución se ha ejecutado correctamente y ha afectado a varias filas.
+                0     ->  Se ha ejecutado la modificación pero no ha afectado a ninguna fila.
+                -1    ->  Ha habido un error durante la ejecución en el servidor de bases de datos.
+        Al realizar consultas:
+                JSON  ->  La consulta se ha realizado correctamente y devuelve los resultados.
+                0     ->  La consulta no ha devuelto ningún valor.
+                -1    ->  Ha habido un error durante la ejecución de la consulta.
+
+Carpeta "/routers": contiene los archivos con las llamadas específicas para cada caso de uso.
+
+Carpeta "/images/...": aquí almacenaremos las imágenes de las que hará uso la APP (fotos de perfil y banners de eventos).
