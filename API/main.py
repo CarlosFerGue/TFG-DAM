@@ -11,6 +11,10 @@ from routers import usuarios
 app.include_router(usuarios.router)
 from routers import categorias
 app.include_router(categorias.router)
+from routers import eventos
+app.include_router(eventos.router)
+from routers import participantes
+app.include_router(participantes.router)
 
 # Petición raíz de nuestra API.
 @app.get("/")

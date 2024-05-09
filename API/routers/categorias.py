@@ -13,4 +13,5 @@ async def find_all():
 # Encontrar categoría por ID.
 @router.get("/find_by_id/{id_categoria}")
 async def find_all(id_categoria:int):
-    return motorSQL.consultar(f"SELECT * FROM categorias WHERE id_categoria={id_categoria}")
+    categoria = motorSQL.consultar(f"SELECT * FROM categorias WHERE id_categoria={id_categoria}")
+    return categoria[0]

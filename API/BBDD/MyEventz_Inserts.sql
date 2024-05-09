@@ -26,16 +26,20 @@ INSERT INTO eventos (id_usuario, titulo, fecha, hora, descripcion, edad_min, eda
 INSERT INTO eventos (id_usuario, titulo, fecha, hora, descripcion, edad_min, edad_max, ubicacion, participantes)
 			 VALUES (4,'Ruta Moto','2024-06-03','08:00','Ruta hasta las pozas de Pígalo.',18,35,'Estación Delicias',10);
 SELECT * FROM eventos;
+SELECT CONCAT(nombre,' ',apel1,' ',apel2) as nombre_com, usuario FROM usuarios WHERE id_usuario = 1;
+SELECT U.id_usuario, CONCAT(nombre,' ',apel1,' ',apel2) as nombre_com, usuario FROM usuarios U INNER JOIN participantes_eventos PE ON U.id_usuario = PE.id_usuario WHERE PE.id_evento = 5;
 SELECT * FROM eventos WHERE id_usuario=1;
 
 
 
 -- Inserts PARTICIPANTES_EVENTOS
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,1,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,3,CURDATE());
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,1,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,2,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,1,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,2,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,5,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (6,1,CURDATE());
+SELECT * FROM participantes_eventos ORDER BY id_evento, id_usuario;
+SELECT E.id_evento, E.titulo, E.fecha FROM participantes_eventos PE INNER JOIN eventos E ON E.id_evento = PE.id_evento WHERE PE.id_usuario = 1;
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (1,2,CURDATE());
