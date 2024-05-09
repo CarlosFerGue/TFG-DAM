@@ -10,10 +10,11 @@ import {
   validateForm,
   ScrollView,
   useState,
+  useWindowDimensions
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
-import Carousel from "react-native-reanimated-carousel";
+// import Carousel from "react-native-reanimated-carousel";
 
 const Home = ({ navigation }) => {
   // Estas son las variables del carousel
@@ -49,7 +50,7 @@ const Home = ({ navigation }) => {
         />
 
         <Text style={styles.subtitulo}>Eventos populares:</Text>
-
+{/* 
         <Carousel 
             width={width} 
             height={width / 2} 
@@ -60,7 +61,7 @@ const Home = ({ navigation }) => {
                     <Image source={item.image} />
                 </View>
             )}
-        />
+        /> */}
 
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
       </View>
