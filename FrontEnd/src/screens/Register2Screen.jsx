@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
 import Background from "../components/Background";
 import Modal from 'react-native-modal';
-import ImagePicker from 'expo-image-picker'; 
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import Constants from "expo-constants";
 
 const Register2 = ({ navigation }) => {
@@ -15,13 +16,20 @@ const Register2 = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const pickImage = async () => {
+    // Pide permiso para acceder a la galería de fotos
+    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    if (status !== 'granted') {
+      alert('Lo siento, necesitamos permisos de cámara para hacer esto!');
+      return;
+    }
+  
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
+  
     if (!result.cancelled) {
       setProfileImage(result.uri);
     }
