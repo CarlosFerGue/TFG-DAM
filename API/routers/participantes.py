@@ -15,9 +15,3 @@ async def apuntarse(id_evento:int,id_usuario:int):
 @router.get("/desapuntarse/[{id_evento}]&[{id_usuario}]")
 async def desapuntarse(id_evento:int,id_usuario:int):
     return motorSQL.modificar(f"DELETE FROM participantes_eventos WHERE id_evento={id_evento} AND id_usuario={id_usuario}")
-
-# Eliminar un evento.
-@router.get("/delete_evento/{id_evento}")
-async def delete_evento(id_evento:int):
-    motorSQL.modificar(f"DELETE FROM participantes_eventos WHERE id_evento={id_evento}")
-    return motorSQL.modificar(f"DELETE FROM eventos WHERE id_evento={id_evento}")

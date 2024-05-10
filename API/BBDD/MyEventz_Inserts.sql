@@ -8,6 +8,7 @@ INSERT INTO usuarios (usuario, clave, nombre, apel1, apel2, f_nac, bio)
 INSERT INTO usuarios (usuario, clave, nombre, apel1, apel2, f_nac, bio)
 			  VALUES ('carver','123','Noe','','','2002-05-16','Rulando con la motico.');
 SELECT * FROM usuarios;
+SELECT id_usuario, CONCAT(nombre,' ',apel1,' ',apel2) AS nombre_completo, usuario FROM usuarios WHERE CONCAT(nombre,' ',apel1,' ',apel2) LIKE '%a%' OR usuario LIKE '%a%';
 SELECT id_usuario FROM usuarios WHERE usuario='carver';
 SELECT * FROM usuarios WHERE id_usuario=1;
 -- http://127.0.0.1:8000/usuarios/add/[israelito]&[123]&[Israel]&[Colta]&[Bujalance]&[2003-04-15]&[Estudio%20en%20San%20Valero%20y%20trabajo%20en%20Deloitte]
@@ -27,19 +28,27 @@ INSERT INTO eventos (id_usuario, titulo, fecha, hora, descripcion, edad_min, eda
 			 VALUES (4,'Ruta Moto','2024-06-03','08:00','Ruta hasta las pozas de Pígalo.',18,35,'Estación Delicias',10);
 SELECT * FROM eventos;
 SELECT CONCAT(nombre,' ',apel1,' ',apel2) as nombre_com, usuario FROM usuarios WHERE id_usuario = 1;
+-- Listado de participantes en cada evento.
+SELECT E.id_evento, PE.id_usuario, E.titulo, E.fecha 
+FROM eventos E INNER JOIN participantes_eventos PE ON E.id_evento = PE.id_evento;
+-- Cantidad de participantes en cada evento.
+SELECT E.id_evento, E.titulo, COUNT(E.id_evento) AS participantes, E.fecha 
+FROM eventos E INNER JOIN participantes_eventos PE ON E.id_evento = PE.id_evento
+GROUP BY E.id_evento
+ORDER BY participantes DESC;
+-- Eventos pendientes organizados por un usuario.
+SELECT count(id_evento) as eventos FROM eventos WHERE id_usuario=1 AND fecha>CURDATE();
 SELECT U.id_usuario, CONCAT(nombre,' ',apel1,' ',apel2) as nombre_com, usuario FROM usuarios U INNER JOIN participantes_eventos PE ON U.id_usuario = PE.id_usuario WHERE PE.id_evento = 5;
 SELECT * FROM eventos WHERE id_usuario=1;
-
+SELECT id_evento, titulo, fecha, ubicacion FROM eventos WHERE fecha>CURDATE() ORDER BY fecha ASC LIMIT 20;
 
 
 -- Inserts PARTICIPANTES_EVENTOS
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (3,3,CURDATE());
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (4,2,CURDATE());
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,1,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,2,CURDATE());
-INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (5,5,CURDATE());
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (6,1,CURDATE());
+INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (7,2,CURDATE());
 SELECT * FROM participantes_eventos ORDER BY id_evento, id_usuario;
 SELECT E.id_evento, E.titulo, E.fecha FROM participantes_eventos PE INNER JOIN eventos E ON E.id_evento = PE.id_evento WHERE PE.id_usuario = 1;
 INSERT INTO participantes_eventos (id_evento, id_usuario, fecha) VALUES (1,2,CURDATE());
