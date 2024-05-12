@@ -21,7 +21,7 @@ export default class App extends React.Component {
   componentDidMount() {
     setTimeout(async () => {
       await SplashScreen.hideAsync();
-    }, 2000);
+    }, 20);
   }
   render() {
     return (

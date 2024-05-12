@@ -11,8 +11,11 @@ import {
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
 
-import slides from "../slides";
-import HomeScreenSlide from "../components/HomeScreenSlideH";
+import slidesH from "../slidesHomeH";
+import slidesV from "../slidesHomeV";
+
+import HomeScreenSlideH from "../components/HomeScreenSlideH";
+import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
 const Home = ({ navigation }) => {
   return (
@@ -24,12 +27,13 @@ const Home = ({ navigation }) => {
           placeholderTextColor="#ccc"
         />
 
+        {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
-
-        <View style={styles.container}>
+        <View style={styles.sliderHView}>
           <FlatList
-            data={slides}
-            renderItem={({ item }) => <HomeScreenSlide item={item} />}
+            style={styles.sliderH}
+            data={slidesH}
+            renderItem={({ item }) => <HomeScreenSlideH item={item} />}
             horizontal
             // showsHorizontalScrollIndicator
             // pagingEnabled
@@ -38,7 +42,17 @@ const Home = ({ navigation }) => {
           />
         </View>
 
+        {/* Slider vertical de Publicaciones recientes */}
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
+        <View style={styles.sliderVView}>
+          <FlatList
+            style={styles.sliderV}
+            data={slidesV}
+            renderItem={({ item }) => <HomeScreenSlideV item={item} />}
+            bounces={true}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
     </Background>
   );
@@ -50,6 +64,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 17,
     display: "flex",
+  },
+  sliderH: {
+    width: 300,
+    borderRadius: 30,
+  },
+  sliderV: {},
+  sliderHView: {
+    flex: 0.3,
+    paddingTop: 10,
+  },
+  sliderVView: {
+    flex: 0.7,
+    paddingTop: 15,
   },
   subtitulo: {
     fontSize: 25,
