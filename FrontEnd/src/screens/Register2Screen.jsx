@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Background from "../components/Background";
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Constants from "expo-constants";
+import { storage } from '../../firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; 
+
 
 const Register2 = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
@@ -12,12 +13,13 @@ const Register2 = ({ navigation }) => {
   const [lastName2, setLastName2] = useState('');
   const [biography, setBiography] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const pickImage = async () => {
     // Pide permiso para acceder a la galería de fotos
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Lo siento, necesitamos permisos de cámara para hacer esto!');
       return;
@@ -31,8 +33,25 @@ const Register2 = ({ navigation }) => {
     });
   
     if (!result.cancelled) {
-      setProfileImage(result.uri);
+      setProfileImage(result.assets[0].uri);
+      uploadImage(result.assets[0].uri);
     }
+  };
+
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const storageRef = ref(storage, `profileImages/${new Date().toISOString()}`);
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log('Imagen subida con éxito');
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        console.log('URL de la imagen:', downloadURL);
+        setProfileImageUrl(downloadURL);
+        console.log('URL de la imagen2:', profileImageUrl);
+      });
+    }).catch((error) => {
+      console.error('Error al subir la imagen:', error);
+    });
   };
 
   return (

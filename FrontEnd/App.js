@@ -27,7 +27,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="Register2"
           screenOptions={{
             headerShown: false, // No mostrar la barra de encabezado
           }}
