@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import CategoriasTarjeta from "../components/Categorias";
@@ -7,7 +7,6 @@ import {
   View,
   StyleSheet,
   TextInput,
-  FlatList,
   TouchableOpacity,
   Text,
 } from "react-native";
@@ -15,9 +14,23 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-import categoriasJson from "../categorias";
-
 const CategoriasScreen = ({ navigation }) => {
+  const [categoriasJson, setCategoriasJson] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://91.250.186.139:8000/categorias/find_all");
+        const data = await response.json();
+        setCategoriasJson(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Background>
       <View style={styles.container}>
@@ -32,15 +45,12 @@ const CategoriasScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Aquí renderizamos la lista de categorías */}
         <View style={styles.listaCategorias}>
-          <FlatList
-            data={categoriasJson}
-            renderItem={({ item }) => <CategoriasTarjeta categoria={item} />}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal={true} // Renderiza la lista horizontalmente
-            //contentContainerStyle={styles.listaCategoriasInterna}
-          />
+          {categoriasJson.map((item) => (
+            <TouchableOpacity key={item.id} onPress={() => navigation.addCategoria(item.categoria)} style={styles.categoriaCard}>
+              <CategoriasTarjeta categoria={item} />
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
       <NavBar />
@@ -71,10 +81,13 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   listaCategorias: {
-    width: '100%',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+  categoriaCard: {
+    marginBottom: 20,
   },
 });
 

@@ -24,7 +24,7 @@
     "expo-permissions": "^14.4.0",
     "expo-splash-screen": "~0.26.5",
     "expo-status-bar": "~1.11.1",
-    "firebase": "^10.11.1",
+    "firebase": "^10.12.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",

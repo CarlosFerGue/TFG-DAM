@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 const CategoriasTarjeta = ({ categoria }) => {
   return (
     <View style={styles.categoriaContainer}>
-      <Text style={styles.categoriaText}>{categoria.nombre}</Text>
+      <Text style={styles.categoriaText}>{categoria.categoria}</Text>
     </View>
   );
 };

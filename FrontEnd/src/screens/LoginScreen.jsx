@@ -17,8 +17,6 @@ import * as Font from "../../assets/fonts/LobsterRegular.ttf";
 
 
 const Login = ({ navigation }) => {
-
-
   return (
     <Background>
       <ScrollView>
