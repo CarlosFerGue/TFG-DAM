@@ -8,6 +8,7 @@ import Register1 from "./src/screens/Register1Screen.jsx";
 import Register2 from "./src/screens/Register2Screen.jsx";
 import PassOlvidada from "./src/screens/PassOlvidadaScreen.jsx";
 import Home from "./src/screens/HomeScreen.jsx";
+import Categorias from "./src/screens/CategoriasSceen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="Categorias"
           screenOptions={{
             headerShown: false, // No mostrar la barra de encabezado
           }}
@@ -39,7 +40,9 @@ export default class App extends React.Component {
           <Stack.Screen name="Register2" component={Register2} />
           <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Categorias" component={Categorias} />
         </Stack.Navigator>
+
       </NavigationContainer>
     );
   }
