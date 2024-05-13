@@ -28,36 +28,34 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "yellow",
-    borderWidth: 3,
-    width: 250,
+    width: 350,
+    height: 200,
     borderRadius: 20,
-    marginHorizontal: 5,
-    overflow: "hidden", // Para recortar cualquier parte de la imagen que exceda los límites del contenedor
+    marginVertical: 10,
   },
   textoInferior: {
-    backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
+    backgroundColor: "rgba(98, 0, 238, 1)",
     width: "100%",
     borderBottomEndRadius: 23,
     borderBottomStartRadius: 23,
-    paddingVertical: 8, // Espacio alrededor del texto
     paddingHorizontal: 16,
-    position: "relative", 
-    top: 50,
+    top: 71,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+
     color: "#fff",
   },
   description: {
     fontSize: 16,
     color: "#fff",
+    marginBottom: 10,
   },
   image: {
     flex: 1,
     width: undefined,
     height: undefined,
+    borderRadius: 35,
   },
 });

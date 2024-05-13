@@ -7,8 +7,10 @@ import {
   TextInput,
   FlatList,
   Animated,
+  TouchableOpacity,
 } from "react-native";
-import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
+import Constants from "expo-constants";
+import { Ionicons } from '@expo/vector-icons'; // Importa el ícono de la lupa desde Ionicons
 import theme from "../theme";
 
 import slidesH from "../slidesHomeH";
@@ -21,22 +23,24 @@ const Home = ({ navigation }) => {
   return (
     <Background>
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputs}
-          placeholder="Buscar eventos..."
-          placeholderTextColor="#ccc"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputs}
+            placeholder="Buscar eventos..."
+            placeholderTextColor="#ccc"
+          />
+          <TouchableOpacity style={styles.searchIconContainer}>
+            <Ionicons name="search" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
 
         {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
         <View style={styles.sliderHView}>
           <FlatList
-            style={styles.sliderH}
             data={slidesH}
             renderItem={({ item }) => <HomeScreenSlideH item={item} />}
             horizontal
-            // showsHorizontalScrollIndicator
-            // pagingEnabled
             bounces={true}
             keyExtractor={(item) => item.id}
           />
@@ -46,7 +50,6 @@ const Home = ({ navigation }) => {
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
         <View style={styles.sliderVView}>
           <FlatList
-            style={styles.sliderV}
             data={slidesV}
             renderItem={({ item }) => <HomeScreenSlideV item={item} />}
             bounces={true}
@@ -61,22 +64,27 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
-    flex: 1,
-    padding: 17,
+    flexGrow: 1,
+    padding: 12,
     display: "flex",
   },
-  sliderH: {
-    width: 300,
-    borderRadius: 30,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderColor: "white",
+    marginBottom: 20,
   },
-  sliderV: {},
   sliderHView: {
-    flex: 0.3,
-    paddingTop: 10,
+    flex: 0.25,
+    paddingTop: 20,
   },
   sliderVView: {
-    flex: 0.7,
+    flex: 0.75,
     paddingTop: 15,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   subtitulo: {
     fontSize: 25,
@@ -99,16 +107,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   inputs: {
-    borderBottomWidth: 2,
-    borderColor: "white",
+    flex: 1,
     color: "white",
     height: 50,
     padding: 8,
-    top: "1%",
     fontSize: 17,
-    width: "100%",
-    bottom: "5%",
-    marginBottom: "1%",
+  },
+  searchIconContainer: {
+    padding: 10,
   },
   button: {
     alignSelf: "center",
@@ -117,8 +123,8 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     width: "80%",
     alignItems: "center",
-    margin: 20, // Adjusted margin
-    shadowColor: "#000", // Adding shadow for depth
+    margin: 20,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -130,7 +136,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
-    fontWeight: "bold", // Bold text for readability
+    fontWeight: "bold",
   },
 });
 

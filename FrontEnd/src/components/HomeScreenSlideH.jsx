@@ -28,12 +28,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "yellow",
-    borderWidth: 3,
-    width: 250,
+    width: 200,
     borderRadius: 20,
     marginHorizontal: 5,
-    overflow: "hidden", // Para recortar cualquier parte de la imagen que exceda los límites del contenedor
+    overflow: "hidden", 
   },
   textoInferior: {
     backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
@@ -48,16 +46,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
     color: "#fff",
   },
   description: {
     fontSize: 16,
     color: "#fff",
+    marginBottom: 10,
   },
   image: {
     flex: 1,
     width: undefined,
     height: undefined,
+    bottom: 30,
   },
 });
