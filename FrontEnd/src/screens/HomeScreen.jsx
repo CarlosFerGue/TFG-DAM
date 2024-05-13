@@ -1,70 +1,65 @@
-import React from "react";
 import Background from "../components/Background";
+import NavBar from "../components/NavBar";
+
 import {
   View,
   Text,
   StyleSheet,
-  Image,
   TextInput,
+  FlatList,
+  Animated,
   TouchableOpacity,
-  validateForm,
-  ScrollView,
-  useState,
-  useWindowDimensions
 } from "react-native";
-import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
+import Constants from "expo-constants";
+import { Ionicons } from '@expo/vector-icons'; // Importa el ícono de la lupa desde Ionicons
 import theme from "../theme";
-// import Carousel from "react-native-reanimated-carousel";
+
+import slidesH from "../slidesHomeH";
+import slidesV from "../slidesHomeV";
+
+import HomeScreenSlideH from "../components/HomeScreenSlideH";
+import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
 const Home = ({ navigation }) => {
-  // Estas son las variables del carousel
-  const { width } = useWindowDimensions();
-
-  //Y esta es la lista de items, esta es temporal, luego se la tendremos
-  //que pasar por un json con la API
-  const list = [
-    {
-      id: 1,
-      title: "Item 1",
-      image: require("../../assets/MyEventz.png"),
-    },
-    {
-      id: 2,
-      title: "Item 2",
-      image: require("../../assets/MyEventz.png"),
-    },
-    {
-      id: 3,
-      title: "Item 3",
-      image: require("../../assets/MyEventz.png"),
-    },
-  ];
-
   return (
     <Background>
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputs}
-          placeholder="Buscar eventos..."
-          placeholderTextColor="#ccc"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputs}
+            placeholder="Buscar eventos..."
+            placeholderTextColor="#ccc"
+          />
+          <TouchableOpacity style={styles.searchIconContainer}>
+            <Ionicons name="search" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
 
+        {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
-{/* 
-        <Carousel 
-            width={width} 
-            height={width / 2} 
-            data={list} 
-            renderItem={({item}
-            ) => (
-                <View>
-                    <Image source={item.image} />
-                </View>
-            )}
-        /> */}
+        <View style={styles.sliderH}>
+          <FlatList
+            data={slidesH}
+            renderItem={({ item }) => <HomeScreenSlideH item={item} />}
+            horizontal
+            bounces={true}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
 
+        {/* Slider vertical de Publicaciones recientes */}
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
+        <View style={styles.sliderV}>
+          <FlatList
+            data={slidesV}
+            renderItem={({ item }) => <HomeScreenSlideV item={item} />}
+            bounces={true}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
+      {/* Aqui metemos la navBar que sera un componente externo */}
+      <NavBar/>
     </Background>
   );
 };
@@ -73,10 +68,27 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     flexGrow: 1,
-    padding: 17,
+    padding: 12,
     display: "flex",
   },
- 
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderColor: "white",
+    marginBottom: 20,
+  },
+  sliderH: {
+    flex: 0.25,
+    paddingTop: 20,
+  },
+  sliderV: {
+    flex: 0.75,
+    paddingTop: 15,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   subtitulo: {
     fontSize: 25,
     fontWeight: "bold",
@@ -89,7 +101,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: theme.colors.white,
     paddingLeft: 5,
-    bottom: 80,
+    top: 14,
   },
   inputText: {
     fontSize: 20,
@@ -98,23 +110,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   inputs: {
-    borderBottomWidth: 2,
-    borderColor: "white",
+    flex: 1,
     color: "white",
     height: 50,
     padding: 8,
-    top: "1%",
     fontSize: 17,
-    width: "100%",
-    bottom: "5%",
-    marginBottom: "1%",
   },
-  olvidona: {
-    fontSize: 15,
-    color: "#ccc",
-    bottom: "3%",
-    textAlign: "center",
-    bottom: "250%",
+  searchIconContainer: {
+    padding: 10,
   },
   button: {
     alignSelf: "center",
@@ -123,8 +126,8 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     width: "80%",
     alignItems: "center",
-    margin: 20, // Adjusted margin
-    shadowColor: "#000", // Adding shadow for depth
+    margin: 20,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -136,15 +139,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
-    fontWeight: "bold", // Bold text for readability
-  },
-  crearcuenta: {
-    fontSize: 20,
-    color: "#8000FF",
-    textDecorationLine: "underline",
     fontWeight: "bold",
-    textAlign: "center",
-    top: "3%",
   },
 });
 
