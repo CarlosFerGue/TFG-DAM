@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
 import Background from "../components/Background";
+import NavBar from "../components/NavBar";
+
 import {
   View,
   Text,
@@ -36,7 +37,7 @@ const Home = ({ navigation }) => {
 
         {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
-        <View style={styles.sliderHView}>
+        <View style={styles.sliderH}>
           <FlatList
             data={slidesH}
             renderItem={({ item }) => <HomeScreenSlideH item={item} />}
@@ -48,7 +49,7 @@ const Home = ({ navigation }) => {
 
         {/* Slider vertical de Publicaciones recientes */}
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
-        <View style={styles.sliderVView}>
+        <View style={styles.sliderV}>
           <FlatList
             data={slidesV}
             renderItem={({ item }) => <HomeScreenSlideV item={item} />}
@@ -57,6 +58,8 @@ const Home = ({ navigation }) => {
           />
         </View>
       </View>
+      {/* Aqui metemos la navBar que sera un componente externo */}
+      <NavBar/>
     </Background>
   );
 };
@@ -75,11 +78,11 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginBottom: 20,
   },
-  sliderHView: {
+  sliderH: {
     flex: 0.25,
     paddingTop: 20,
   },
-  sliderVView: {
+  sliderV: {
     flex: 0.75,
     paddingTop: 15,
     display: "flex",

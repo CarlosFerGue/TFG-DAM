@@ -18,7 +18,8 @@ export default HomeScreenSlideV = ({ item }) => {
       />
       <View style={styles.textoInferior}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.date}>{item.date}</Text>
+        <Text style={styles.place}>{item.place}</Text>
       </View>
     </View>
   );
@@ -44,13 +45,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-
     color: "#fff",
   },
-  description: {
+  date: {
+    fontSize: 16,
+    color: "#fff",
+    paddingLeft: 10,
+  },
+  place: {
     fontSize: 16,
     color: "#fff",
     marginBottom: 10,
+    paddingLeft: 10,
   },
   image: {
     flex: 1,

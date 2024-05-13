@@ -1,0 +1,67 @@
+import React from "react";
+import { ImageBackground, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Asegúrate de importar esto si estás utilizando React Navigation
+import { Ionicons } from '@expo/vector-icons';
+
+const NavBar = () => {
+    const navigation = useNavigation(); // Obtener el objeto de navegación
+
+    // Función para manejar la navegación a diferentes pantallas
+    const navigateToScreen = (screenName) => {
+        navigation.navigate(screenName);
+    };
+
+    return (
+        <View style={styles.background}>
+            <TouchableOpacity onPress={() => navigateToScreen('Screen1')} style={styles.iconContainer}>
+                {/* <Image source={require('./ruta/al/Icono1.svg')} style={styles.icon} /> */}
+                <Ionicons name="home" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToScreen('Screen2')} style={styles.iconContainer}>
+                <Ionicons name="pricetags" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToScreen('Screen2')} style={styles.iconContainer}>
+                <Ionicons name="add-circle" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToScreen('Screen2')} style={styles.iconContainer}>
+                <Ionicons name="person-add" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToScreen('Screen2')} style={styles.iconContainer}>
+                <Image source={require('../../assets/foczy.png')} style={styles.perfil} />
+            </TouchableOpacity>
+        </View>
+
+    );
+};
+
+const styles = StyleSheet.create({
+    background: {
+        width: '100%',
+        height: 40,
+        backgroundColor: '#100916',
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row', // Alinea los iconos en una fila
+        justifyContent: 'space-around', // Espacio uniformemente los iconos en la fila
+        alignItems: 'center', // Centra los iconos verticalmente
+        borderTopColor: 'white', 
+        borderTopWidth: 2,
+    },
+    iconContainer: {
+        flex: 1, // Divide el espacio disponible igualmente entre los iconos
+        alignItems: 'center', // Centra el ícono dentro del contenedor
+    },
+    icon: {
+        width: 24,
+        height: 24,
+    },
+    perfil: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        borderWidth: 2,
+        borderColor: 'white',
+    },
+});
+
+export default NavBar;

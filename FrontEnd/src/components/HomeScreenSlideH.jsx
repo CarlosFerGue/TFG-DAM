@@ -18,7 +18,7 @@ export default HomeScreenSlideH = ({ item }) => {
       />
       <View style={styles.textoInferior}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.date}>{item.date}</Text>
       </View>
     </View>
   );
@@ -28,35 +28,33 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    width: 200,
+    width: 215,
     borderRadius: 20,
     marginHorizontal: 5,
-    overflow: "hidden", 
+    overflow: "hidden",
   },
   textoInferior: {
     backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
     width: "100%",
     borderBottomEndRadius: 23,
     borderBottomStartRadius: 23,
-    paddingVertical: 8, // Espacio alrededor del texto
     paddingHorizontal: 16,
-    position: "relative", 
-    top: 50,
+    position: "relative",
+    bottom: -45,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
   },
-  description: {
+  date: {
     fontSize: 16,
     color: "#fff",
     marginBottom: 10,
+    marginLeft: 5,
   },
   image: {
     flex: 1,
-    width: undefined,
-    height: undefined,
-    bottom: 30,
+    left: "-26%", 
   },
 });
