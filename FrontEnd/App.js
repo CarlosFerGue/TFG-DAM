@@ -9,6 +9,7 @@ import Register2 from "./src/screens/Register2Screen.jsx";
 import PassOlvidada from "./src/screens/PassOlvidadaScreen.jsx";
 import Home from "./src/screens/HomeScreen.jsx";
 import Categorias from "./src/screens/CategoriasSceen.jsx";
+import Evento from "./src/screens/EventoScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export default class App extends React.Component {
           <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Categorias" component={Categorias} />
+          <Stack.Screen name="Evento" component={Evento} />
         </Stack.Navigator>
 
       </NavigationContainer>
