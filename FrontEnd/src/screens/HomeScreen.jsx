@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 2,
     borderColor: "white",
-    marginBottom: 20,
+    top: -30,
   },
   sliderH: {
     flex: 0.25,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   sliderV: {
     flex: 0.75,
@@ -88,13 +88,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 40,
   },
   subtitulo: {
     fontSize: 25,
     fontWeight: "bold",
     color: theme.colors.white,
     paddingLeft: 5,
-    top: 14,
+    top: 4,
   },
   subtitulo2: {
     fontSize: 25,

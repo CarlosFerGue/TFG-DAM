@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,7 +21,9 @@ const CategoriasScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://91.250.186.139:8000/categorias/find_all");
+        const response = await fetch(
+          "http://91.250.186.139:8000/categorias/find_all"
+        );
         const data = await response.json();
         setCategoriasJson(data);
       } catch (error) {
@@ -33,8 +36,7 @@ const CategoriasScreen = ({ navigation }) => {
 
   return (
     <Background>
-      <View style={styles.container}>
-        <View style={styles.inputContainer}>
+       <View style={styles.inputContainer}>
           <TextInput
             style={styles.inputs}
             placeholder="Buscar categorias..."
@@ -44,15 +46,21 @@ const CategoriasScreen = ({ navigation }) => {
             <Ionicons name="search" size={24} color="white" />
           </TouchableOpacity>
         </View>
+      <ScrollView style={styles.container}>
+       
 
         <View style={styles.listaCategorias}>
           {categoriasJson.map((item) => (
-            <TouchableOpacity key={item.id} onPress={() => navigation.addCategoria(item.categoria)} style={styles.categoriaCard}>
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => navigation.addCategoria(item.categoria)}
+              style={styles.categoriaCard}
+            >
               <CategoriasTarjeta categoria={item} />
             </TouchableOpacity>
           ))}
         </View>
-      </View>
+      </ScrollView>
       <NavBar />
     </Background>
   );
@@ -62,13 +70,15 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     padding: 12,
+    marginBottom: 40,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 2,
     borderColor: "white",
-    marginBottom: 20,
+    marginBottom: 5,
+    top: 10,
   },
   inputs: {
     flex: 1,
