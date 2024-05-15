@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-import CategoriasTarjeta from "../components/Categorias";
 
 import {
   View,
@@ -10,55 +9,50 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  Image,
 } from "react-native";
 import Constants from "expo-constants";
-import { Ionicons } from "@expo/vector-icons";
-import theme from "../theme";
 
-const CategoriasScreen = ({ navigation }) => {
-  const [categoriasJson, setCategoriasJson] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://91.250.186.139:8000/categorias/find_all"
-        );
-        const data = await response.json();
-        setCategoriasJson(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+const EventoScreen = ({ navigation }) => {
   return (
     <Background>
-       <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Buscar categorias..."
-            placeholderTextColor="#ccc"
+      <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.container}>
+          <Image
+            source={require("../../assets/bg.png")}
+            style={styles.Background}
           />
-          <TouchableOpacity style={styles.searchIconContainer}>
-            <Ionicons name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      <ScrollView style={styles.container}>
-       
+          <Image
+            source={require("../../assets/foczy.png")}
+            style={styles.profile}
+          />
+          <Text style={styles.nombre}>Nombre del evento</Text>
+          <Text style={styles.fecha}>29/02/1987 11:40</Text>
+          <View style={styles.categorias}>
 
-        <View style={styles.listaCategorias}>
-          {categoriasJson.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => navigation.addCategoria(item.categoria)}
-              style={styles.categoriaCard}
-            >
-              <CategoriasTarjeta categoria={item} />
-            </TouchableOpacity>
-          ))}
+          </View>
+
+          <Text style={styles.cabecera}>Descripción del evento:</Text> 
+          <Text style={styles.cuerpoEvento}>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Voluptatum, vero facere! Adipisci perferendis quo veniam hic eligendi deleniti id 
+          ipsam aut quam dignissimos sapiente, voluptates perspiciatis exercitationem in soluta sint.</Text>
+
+          <Text style={styles.subCabecera}>Rango de edad:
+          <Text style={styles.textoCabecera}> de 18 a 25 años.</Text>
+          </Text>
+          
+          <Text style={styles.subCabecera}>Ubicación: 
+          <Text style={styles.textoCabecera}> El macauto de marras en deep deli</Text>
+          </Text>
+          
+          <View style={styles.ubicacion}>
+
+          </View>
+          <Text style={styles.cabecera}>Participantes:</Text> 
+          <View style={styles.participantes}>
+
+          </View>
         </View>
       </ScrollView>
       <NavBar />
@@ -67,38 +61,89 @@ const CategoriasScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: Constants.statusBarHeight,
-    padding: 12,
-    marginBottom: 40,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderBottomWidth: 2,
-    borderColor: "white",
-    marginBottom: 5,
-    top: 10,
-  },
-  inputs: {
-    flex: 1,
-    color: "white",
-    height: 50,
-    padding: 8,
-    fontSize: 17,
-  },
-  searchIconContainer: {
-    padding: 10,
-  },
-  listaCategorias: {
+  imagen: {
     width: "100%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
+    maxHeight: "100%",
+    position: "absolute",
+    top: -90,
   },
-  categoriaCard: {
+  scrollViewContent: {
+    marginTop: Constants.statusBarHeight + 120,
+    flexGrow: 1, 
+    paddingBottom: 50, 
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 100,
+    paddingHorizontal: 20,
+  },
+  profile: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderColor: "white",
+    borderWidth: 2,
+  },
+  Background: {
+    position: "absolute",
+    top: 50,
+  },
+  nombre: {
+    color: "white",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  categorias: {
+    display: "flex",
+    width: "100%",
+  },
+  fecha: {
+    color: "white",
+    fontSize: 20,
+    color: "#ccc",
+  },
+  cabecera: {
+    color: "white",
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginBottom: 40,
     marginBottom: 20,
   },
+  textoCabecera: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "normal",
+    textAlign: "left",
+  },
+  cuerpoEvento: {
+    color: "#ccc",
+    fontSize: 18,
+
+  },
+  subCabecera: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginTop: 10,
+
+  },
+  ubicacion: {
+    width: "100%",
+    height: 120,
+    borderRadius: 20,
+    borderColor: "white",
+    borderWidth: 2,
+    marginTop: 20,
+  },
+  participantes: {
+    width: "100%",
+
+    borderRadius: 20,
+    marginBottom: 50,
+  },
+
 });
 
-export default CategoriasScreen;
+export default EventoScreen;

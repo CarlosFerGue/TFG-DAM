@@ -29,7 +29,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Categorias"
+          initialRouteName="Evento"
           screenOptions={{
             headerShown: false, // No mostrar la barra de encabezado
           }}
