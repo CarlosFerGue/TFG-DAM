@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
-import { Ionicons } from '@expo/vector-icons'; // Importa el ícono de la lupa desde Ionicons
+import { Ionicons } from "@expo/vector-icons"; // Importa el ícono de la lupa desde Ionicons
 import theme from "../theme";
 
 import slidesH from "../slidesHomeH";
@@ -21,6 +21,10 @@ import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
 const Home = ({ navigation }) => {
+  // Función para navegar a la pantalla "Evento"
+  const navigateToEvento = () => {
+    navigation.navigate("Evento");
+  };
   return (
     <Background>
       <View style={styles.container}>
@@ -40,7 +44,11 @@ const Home = ({ navigation }) => {
         <View style={styles.sliderH}>
           <FlatList
             data={slidesH}
-            renderItem={({ item }) => <HomeScreenSlideH item={item} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={navigateToEvento}>
+                <HomeScreenSlideH item={item} />
+              </TouchableOpacity>
+            )}
             horizontal
             bounces={true}
             keyExtractor={(item) => item.id}
@@ -52,14 +60,18 @@ const Home = ({ navigation }) => {
         <View style={styles.sliderV}>
           <FlatList
             data={slidesV}
-            renderItem={({ item }) => <HomeScreenSlideV item={item} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={navigateToEvento}>
+                <HomeScreenSlideV item={item} />
+              </TouchableOpacity>
+            )}
             bounces={true}
             keyExtractor={(item) => item.id}
           />
         </View>
       </View>
       {/* Aqui metemos la navBar que sera un componente externo */}
-      <NavBar/>
+      <NavBar />
     </Background>
   );
 };
@@ -72,8 +84,8 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 2,
     borderColor: "white",
     top: -30,

@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 5,
     overflow: "hidden",
+    height: 130,
   },
   textoInferior: {
     backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
