@@ -1,0 +1,19 @@
+{
+	"nodes":[
+		{"id":"764edd5e6e8a7e3e","type":"text","text":"### USUARIOS_HOBBIES\n>**id_usuario** INT\n>**id_categoria** INT\n>\n","x":321,"y":-232,"width":327,"height":129,"color":"3"},
+		{"id":"b2b03ab075bc3273","type":"text","text":"### EVENTOS_CATEGORIAS\n>**id_evento** INT\n>**id_categoria** INT\n>\n","x":-222,"y":215,"width":327,"height":129,"color":"3"},
+		{"id":"2a851732cfa6104a","type":"text","text":"### PARTICIPANTES_EVENTOS\n>**id_participacion** INT\n>**id_evento** INT\n>**id_categoria** INT\n>**fecha** DATE\n>\n","x":-821,"y":-261,"width":327,"height":187,"color":"3"},
+		{"id":"7af4888508785b1a","x":-183,"y":-327,"width":250,"height":319,"color":"5","type":"text","text":"# USUARIOS\n>**id_usuario** INT\n>**usuario** VARCHAR(30)\n>**clave** VARCHAR(255)\n>**nombre** VARCHAR(40)\n>**apel1** VARCHAR(60)\n>**apel2** VARCHAR(60)\n>**f_nac** DATE\n>**bio** VARCHAR(255)\n>**ig** VARCHAR(60)\n>\n"},
+		{"id":"15d7af8ae2f0a59d","type":"text","text":"# EVENTOS\n>**id_evento** INT\n>**id_usuario** INT\n>**fecha** DATE\n>**hora** TIME\n>**descripcion** VARCHAR(255)\n>**edad_min** INT\n>**edad_max** INT\n>**ubicacion** VARCHAR(255)\n>**participantes** INT\n>\n","x":-783,"y":95,"width":250,"height":370,"color":"5"},
+		{"id":"dead7af768faeac7","type":"text","text":"# CATEGORiAS\n>**id_categoria** INT\n>**categoria** VARCHAR(50)\n>\n","x":355,"y":215,"width":259,"height":129,"color":"5"}
+	],
+	"edges":[
+		{"id":"1c269f939f45fbb2","fromNode":"dead7af768faeac7","fromSide":"left","toNode":"b2b03ab075bc3273","toSide":"right","label":"1:N"},
+		{"id":"ac154f241b48e768","fromNode":"15d7af8ae2f0a59d","fromSide":"right","toNode":"b2b03ab075bc3273","toSide":"left","label":"1:N"},
+		{"id":"772c71af97eee89a","fromNode":"dead7af768faeac7","fromSide":"top","toNode":"764edd5e6e8a7e3e","toSide":"bottom","label":"1:N"},
+		{"id":"33eb61113cdfde44","fromNode":"7af4888508785b1a","fromSide":"right","toNode":"764edd5e6e8a7e3e","toSide":"left","label":"1:N"},
+		{"id":"8f460d79ac088617","fromNode":"15d7af8ae2f0a59d","fromSide":"top","toNode":"2a851732cfa6104a","toSide":"bottom","label":"1:N"},
+		{"id":"e8e47640b5f04fc1","fromNode":"7af4888508785b1a","fromSide":"left","toNode":"2a851732cfa6104a","toSide":"right","label":"1:N"},
+		{"id":"0558ea453ec63fa3","fromNode":"7af4888508785b1a","fromSide":"bottom","toNode":"15d7af8ae2f0a59d","toSide":"top","label":"1:N"}
+	]
+}
