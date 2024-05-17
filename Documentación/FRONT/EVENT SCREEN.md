@@ -4,6 +4,7 @@ Al acceder a un evento, se realizará una petición usando la ID del evento. Est
 | OUTPUT    | PETICIÓN                                   | INPUT          |
 | --------- | ------------------------------------------ | -------------- |
 | id_evento | ***IP:PORT***/eventos/load_event/id_evento | id_evento/0/-1 |
+
 Ejemplo de JSON devuelto por creación de usuario satisfactoria:
 ```  json
 {

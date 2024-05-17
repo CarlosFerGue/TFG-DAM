@@ -4,6 +4,7 @@ Se mostrará un listado de máximo 25 usuarios cuyo nombre completo (nombre y ap
 | OUTPUT   | PETICIÓN                               | INPUT     |
 | -------- | -------------------------------------- | --------- |
 | busqueda | ***IP:PORT***/usuarios/search/busqueda | JSON/0/-1 |
+
 Usuarios devueltos cuyos datos coinciden con la búsqueda:
 ```  json
 [

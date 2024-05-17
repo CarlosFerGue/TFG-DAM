@@ -4,6 +4,7 @@ El usuario introduce su nombre de usuario y clave(contraseña). El BACK devuelve
 | OUTPUT        | PETICIÓN                                       | INPUT      |
 | ------------- | ---------------------------------------------- | ---------- |
 | usuario,clave | ***IP:PORT***/usuarios/login/[usuario]&[clave] | id_usuario |
+
 Ejemplo de JSON devuelto por el BACK:
 
 ```  JSON

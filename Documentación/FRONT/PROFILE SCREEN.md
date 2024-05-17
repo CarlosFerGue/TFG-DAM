@@ -7,6 +7,7 @@ La pantalla que se usará para mostrar otros usuarios como la propia será la mi
 | OUTPUT     | PETICIÓN                                       | INPUT     |
 | ---------- | ---------------------------------------------- | --------- |
 | id_usuario | ***IP:PORT***/usuarios/load_profile/id_usuario | JSON/0/-1 |
+
 Ejemplo de JSON devuelto por creación de usuario satisfactoria:
 ```  JSON
 {

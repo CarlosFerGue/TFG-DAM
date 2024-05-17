@@ -4,6 +4,7 @@ En la parte superior se cargarán los 10 eventos pendientes de realizar más pop
 | OUTPUT | PETICIÓN                       | INPUT     |
 | ------ | ------------------------------ | --------- |
 |        | ***IP:PORT***/eventos/popular/ | JSON/0/-1 |
+
 Se devolverá un JSON en caso de respuesta exitosa del servidor:
 ```  json
 [
@@ -49,6 +50,7 @@ Se buscarán los 30 pendientes de realizar cuya fecha de realización sea poster
 | OUTPUT | PETICIÓN                            | INPUT     |
 | ------ | ----------------------------------- | --------- |
 |        | ***IP:PORT***/eventos/close_events/ | JSON/0/-1 |
+
 Se devolverá un JSON en caso de respuesta exitosa del servidor:
 ```  
 [

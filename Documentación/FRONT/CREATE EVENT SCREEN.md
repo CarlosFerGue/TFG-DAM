@@ -6,6 +6,7 @@ El usuario introduce los datos con los que creará un nuevo evento. Primero se c
 | OUTPUT                                                                         | PETICIÓN                                                                                                          | INPUT          |
 | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------- |
 | titulo, fecha, hora, descripcion, edad_min, edad_max, ubicacion, participantes | ***IP:PORT***/eventos/add/[titulo]&[fecha]&[hora]&[descripcion]&[edad_min]&[edad_max]&[ubicacion]&[participantes] | id_evento/0/-1 |
+
 Ejemplo de JSON devuelto por creación de usuario satisfactoria:
 
 ```  
@@ -32,6 +33,7 @@ Los usuarios no podrán tener publicados más de 3 eventos cuya fecha de realiza
 | OUTPUT     | PETICIÓN                                            | INPUT   |
 | ---------- | --------------------------------------------------- | ------- |
 | id_usuario | ***IP:PORT***/usuarios/check_user_events/id_usuario | 1+/0/-1 |
+
 En caso de que la consulta devuelva un 3 o superior, el acceso del usuario a la pantalla de eventos será restringido hasta que pase la fecha de realización de alguno de los 3 eventos o los elimine:
 ```  
 3+
