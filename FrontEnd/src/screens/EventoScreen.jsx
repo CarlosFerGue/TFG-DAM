@@ -10,12 +10,33 @@ import {
   Text,
   ScrollView,
   Image,
+  FlatList,
 } from "react-native";
 
 import Constants from "expo-constants";
 import MapView from "react-native-maps";
+import UsuariosTarjeta from "../components/UsuarioCard";
 
 const EventoScreen = ({ navigation }) => {
+  const [usuarios, setusuarios] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://myeventz.es/usuarios/find_all");
+        const data = await response.json();
+        setusuarios(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const navigateToUsuario = () => {
+    navigation.navigate("Usuario");
+  };
+
   return (
     <Background>
       <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
@@ -60,8 +81,20 @@ const EventoScreen = ({ navigation }) => {
           <View style={styles.ubicacion}>
             <MapView style={styles.MapUbicacion} />
           </View>
+
           <Text style={styles.cabecera}>Participantes:</Text>
-          <View style={styles.participantes}></View>
+          <View style={styles.participantes}>
+            <FlatList
+              data={usuarios}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={navigateToUsuario}>
+                  <UsuariosTarjeta item={item} />
+                </TouchableOpacity>
+              )}
+              bounces={true}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
         </View>
       </ScrollView>
       <NavBar />
@@ -149,6 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     overflow: "hidden",
     marginBottom: 10,
+    marginBottom: 20,
   },
   MapUbicacion: {
     width: "100%",
@@ -158,6 +192,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
     marginBottom: 50,
+    top: -20,
   },
 });
 

@@ -17,18 +17,16 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-import UsuariosTarjeta from "../components/Usuarios";
+import UsuariosTarjeta from "../components/UsuarioCard";
 
 const BuscarUsuarios = ({ navigation }) => {
-  const [categoriasJson, setCategoriasJson] = useState([]);
+  const [usuarios, setusuarios] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://91.250.186.139:8000/usuarios/search/busqueda"
-        );
+        const response = await fetch("https://myeventz.es/usuarios/find_all");
         const data = await response.json();
-        setCategoriasJson(data);
+        setusuarios(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,6 +34,10 @@ const BuscarUsuarios = ({ navigation }) => {
 
     fetchData();
   }, []);
+
+  const navigateToUsuario = () => {
+    navigation.navigate("Usuario");
+  };
 
   return (
     <Background>
@@ -49,20 +51,20 @@ const BuscarUsuarios = ({ navigation }) => {
           <Ionicons name="search" size={24} color="white" />
         </TouchableOpacity>
       </View>
-      {/* <ScrollView style={styles.container}>
-        <View style={styles.listaUsuarios}>
-          {categoriasJson.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => navigation.addUsuario(item.usuarios)}
-              style={styles.usuarioCard}
-            >
-              <CategoriasTarjeta usuarios={item} />
-            </TouchableOpacity>
-          ))}
 
-        </View>
-      </ScrollView> */}
+      <View style={styles.sliderV}>
+        <FlatList
+          data={usuarios}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={navigateToUsuario}>
+              <UsuariosTarjeta item={item} />
+            </TouchableOpacity>
+          )}
+          bounces={true}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+
       <NavBar />
     </Background>
   );

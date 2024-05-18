@@ -16,10 +16,11 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-import UsuariosTarjeta from "../components/Usuarios";
+import UsuariosTarjeta from "../components/UsuarioCard";
 import slidesH from "../slidesHomeH";
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
+
 
 const Usuario = ({ navigation }) => {
   const navigateToEvento = () => {
@@ -44,7 +45,7 @@ const Usuario = ({ navigation }) => {
 
   return (
     <Background>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Image
           source={require("../../assets/foczy.png")}
           style={styles.imagen}
@@ -74,9 +75,7 @@ const Usuario = ({ navigation }) => {
 
         <Text style={styles.cabecera}>Mis eventos:</Text>
 
-        <Text style={styles.cabecera}>Participaciones:</Text>
-
-        <View style={styles.sliderH}>
+        <View style={styles.eventos}>
           <FlatList
             data={slidesH}
             renderItem={({ item }) => (
@@ -90,8 +89,30 @@ const Usuario = ({ navigation }) => {
           />
         </View>
 
-        <Text style={styles.cabecera}>Mis redes sociales</Text>
-      </View>
+        <Text style={styles.cabecera}>Participaciones:</Text>
+
+        <View style={styles.eventos}>
+          <FlatList
+            data={slidesH}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={navigateToEvento}>
+                <HomeScreenSlideH item={item} />
+              </TouchableOpacity>
+            )}
+            horizontal
+            bounces={true}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+
+        <Text style={styles.redes}>Mis redes sociales</Text>
+        <View style={styles.redesIconos}>
+          <Ionicons name="logo-facebook" size={24} color="white" />
+          <Ionicons name="logo-twitter" size={24} color="white" />
+          <Ionicons name="logo-instagram" size={24} color="white" />
+          <Ionicons name="logo-tiktok" size={24} color="white" />
+        </View>
+      </ScrollView>
       <NavBar />
     </Background>
   );
@@ -102,18 +123,19 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
     padding: 12,
     marginBottom: 40,
-    top: 40,
+    height: "100%",
+    width: "100%",
   },
   imagen: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    bottom: 30,
+    marginBottom: 10,
   },
   nombre: {
     fontSize: 25,
     color: theme.colors.white,
-    bottom: 120,
+    bottom: 100,
     fontFamily: "Lobster Two Regular",
     left: 120,
   },
@@ -121,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: theme.colors.white,
     left: 120,
-    bottom: 110,
+    bottom: 100,
     fontFamily: "Lobster Two Regular",
   },
   cabecera: {
@@ -138,9 +160,16 @@ const styles = StyleSheet.create({
     fontFamily: "Lobster Two Regular",
     padding: 5,
     color: "#ccc",
+    marginBottom: 20,
   },
   eventos: {
-    bottom: 20,
+    bottom: 50,
+    width: "100%",
+    marginVertical: 10,
+  },
+  categoriaCard: {
+    width: "45%",
+    marginBottom: 20,
   },
   listaCategorias: {
     width: "100%",
@@ -148,6 +177,23 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around",
     bottom: 50,
+  },
+  redes: {
+    fontSize: 20,
+    color: theme.colors.white,
+    fontWeight: "bold",
+    textAlign: "center",
+    fontFamily: "Lobster Two Regular",
+    marginTop: 20,
+    bottom: 50,
+  },
+  redesIconos: {
+    bottom: 40,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: "#6200ee",
+    borderRadius: 10,
+    padding: 10,
   },
 });
 

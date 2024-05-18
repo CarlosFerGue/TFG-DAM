@@ -58,7 +58,7 @@ const Register3 = ({ navigation }) => {
         value={email}
         keyboardType="email-address"
       />
-      <Button title="Send Verification Code" onPress={getVerificationCodes} />
+      <Button title="Send Verification Code" onPress={sendVerificationEmail} />
 
       {codeSent && (
         <>
