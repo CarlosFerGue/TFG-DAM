@@ -10,19 +10,22 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  Image,
+  FlatList,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-const CategoriasScreen = ({ navigation }) => {
-  const [categoriasJson, setCategoriasJson] = useState([]);
+import UsuariosTarjeta from "../components/Usuarios";
 
+const BuscarUsuarios = ({ navigation }) => {
+  const [categoriasJson, setCategoriasJson] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://myeventz.es/categorias/find_all"
+          "http://91.250.186.139:8000/usuarios/search/busqueda"
         );
         const data = await response.json();
         setCategoriasJson(data);
@@ -36,31 +39,30 @@ const CategoriasScreen = ({ navigation }) => {
 
   return (
     <Background>
-       <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Buscar categorias..."
-            placeholderTextColor="#ccc"
-          />
-          <TouchableOpacity style={styles.searchIconContainer}>
-            <Ionicons name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      <ScrollView style={styles.container}>
-       
-
-        <View style={styles.listaCategorias}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Buscar usuarios..."
+          placeholderTextColor="#ccc"
+        />
+        <TouchableOpacity style={styles.searchIconContainer}>
+          <Ionicons name="search" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+      {/* <ScrollView style={styles.container}>
+        <View style={styles.listaUsuarios}>
           {categoriasJson.map((item) => (
             <TouchableOpacity
               key={item.id}
-              onPress={() => navigation.addCategoria(item.categoria)}
-              style={styles.categoriaCard}
+              onPress={() => navigation.addUsuario(item.usuarios)}
+              style={styles.usuarioCard}
             >
-              <CategoriasTarjeta categoria={item} />
+              <CategoriasTarjeta usuarios={item} />
             </TouchableOpacity>
           ))}
+
         </View>
-      </ScrollView>
+      </ScrollView> */}
       <NavBar />
     </Background>
   );
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginBottom: 5,
     top: 10,
+    paddingHorizontal: 10,
   },
   inputs: {
     flex: 1,
@@ -90,15 +93,15 @@ const styles = StyleSheet.create({
   searchIconContainer: {
     padding: 10,
   },
-  listaCategorias: {
+  listaUsuarios: {
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
   },
-  categoriaCard: {
+  usuarioCard: {
     marginBottom: 20,
   },
 });
 
-export default CategoriasScreen;
+export default BuscarUsuarios;

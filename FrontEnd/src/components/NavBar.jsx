@@ -39,7 +39,7 @@ const NavBar = ({ navigate }) => {
         <Ionicons name="add-circle" size={24} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("BuscarAmigos")}
+        onPress={() => navigation.navigate("BuscarUsuarios")}
         style={styles.iconContainer}
       >
         <Ionicons name="person-add" size={24} color="white" />

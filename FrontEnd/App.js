@@ -10,6 +10,9 @@ import PassOlvidada from "./src/screens/PassOlvidadaScreen.jsx";
 import Home from "./src/screens/HomeScreen.jsx";
 import Categorias from "./src/screens/CategoriasSceen.jsx";
 import Evento from "./src/screens/EventoScreen.jsx";
+import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
+import UsuarioScreen from "./src/screens/UsuarioScreen.jsx";
+import Usuario from "./src/screens/UsuarioScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +32,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Evento"
+          initialRouteName="Register3"
           screenOptions={{
             headerShown: false, // No mostrar la barra de encabezado
           }}
@@ -43,6 +46,9 @@ export default class App extends React.Component {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Categorias" component={Categorias} />
           <Stack.Screen name="Evento" component={Evento} />
+          <Stack.Screen name="BuscarUsuarios" component={BuscarUsuarios} />
+          <Stack.Screen name="UsuarioScreen" component={UsuarioScreen} />
+          <Stack.Screen name="Usuario" component={Usuario} />
         </Stack.Navigator>
 
       </NavigationContainer>
