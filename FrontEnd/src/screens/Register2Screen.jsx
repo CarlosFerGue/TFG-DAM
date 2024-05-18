@@ -102,7 +102,7 @@ const Register2 = ({ navigation }) => {
         </TouchableOpacity>
         {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NextScreen")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register3")}>
           <Text style={styles.buttonText}>Continuar</Text>
         </TouchableOpacity>
 

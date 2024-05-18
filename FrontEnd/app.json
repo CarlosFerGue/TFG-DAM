@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "myeventz",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -15,9 +16,15 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.jorgealquezar.FrontEnd",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBn6t8WfFZk3h7R9VYsGp9mY5P5L8h0h5s"
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

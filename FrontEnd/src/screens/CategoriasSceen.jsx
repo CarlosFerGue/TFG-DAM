@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import CategoriasTarjeta from "../components/Categorias";
-
 import {
   View,
   StyleSheet,
@@ -93,12 +92,13 @@ const styles = StyleSheet.create({
   listaCategorias: {
     width: "100%",
     flexDirection: "row",
+    overflow: "scroll",
     flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "center",
   },
   categoriaCard: {
     marginBottom: 20,
-  },
+  }
 });
 
 export default CategoriasScreen;
