@@ -11,7 +11,9 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+
 import Constants from "expo-constants";
+import MapView from "react-native-maps";
 
 const EventoScreen = ({ navigation }) => {
   return (
@@ -23,36 +25,43 @@ const EventoScreen = ({ navigation }) => {
             source={require("../../assets/bg.png")}
             style={styles.Background}
           />
-          <Image
-            source={require("../../assets/foczy.png")}
-            style={styles.profile}
-          />
-          <Text style={styles.nombre}>Nombre del evento</Text>
-          <Text style={styles.fecha}>29/02/1987 11:40</Text>
-          <View style={styles.categorias}>
 
+          <View style={styles.infoImportante}>
+            <Image
+              source={require("../../assets/foczy.png")}
+              style={styles.profile}
+            />
+            <Text style={styles.nombre}>Nombre del evento</Text>
+            <Text style={styles.fecha}>29/02/1987 11:40</Text>
+            <View style={styles.categorias}></View>
           </View>
 
-          <Text style={styles.cabecera}>Descripción del evento:</Text> 
-          <Text style={styles.cuerpoEvento}>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-          Voluptatum, vero facere! Adipisci perferendis quo veniam hic eligendi deleniti id 
-          ipsam aut quam dignissimos sapiente, voluptates perspiciatis exercitationem in soluta sint.</Text>
+          <Text style={styles.cabecera}>Descripción del evento:</Text>
+          <Text style={styles.cuerpoEvento}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
+            vero facere! Adipisci perferendis quo veniam hic eligendi deleniti
+            id ipsam aut quam dignissimos sapiente, voluptates perspiciatis
+            exercitationem in soluta sint.
+          </Text>
 
-          <Text style={styles.subCabecera}>Rango de edad:
-          <Text style={styles.textoCabecera}> de 18 a 25 años.</Text>
+          <Text style={styles.subCabecera}>
+            Rango de edad:
+            <Text style={styles.textoCabecera}> de 18 a 25 años.</Text>
           </Text>
-          
-          <Text style={styles.subCabecera}>Ubicación: 
-          <Text style={styles.textoCabecera}> El macauto de marras en deep deli</Text>
+
+          <Text style={styles.subCabecera}>
+            Ubicación:
+            <Text style={styles.textoCabecera}>
+              {" "}
+              El macauto de marras en deep deli
+            </Text>
           </Text>
-          
+
           <View style={styles.ubicacion}>
-
+            <MapView style={styles.MapUbicacion} />
           </View>
-          <Text style={styles.cabecera}>Participantes:</Text> 
-          <View style={styles.participantes}>
-
-          </View>
+          <Text style={styles.cabecera}>Participantes:</Text>
+          <View style={styles.participantes}></View>
         </View>
       </ScrollView>
       <NavBar />
@@ -69,14 +78,17 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     marginTop: Constants.statusBarHeight + 120,
-    flexGrow: 1, 
-    paddingBottom: 50, 
+    flexGrow: 1,
+    paddingBottom: 50,
   },
   container: {
-    alignItems: "center",
-    justifyContent: "center",
     marginBottom: 100,
     paddingHorizontal: 20,
+  },
+  infoImportante: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   profile: {
     width: 100,
@@ -97,6 +109,7 @@ const styles = StyleSheet.create({
   categorias: {
     display: "flex",
     width: "100%",
+    height: 20,
   },
   fecha: {
     color: "white",
@@ -120,30 +133,32 @@ const styles = StyleSheet.create({
   cuerpoEvento: {
     color: "#ccc",
     fontSize: 18,
-
   },
   subCabecera: {
     color: "white",
     fontSize: 15,
     fontWeight: "bold",
     marginTop: 10,
-
   },
   ubicacion: {
     width: "100%",
     height: 120,
     borderRadius: 20,
-    borderColor: "white",
-    borderWidth: 2,
+    borderColor: "purple",
+    borderWidth: 4,
     marginTop: 20,
+    overflow: "hidden",
+    marginBottom: 10,
+  },
+  MapUbicacion: {
+    width: "100%",
+    height: "100%",
   },
   participantes: {
     width: "100%",
-
     borderRadius: 20,
     marginBottom: 50,
   },
-
 });
 
 export default EventoScreen;
