@@ -16,9 +16,14 @@ export default HomeScreenSlideH = ({ item }) => {
         style={[StyleSheet.absoluteFill, styles.image]}
         resizeMode="contain"
       />
+      <View style={styles.cantidadGente}>
+        <View style={styles.puntoRojo} />
+        <Text style={styles.participantes}>{item.participantes}</Text>
+      </View>
+
       <View style={styles.textoInferior}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.date}>{item.date}</Text>
+        <Text style={styles.title}>{item.titulo}</Text>
+        <Text style={styles.date}>{item.fecha}</Text>
       </View>
     </View>
   );
@@ -33,6 +38,28 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     overflow: "hidden",
     height: 130,
+  },
+  cantidadGente: {
+    backgroundColor: "blue",
+    paddingHorizontal: 7,
+    borderRadius: 23,
+    position: "absolute",
+    flexDirection: "row",
+    left: 5,
+    top: 5
+  },
+  puntoRojo: {
+    width: 10,
+    height: 10,
+    backgroundColor: "red",
+    position: "relative",
+    alignSelf: "center",
+    borderRadius: 50,
+  },
+  participantes: {
+    fontSize: 16,
+    color: "#fff",
+        marginLeft: 5,
   },
   textoInferior: {
     backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
@@ -56,6 +83,6 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    left: "-26%", 
+    left: "-26%",
   },
 });

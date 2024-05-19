@@ -15,6 +15,7 @@ import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
 import UsuarioScreen from "./src/screens/UsuarioScreen.jsx";
 import Usuario from "./src/screens/UsuarioScreen.jsx";
 import Register3 from "./src/screens/Register3Screen.jsx";
+import Perfil from "./src/screens/PerfilScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -64,7 +65,7 @@ export default class App extends React.Component {
         }}
       >
         <Stack.Navigator
-          initialRouteName="BuscarUsuarios"
+          initialRouteName="Home"
           screenOptions={{
             headerShown: false, // No mostrar la barra de encabezado
           }}
@@ -79,7 +80,7 @@ export default class App extends React.Component {
           <Stack.Screen name="BuscarUsuarios" component={BuscarUsuarios} />
           <Stack.Screen name="UsuarioScreen" component={UsuarioScreen} />
           <Stack.Screen name="Usuario" component={Usuario} />
-
+          <Stack.Screen name="Perfil" component={Perfil} />
           {/*<Stack.Screen name="EmailVerificationScreen" component={EmailVerificationScreen} />*/}
           <Stack.Screen name="Register3" component={Register3} />
         </Stack.Navigator>

@@ -37,6 +37,7 @@ const BuscarUsuarios = ({ navigation }) => {
 
   const navigateToUsuario = () => {
     navigation.navigate("Usuario");
+
   };
 
   return (
