@@ -9,7 +9,6 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons"; // Importa el ícono de la lupa desde Ionicons
@@ -19,17 +18,17 @@ import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
 const Home = ({ navigation }) => {
-  // https://myeventz.es/eventos/find_all
-  
-  const navigateToEvento = () => {
-    navigation.navigate("Evento");
+  const navigateToEvento = (id_evento) => {
+    navigation.navigate("Evento", { id_evento });
   };
-  
+
   const [eventosRecientes, seteventosRecientes] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://myeventz.es/eventos/close_events");
+        const response = await fetch(
+          "https://myeventz.es/eventos/close_events"
+        );
         const data = await response.json();
         seteventosRecientes(data);
       } catch (error) {
@@ -75,7 +74,9 @@ const Home = ({ navigation }) => {
           <FlatList
             data={eventosPoupulares}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideH item={item} />
               </TouchableOpacity>
             )}
@@ -91,7 +92,9 @@ const Home = ({ navigation }) => {
           <FlatList
             data={eventosRecientes}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideV item={item} />
               </TouchableOpacity>
             )}

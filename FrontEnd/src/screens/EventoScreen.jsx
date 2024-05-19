@@ -17,8 +17,10 @@ import Constants from "expo-constants";
 import MapView from "react-native-maps";
 import UsuariosTarjeta from "../components/UsuarioCard";
 
-const EventoScreen = ({ navigation }) => {
+const EventoScreen = ({ navigation, route }) => {
+  const { id_evento } = route.params;
   const [usuarios, setusuarios] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,7 +44,7 @@ const EventoScreen = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://myeventz.es/eventos/load_evento/1"
+          `https://myeventz.es/eventos/load_evento/${id_evento}` // Use id_evento from props
         );
         const data = await response.json();
         setevento(data);
@@ -102,7 +104,6 @@ const EventoScreen = ({ navigation }) => {
                 longitudeDelta: 0.05,
               }}
             />
-        
           </View>
 
           <Text style={styles.cabecera}>Participantes:</Text>
