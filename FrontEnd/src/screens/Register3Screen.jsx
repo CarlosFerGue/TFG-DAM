@@ -1,111 +1,174 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native"; 
 import axios from 'axios';
 
-const Register3 = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [codeSent, setCodeSent] = useState(false);
+const Register3 = ({ route, navigation }) => {
+  const { registrationData } = route.params; // Recibir los datos de Register1 y 2
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
-  const sendVerificationEmail = async () => {
-    try {
-      const response = await axios.post('https://myeventz.es/send_verification', { email }, {
+  const sendVerificationEmail = (email) => {
+    axios.post('https://myeventz.es/send_verification', { email }, {
         headers: {
           'Content-Type': 'application/json',
         },
-      });
-      const json = response.data;
-      if (json.success) {
-        alert('Verification code sent to your email.');
-        setCodeSent(true);
-      } else {
-        alert('Failed to send verification code.');
-      }
-    } catch (error) {
-      console.error('Error sending verification code:', error);
-      alert('An error occurred. Please try again later.');
-    }
+    });
   };
 
-  const verifyEmailCode = async () => {
-    console.log(JSON.stringify({ email, code }));
-    console.log('email:', email);
-    try {
-      const response = await axios.post('https://myeventz.es/verify_code', { email, code }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+  useEffect(() => {
+    // Fetch hobbies from your backend
+    axios.get('https://myeventz.es/categorias/find_all')
+      .then(response => {
+        setHobbies(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching hobbies:', error);
       });
-      const json = response.data;
-      if (json.success) {
-        alert('Email verified successfully!');
-        navigation.navigate('Home');
+  }, []);
+
+  const toggleHobbySelection = (hobby) => {
+    setSelectedHobbies(prevSelectedHobbies => {
+      if (prevSelectedHobbies.includes(hobby.id_categoria)) {
+        return prevSelectedHobbies.filter(item => item !== hobby.id_categoria);
       } else {
-        alert('Failed to verify code. Please check the code and try again.');
+        return [...prevSelectedHobbies, hobby.id_categoria];
       }
-    } catch (error) {
-      console.error('Error verifying email:', error);
-      alert('An error occurred. Please try again later.');
-    }
+    });
+  };
+
+  const continueToRegister4 = () => {
+    // Concatenar los datos recibidos con los nuevos datos
+    const updatedRegistrationData = {
+      ...registrationData,
+      hobbies: selectedHobbies
+    };
+
+    navigation.navigate("Register4", { registrationData: updatedRegistrationData });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image source={require("../../assets/MyEventz.png")} style={styles.logo} resizeMode="contain"/>
+      <Text style={styles.header}>Selecciona al menos 3 hobbies y categorías que sean de tu interés.</Text>
+      
       <TextInput
         style={styles.input}
-        placeholder="Your Email Address"
-        onChangeText={setEmail}
-        value={email}
-        keyboardType="email-address"
+        placeholder="Busca hobbies y categorías..."
+        placeholderTextColor="#ccc"
+        onChangeText={setSearchText}
+        value={searchText}
       />
-      <Button title="Send Verification Code" onPress={getVerificationCodes} />
+      
+      <View style={styles.hobbiesContainer}>
+        {hobbies.filter(hobby => hobby.categoria.toLowerCase().includes(searchText.toLowerCase())).map(hobby => (
+          <TouchableOpacity
+            key={hobby.id_categoria}
+            style={[
+              styles.hobbyTag,
+              selectedHobbies.includes(hobby.id_categoria) && styles.selectedHobbyTag
+            ]}
+            onPress={() => toggleHobbySelection(hobby)}
+          >
+            <Text style={styles.hobbyText}>{hobby.categoria}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      
+      <TouchableOpacity style={styles.button} onPress={() => {
+        if (selectedHobbies.length >= 3) {
+          sendVerificationEmail(registrationData.email);
+          continueToRegister4();
+          console.log("Selected hobbies:", selectedHobbies);
+        } else {
+          alert("Por favor, selecciona al menos 3 hobbies.");
+        }
+      }}>
+        <Text style={styles.buttonText}>Crear Cuenta</Text>
+      </TouchableOpacity>
 
-      {codeSent && (
-        <>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Verification Code"
-            onChangeText={setCode}
-            value={code}
-          />
-          <Button title="Verify Code" onPress={verifyEmailCode} />
-        </>
-      )}
-    </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.linkText}>Volver Al Inicio de Sesión</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "5%",
+    backgroundColor: "#000",
+  },
+  logo: {
+    width: "115%",
+    maxHeight: "20%",
+    marginBottom: -10,
+  },
+  header: {
+    fontSize: 20,
+    color: "#fff",
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   input: {
-    width: '80%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    width: "100%",
+    backgroundColor: "#222",
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#5f5fc4",
+    color: "#ffffff",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  hobbiesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  hobbyTag: {
+    backgroundColor: "#444",
+    borderRadius: 20,
+    padding: 10,
+    margin: 5,
+  },
+  selectedHobbyTag: {
+    backgroundColor: "#6200ee",
+  },
+  hobbyText: {
+    color: "#fff",
   },
   button: {
-    width: '80%',
-    height: 40,
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
+    backgroundColor: "#6200ee",
+    padding: 15,
+    borderRadius: 25,
+    width: "60%",
+    alignItems: "center",
+    margin: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonText: {
-    color: 'white',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   linkText: {
-    color: 'blue',
+    color: "#BB86FC",
+    textDecorationLine: 'underline',
     marginTop: 10,
-  }
-})
+  },
+});
 
 export default Register3;

@@ -3,19 +3,17 @@ import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image 
 import Background from "../components/Background";
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
-import { storage } from '../../firebaseConfig';
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; 
 
-
-const Register2 = ({ navigation }) => {
+const Register2 = ({ route, navigation }) => {
+  const { registrationData } = route.params; // Recibir los datos de Register1
   const [firstName, setFirstName] = useState('');
   const [lastName1, setLastName1] = useState('');
   const [lastName2, setLastName2] = useState('');
   const [biography, setBiography] = useState('');
   const [profileImage, setProfileImage] = useState(null);
-  const [profileImageUrl, setProfileImageUrl] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [uri, setUri] = useState('');
 
   const pickImage = async () => {
     // Pide permiso para acceder a la galería de fotos
@@ -34,24 +32,23 @@ const Register2 = ({ navigation }) => {
   
     if (!result.cancelled) {
       setProfileImage(result.assets[0].uri);
-      uploadImage(result.assets[0].uri);
+      setUri(result.assets[0].uri);
+      //uploadImage(result.assets[0].uri);
     }
   };
 
-  const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const storageRef = ref(storage, `profileImages/${new Date().toISOString()}`);
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log('Imagen subida con éxito');
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        console.log('URL de la imagen:', downloadURL);
-        setProfileImageUrl(downloadURL);
-        console.log('URL de la imagen2:', profileImageUrl);
-      });
-    }).catch((error) => {
-      console.error('Error al subir la imagen:', error);
-    });
+  const continueToRegister3 = () => {
+    // Concatenar los datos recibidos con los nuevos datos
+    const updatedRegistrationData = {
+      ...registrationData,
+      firstName,
+      lastName1,
+      lastName2,
+      biography,
+      profileImageUri: uri,
+    };
+
+    navigation.navigate("Register3", { registrationData: updatedRegistrationData });
   };
 
   return (
@@ -102,7 +99,7 @@ const Register2 = ({ navigation }) => {
         </TouchableOpacity>
         {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register3")}>
+        <TouchableOpacity style={styles.button} onPress={continueToRegister3}>
           <Text style={styles.buttonText}>Continuar</Text>
         </TouchableOpacity>
 
@@ -123,7 +120,6 @@ const Register2 = ({ navigation }) => {
   );
 };
 
-// Update the styles accordingly
 const styles = StyleSheet.create({
   // Existing styles adjusted and new styles for biography and profile image
   biography: {

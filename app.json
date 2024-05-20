@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "bd65f15d-9cbd-459e-9f05-75fcbec9d67f"
+      }
+    },
+    "android": {
+      "package": "com.jorgealquezar.myeventz"
+    }
+  }
+}

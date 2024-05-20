@@ -14,25 +14,17 @@ const Register1 = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
-  
+
   const onDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
-    setBirthdate(currentDate.toLocaleDateString()); // Formato de fecha local
   };
 
   const validateForm = () => {
-    console.log('Validating form...');
-    console.log('Username:', username);
-    console.log('Birthdate:', date);
-    console.log('Email:', email);
-    console.log('Password:', password);
-  
     // Validación de correo electrónico
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
@@ -40,21 +32,21 @@ const Register1 = ({ navigation }) => {
       setModalVisible(true);
       return;
     }
-  
+
     // Validación del nombre de usuario
     if (username.length < 3) {
       setErrorMessage('El nombre de usuario debe tener al menos 3 caracteres.');
       setModalVisible(true);
       return;
     }
-  
+
     // Validación de la contraseña
     if (password.length < 8 || !/\d/.test(password) || !/[a-zA-Z]/.test(password) || !/[A-Z]/.test(password)) {
       setErrorMessage('La contraseña debe tener al menos 8 caracteres, incluyendo números, letras y al menos una mayúscula.');
       setModalVisible(true);
       return;
     }
-  
+
     // Validación de la fecha de nacimiento
     const today = new Date();
     const hundredYearsAgo = new Date();
@@ -64,9 +56,16 @@ const Register1 = ({ navigation }) => {
       setModalVisible(true);
       return;
     }
-  
+
     // Si todas las validaciones son correctas
-    navigation.navigate("Register2");
+    const registrationData = {
+      username,
+      date: date.toISOString(),
+      email,
+      password,
+    };
+
+    navigation.navigate("Register2", { registrationData });
   };
   
 

@@ -1,17 +1,18 @@
-import React from "react";
-import * as SplashScreen from "expo-splash-screen";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
-import { Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Login from "./src/screens/LoginScreen.jsx";
-import Register1 from "./src/screens/Register1Screen.jsx";
-import Register2 from "./src/screens/Register2Screen.jsx";
-import PassOlvidada from "./src/screens/PassOlvidadaScreen.jsx";
-import Home from "./src/screens/HomeScreen.jsx";
-import Categorias from "./src/screens/CategoriasSceen.jsx";
-import Evento from "./src/screens/EventoScreen.jsx";
-import Register3 from "./src/screens/Register3Screen.jsx";
+import Login from './src/screens/LoginScreen.jsx';
+import Register1 from './src/screens/Register1Screen.jsx';
+import Register2 from './src/screens/Register2Screen.jsx';
+import PassOlvidada from './src/screens/PassOlvidadaScreen.jsx';
+import Home from './src/screens/HomeScreen.jsx';
+import Categorias from './src/screens/CategoriasSceen.jsx';
+import Evento from './src/screens/EventoScreen.jsx';
+import Register3 from './src/screens/Register3Screen.jsx';
+import Register4 from './src/screens/Register4Screen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,61 +22,41 @@ SplashScreen.preventAutoHideAsync()
   )
   .catch(console.warn);
 
-export default class App extends React.Component {
-  componentDidMount() {
-    setTimeout(async () => {
-      await SplashScreen.hideAsync();
-    }, 20);
+const App = () => {
+  const [initialRoute, setInitialRoute] = useState('Login');
 
-    // Manejo de enlaces profundos
-    const handleOpenURL = (event) => {
-      console.log('URL recibida:', event.url);
-      // Aquí puedes añadir la lógica para navegar a la pantalla deseada
-      // Por ejemplo, podrías extraer un token de la URL y usarlo para navegar
-      this.navigator && this.navigator.navigate('Register3', { url: event.url });
+  useEffect(() => {
+    const checkToken = async () => {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (userToken) {
+        setInitialRoute('Home');
+      }
+      await SplashScreen.hideAsync();
     };
 
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        handleOpenURL({ url });
-      }
-    });
+    checkToken();
+  }, []);
 
-    Linking.addEventListener('url', handleOpenURL);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={initialRoute}
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register1" component={Register1} />
+        <Stack.Screen name="Register2" component={Register2} />
+        <Stack.Screen name="Register3" component={Register3} />
+        <Stack.Screen name="Register4" component={Register4} />
+        <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Categorias" component={Categorias} />
+        <Stack.Screen name="Evento" component={Evento} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-    // Guardar el objeto de navegación para usarlo en handleOpenURL
-    this.handleOpenURL = handleOpenURL;
-  }
-
-  componentWillUnmount() {
-    // Asegurarse de remover el listener al desmontar el componente
-    Linking.removeEventListener('url', this.handleOpenURL);
-  }
-
-  render() {
-    return (
-      <NavigationContainer ref={nav => { this.navigator = nav; }}>
-        <Stack.Navigator
-<<<<<<< Updated upstream
-          initialRouteName="Evento"
-=======
-          initialRouteName="Register3"
->>>>>>> Stashed changes
-          screenOptions={{
-            headerShown: false, // No mostrar la barra de encabezado
-          }}
-        >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register1" component={Register1} />
-          <Stack.Screen name="Register2" component={Register2} />
-          <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Categorias" component={Categorias} />
-          <Stack.Screen name="Evento" component={Evento} />
-          {/*<Stack.Screen name="EmailVerificationScreen" component={EmailVerificationScreen} />*/}
-          <Stack.Screen name="Register3" component={Register3} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+export default App;
