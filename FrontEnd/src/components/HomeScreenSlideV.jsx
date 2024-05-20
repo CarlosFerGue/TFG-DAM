@@ -17,9 +17,9 @@ export default HomeScreenSlideV = ({ item }) => {
         resizeMode="contain"
       />
       <View style={styles.textoInferior}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.date}>{item.date}</Text>
-        <Text style={styles.place}>{item.place}</Text>
+        <Text style={styles.title}>{item.titulo}</Text>
+        <Text style={styles.date}>{item.fecha}</Text>
+        <Text style={styles.place}>{item.ubicacion}</Text>
       </View>
     </View>
   );

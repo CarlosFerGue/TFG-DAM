@@ -10,12 +10,52 @@ import {
   Text,
   ScrollView,
   Image,
+  FlatList,
 } from "react-native";
 
 import Constants from "expo-constants";
 import MapView from "react-native-maps";
+import UsuariosTarjeta from "../components/UsuarioCard";
 
-const EventoScreen = ({ navigation }) => {
+const EventoScreen = ({ navigation, route }) => {
+  const { id_evento } = route.params;
+  const [usuarios, setusuarios] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://myeventz.es/usuarios/find_all");
+        const data = await response.json();
+        setusuarios(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const navigateToUsuario = () => {
+    navigation.navigate("Usuario");
+  };
+
+  const [evento, setevento] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/eventos/load_evento/${id_evento}` // Use id_evento from props
+        );
+        const data = await response.json();
+        setevento(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Background>
       <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
@@ -31,37 +71,54 @@ const EventoScreen = ({ navigation }) => {
               source={require("../../assets/foczy.png")}
               style={styles.profile}
             />
-            <Text style={styles.nombre}>Nombre del evento</Text>
-            <Text style={styles.fecha}>29/02/1987 11:40</Text>
+            <Text style={styles.nombre}>{evento.titulo}</Text>
+            <Text style={styles.fecha}>
+              {evento.fecha} {evento.hora}
+            </Text>
             <View style={styles.categorias}></View>
           </View>
 
           <Text style={styles.cabecera}>Descripción del evento:</Text>
-          <Text style={styles.cuerpoEvento}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
-            vero facere! Adipisci perferendis quo veniam hic eligendi deleniti
-            id ipsam aut quam dignissimos sapiente, voluptates perspiciatis
-            exercitationem in soluta sint.
-          </Text>
+          <Text style={styles.cuerpoEvento}>{evento.descripcion}</Text>
 
           <Text style={styles.subCabecera}>
             Rango de edad:
-            <Text style={styles.textoCabecera}> de 18 a 25 años.</Text>
+            <Text style={styles.textoCabecera}>
+              {" "}
+              de {evento.edad_min} a {evento.edad_max} años.
+            </Text>
           </Text>
 
           <Text style={styles.subCabecera}>
             Ubicación:
-            <Text style={styles.textoCabecera}>
-              {" "}
-              El macauto de marras en deep deli
-            </Text>
+            <Text style={styles.textoCabecera}> {evento.ubicacion}</Text>
           </Text>
 
           <View style={styles.ubicacion}>
-            <MapView style={styles.MapUbicacion} />
+            <MapView
+              style={styles.MapUbicacion}
+              initialRegion={{
+                latitude: 37.783333,
+                longitude: -0.893333,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+              }}
+            />
           </View>
+
           <Text style={styles.cabecera}>Participantes:</Text>
-          <View style={styles.participantes}></View>
+          <View style={styles.participantes}>
+            <FlatList
+              data={usuarios}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={navigateToUsuario}>
+                  <UsuariosTarjeta item={item} />
+                </TouchableOpacity>
+              )}
+              bounces={true}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
         </View>
       </ScrollView>
       <NavBar />
@@ -149,6 +206,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     overflow: "hidden",
     marginBottom: 10,
+    marginBottom: 20,
   },
   MapUbicacion: {
     width: "100%",
@@ -158,6 +216,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
     marginBottom: 50,
+    top: -20,
   },
 });
 

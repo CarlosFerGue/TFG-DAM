@@ -1,5 +1,6 @@
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
+import React, { useState, useEffect } from "react";
 
 import {
   View,
@@ -7,24 +8,52 @@ import {
   StyleSheet,
   TextInput,
   FlatList,
-  Animated,
   TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons"; // Importa el ícono de la lupa desde Ionicons
 import theme from "../theme";
 
-import slidesH from "../slidesHomeH";
-import slidesV from "../slidesHomeV";
-
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
 const Home = ({ navigation }) => {
-  // Función para navegar a la pantalla "Evento"
-  const navigateToEvento = () => {
-    navigation.navigate("Evento");
+  const navigateToEvento = (id_evento) => {
+    navigation.navigate("Evento", { id_evento });
   };
+
+  const [eventosRecientes, seteventosRecientes] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://myeventz.es/eventos/close_events"
+        );
+        const data = await response.json();
+        seteventosRecientes(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://myeventz.es/eventos/popular");
+        const data = await response.json();
+        seteventosPoupulares(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Background>
       <View style={styles.container}>
@@ -43,9 +72,11 @@ const Home = ({ navigation }) => {
         <Text style={styles.subtitulo}>Eventos populares:</Text>
         <View style={styles.sliderH}>
           <FlatList
-            data={slidesH}
+            data={eventosPoupulares}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideH item={item} />
               </TouchableOpacity>
             )}
@@ -59,9 +90,11 @@ const Home = ({ navigation }) => {
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
         <View style={styles.sliderV}>
           <FlatList
-            data={slidesV}
+            data={eventosRecientes}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideV item={item} />
               </TouchableOpacity>
             )}

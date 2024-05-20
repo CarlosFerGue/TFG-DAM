@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import CategoriasTarjeta from "../components/Categorias";
+
 import {
   View,
   StyleSheet,
@@ -9,22 +10,23 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  Image,
+  FlatList,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-const CategoriasScreen = ({ navigation }) => {
-  const [categoriasJson, setCategoriasJson] = useState([]);
+import UsuariosTarjeta from "../components/UsuarioCard";
 
+const BuscarUsuarios = ({ navigation }) => {
+  const [usuarios, setusuarios] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://myeventz.es/categorias/find_all"
-        );
+        const response = await fetch("https://myeventz.es/usuarios/find_all");
         const data = await response.json();
-        setCategoriasJson(data);
+        setusuarios(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -33,33 +35,37 @@ const CategoriasScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const navigateToUsuario = () => {
+    navigation.navigate("Usuario");
+
+  };
+
   return (
     <Background>
-       <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Buscar categorias..."
-            placeholderTextColor="#ccc"
-          />
-          <TouchableOpacity style={styles.searchIconContainer}>
-            <Ionicons name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      <ScrollView style={styles.container}>
-       
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Buscar usuarios..."
+          placeholderTextColor="#ccc"
+        />
+        <TouchableOpacity style={styles.searchIconContainer}>
+          <Ionicons name="search" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.listaCategorias}>
-          {categoriasJson.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => navigation.addCategoria(item.categoria)}
-              style={styles.categoriaCard}
-            >
-              <CategoriasTarjeta categoria={item} />
+      <View style={styles.sliderV}>
+        <FlatList
+          data={usuarios}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={navigateToUsuario}>
+              <UsuariosTarjeta item={item} />
             </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+          )}
+          bounces={true}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+
       <NavBar />
     </Background>
   );
@@ -78,6 +84,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginBottom: 5,
     top: 10,
+    paddingHorizontal: 10,
   },
   inputs: {
     flex: 1,
@@ -89,16 +96,15 @@ const styles = StyleSheet.create({
   searchIconContainer: {
     padding: 10,
   },
-  listaCategorias: {
+  listaUsuarios: {
     width: "100%",
     flexDirection: "row",
-    overflow: "scroll",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-around",
   },
-  categoriaCard: {
+  usuarioCard: {
     marginBottom: 20,
-  }
+  },
 });
 
-export default CategoriasScreen;
+export default BuscarUsuarios;

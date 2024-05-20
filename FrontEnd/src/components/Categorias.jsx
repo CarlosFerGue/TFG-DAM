@@ -11,13 +11,14 @@ const CategoriasTarjeta = ({ categoria }) => {
 
 const styles = StyleSheet.create({
   categoriaContainer: {
-    backgroundColor: "purple",
+    backgroundColor: "#6200ee",
     padding: 10,
     borderRadius: 17,
     marginRight: 10,
   },
   categoriaText: {
     color: "white",
+    textAlign: "center",
   },
 });
 
