@@ -16,16 +16,28 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 
-import UsuariosTarjeta from "../components/UsuarioCard";
-import slidesH from "../slidesHomeH";
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 
-
-const Usuario = ({ navigation }) => {
-  const navigateToEvento = () => {
-    navigation.navigate("Evento");
+const Usuario = ({ navigation, route }) => {
+  const navigateToEvento = (id_evento) => {
+    navigation.navigate("Evento", { id_evento });
   };
+
+  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://myeventz.es/eventos/popular");
+        const data = await response.json();
+        seteventosPoupulares(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [categoriasJson, setCategoriasJson] = useState([]);
 
@@ -43,6 +55,26 @@ const Usuario = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const { id_usuario } = route.params;
+
+  const [usuarioJson, setUsuarioInfo] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id/${id_usuario}`
+        );
+        const data = await response.json();
+        setUsuarioInfo(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Background>
       <ScrollView style={styles.container}>
@@ -50,13 +82,12 @@ const Usuario = ({ navigation }) => {
           source={require("../../assets/foczy.png")}
           style={styles.imagen}
         />
-        <Text style={styles.nombre}>Gabriel Milagro Lopez</Text>
-        <Text style={styles.user}>@gaymiloco</Text>
+        <Text style={styles.nombre}>{usuarioJson.nombre} {usuarioJson.apel1} {usuarioJson.apel2}</Text>
+        <Text style={styles.user}>{usuarioJson.usuario}</Text>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
         <Text style={styles.biografiaCuerpo}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
-          vero facere! Adipisci perferendis quo veniam hic eligendi deleniti
+        {usuarioJson.bio}
         </Text>
 
         <View style={styles.categorias}>
@@ -77,9 +108,11 @@ const Usuario = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={slidesH}
+            data={eventosPoupulares}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideH item={item} />
               </TouchableOpacity>
             )}
@@ -93,9 +126,11 @@ const Usuario = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={slidesH}
+            data={eventosPoupulares}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={navigateToEvento}>
+              <TouchableOpacity
+                onPress={() => navigateToEvento(item.id_evento)}
+              >
                 <HomeScreenSlideH item={item} />
               </TouchableOpacity>
             )}

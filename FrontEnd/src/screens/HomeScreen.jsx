@@ -22,6 +22,21 @@ const Home = ({ navigation }) => {
     navigation.navigate("Evento", { id_evento });
   };
 
+  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://myeventz.es/eventos/popular");
+        const data = await response.json();
+        seteventosPoupulares(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [eventosRecientes, seteventosRecientes] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -31,21 +46,6 @@ const Home = ({ navigation }) => {
         );
         const data = await response.json();
         seteventosRecientes(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://myeventz.es/eventos/popular");
-        const data = await response.json();
-        seteventosPoupulares(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

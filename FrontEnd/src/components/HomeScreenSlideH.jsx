@@ -4,8 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
-  useWindowDimensions,
 } from "react-native";
 
 export default HomeScreenSlideH = ({ item }) => {

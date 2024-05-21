@@ -35,9 +35,8 @@ const BuscarUsuarios = ({ navigation }) => {
     fetchData();
   }, []);
 
-  const navigateToUsuario = () => {
-    navigation.navigate("Usuario");
-
+  const navigateToUsuario = (id_usuario) => {
+    navigation.navigate("Usuario", { id_usuario });
   };
 
   return (
@@ -57,12 +56,14 @@ const BuscarUsuarios = ({ navigation }) => {
         <FlatList
           data={usuarios}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={navigateToUsuario}>
+            <TouchableOpacity
+              onPress={() => navigateToUsuario(item.id_usuario)}
+            >
               <UsuariosTarjeta item={item} />
             </TouchableOpacity>
           )}
           bounces={true}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id_usuario.toString()}
         />
       </View>
 
