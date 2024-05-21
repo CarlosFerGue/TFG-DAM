@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-import CategoriasTarjeta from "../components/Categorias";
 
 import {
   View,

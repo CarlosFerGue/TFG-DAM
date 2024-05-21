@@ -41,10 +41,6 @@ const EventoScreen = ({ navigation, route }) => {
     fetchData();
   }, []);
 
-  const navigateToUsuario = (id_usuario) => {
-    navigation.navigate("Usuario", { id_usuario });
-  };
-
   const [evento, setevento] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +57,10 @@ const EventoScreen = ({ navigation, route }) => {
 
     fetchData();
   }, []);
+
+  const navigateToUsuario = (id_usuario) => {
+    navigation.navigate("Usuario", { id_usuario });
+  };
 
   return (
     <Background>
@@ -118,12 +118,13 @@ const EventoScreen = ({ navigation, route }) => {
               <FlatList
                 data={usuarios}
                 renderItem={({ item }) => (
-                  <TouchableOpacity onPress={navigateToUsuario}>
+                  <TouchableOpacity
+                    onPress={() => navigateToUsuario(item.id_usuario)}>
                     <UsuariosTarjeta item={item} />
                   </TouchableOpacity>
                 )}
                 bounces={true}
-                keyExtractor={(item) => item.id_usuario} // Use id_usuario for key extraction
+                keyExtractor={(item) => item.id_usuario} 
               />
             ) : (
               <Text style={styles.textoCabecera}>

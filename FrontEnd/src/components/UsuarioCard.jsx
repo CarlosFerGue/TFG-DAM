@@ -5,7 +5,9 @@ const UsuarioCard = ({ item }) => {
   return (
     <View style={styles.UserContainer}>
       <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
-      <Text style={styles.nombreTexto}>{item.nombre} {item.apel1} {item.apel2} </Text>
+      <Text style={styles.nombreTexto}>
+        {item.nombre_com} {item.nombre} {item.apel1} {item.apel2}{" "}
+      </Text>
       <Text style={styles.usuarioTexto}>{item.usuario}</Text>
     </View>
   );

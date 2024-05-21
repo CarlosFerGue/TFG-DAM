@@ -17,6 +17,10 @@ const NavBar = ({ navigate }) => {
     navigation.navigate(screenName);
   };
 
+  const navigateToUsuario = (id_usuario) => {
+    navigation.navigate("Perfil", { id_usuario });
+  };
+
   return (
     <View style={styles.background}>
       <TouchableOpacity
@@ -45,7 +49,8 @@ const NavBar = ({ navigate }) => {
         <Ionicons name="person-add" size={24} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Perfil")}
+        //onPress={() => navigation.navigate("Perfil")}
+        onPress={() => navigateToUsuario(2)}
         style={styles.iconContainer}
       >
         <Image

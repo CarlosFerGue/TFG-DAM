@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-
 import {
   View,
   StyleSheet,
@@ -15,7 +14,6 @@ import {
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
-
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 
@@ -44,7 +42,9 @@ const Usuario = ({ navigation, route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://myeventz.es/categorias/find_all");
+        const response = await fetch(
+          `https://myeventz.es/usuarios/hobbies/${id_usuario}`
+        );
         const data = await response.json();
         setCategoriasJson(data);
       } catch (error) {
@@ -55,9 +55,12 @@ const Usuario = ({ navigation, route }) => {
     fetchData();
   }, []);
 
+  //console.log(categoriasJson);
+
   const { id_usuario } = route.params;
 
-  const [usuarioJson, setUsuarioInfo] = useState([]);
+  const [usuarioJson, setUsuarioInfo] = useState({});
+  const [redesSociales, setRedesSociales] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +70,7 @@ const Usuario = ({ navigation, route }) => {
         );
         const data = await response.json();
         setUsuarioInfo(data);
+        setRedesSociales(data.redesSociales || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -82,28 +86,29 @@ const Usuario = ({ navigation, route }) => {
           source={require("../../assets/foczy.png")}
           style={styles.imagen}
         />
-        <Text style={styles.nombre}>{usuarioJson.nombre} {usuarioJson.apel1} {usuarioJson.apel2}</Text>
-        <Text style={styles.user}>{usuarioJson.usuario}</Text>
+        <Text style={styles.nombre}>
+          {usuarioJson.nombre} {usuarioJson.apel1} {usuarioJson.apel2}
+        </Text>
+        <Text style={styles.user}>@{usuarioJson.usuario}</Text>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
-        <Text style={styles.biografiaCuerpo}>
-        {usuarioJson.bio}
-        </Text>
+        <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
 
-        <View style={styles.categorias}>
-          <View style={styles.listaCategorias}>
-            {categoriasJson.slice(0, 2).map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => navigation.addCategoria(item.categoria)}
-                style={styles.categoriaCard}
-              >
-                <CategoriasTarjeta categoria={item} />
-              </TouchableOpacity>
-            ))}
+        {categoriasJson.length > 0 && ( // Check if there are categories
+          <View style={styles.categorias}>
+            <View style={styles.listaCategorias}>
+              {categoriasJson.map((item) => (
+                <View
+                  key={item.id}
+                  onPress={() => navigation.addCategoria(item.categoria)}
+                  style={styles.categoriaCard}
+                >
+                  <CategoriasTarjeta categoria={item} />
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
-
+        )}
         <Text style={styles.cabecera}>Mis eventos:</Text>
 
         <View style={styles.eventos}>
@@ -142,10 +147,20 @@ const Usuario = ({ navigation, route }) => {
 
         <Text style={styles.redes}>Mis redes sociales</Text>
         <View style={styles.redesIconos}>
-          <Ionicons name="logo-facebook" size={24} color="white" />
-          <Ionicons name="logo-twitter" size={24} color="white" />
-          <Ionicons name="logo-instagram" size={24} color="white" />
-          <Ionicons name="logo-tiktok" size={24} color="white" />
+          {redesSociales.length > 0 ? (
+            redesSociales.map((red) => (
+              <Ionicons
+                key={red}
+                name={`logo-${red}`}
+                size={24}
+                color="white"
+              />
+            ))
+          ) : (
+            <Text style={styles.sinRedes}>
+              Este usuario no tiene ninguna red social asociada
+            </Text>
+          )}
         </View>
       </ScrollView>
       <NavBar />
@@ -171,7 +186,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: theme.colors.white,
     bottom: 100,
-    fontFamily: "Lobster Two Regular",
     left: 120,
   },
   user: {
@@ -179,20 +193,17 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     left: 120,
     bottom: 100,
-    fontFamily: "Lobster Two Regular",
   },
   cabecera: {
     fontSize: 20,
     color: theme.colors.white,
     fontWeight: "bold",
     bottom: 50,
-    fontFamily: "Lobster Two Regular",
   },
   biografiaCuerpo: {
     fontSize: 15,
     color: theme.colors.white,
     bottom: 50,
-    fontFamily: "Lobster Two Regular",
     padding: 5,
     color: "#ccc",
     marginBottom: 20,
@@ -218,7 +229,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     fontWeight: "bold",
     textAlign: "center",
-    fontFamily: "Lobster Two Regular",
     marginTop: 20,
     bottom: 50,
   },
@@ -229,6 +239,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#6200ee",
     borderRadius: 10,
     padding: 10,
+  },
+  sinRedes: {
+    color: "#ccc",
+    fontSize: 15,
+    textAlign: "center",
   },
 });
 

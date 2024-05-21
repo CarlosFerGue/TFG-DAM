@@ -15,6 +15,7 @@ import Register3 from "./src/screens/Register3Screen.jsx";
 import Register4 from "./src/screens/Register4Screen.jsx";
 import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
 import Usuario from "./src/screens/UsuarioScreen.jsx";
+import Perfil from "./src/screens/PerfilScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,13 +26,13 @@ SplashScreen.preventAutoHideAsync()
   .catch(console.warn);
 
 const App = () => {
-  const [initialRoute, setInitialRoute] = useState("BuscarUsuarios");
+  const [initialRoute, setInitialRoute] = useState("Perfil");
 
   useEffect(() => {
     const checkToken = async () => {
       const userToken = await AsyncStorage.getItem("userToken");
       if (userToken) {
-        setInitialRoute("BuscarUsuarios");
+        setInitialRoute("Perfil");
       }
       await SplashScreen.hideAsync();
     };
@@ -58,6 +59,7 @@ const App = () => {
         <Stack.Screen name="Evento" component={Evento} />
         <Stack.Screen name="BuscarUsuarios" component={BuscarUsuarios} />
         <Stack.Screen name="Usuario" component={Usuario} />
+        <Stack.Screen name="Perfil" component={Perfil} />
       </Stack.Navigator>
     </NavigationContainer>
   );
