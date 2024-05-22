@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -28,9 +29,10 @@ const Login = ({ navigation }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Login successful
-        console.log("Login successful:", data);
-        navigation.navigate("Perfil", { id_usuario: data.id_usuario });
+        // Login successfulo
+        console.log("Login successful:", data.tken);
+        AsyncStorage.setItem("userToken", data.token);
+        navigation.navigate("Perfil", { id_usuario: data.token });
       } else {
         // Login failed
         setError("Credenciales incorrectas. Inténtalo de nuevo.");
