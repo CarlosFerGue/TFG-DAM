@@ -19,31 +19,29 @@ import Perfil from "./src/screens/PerfilScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
-SplashScreen.preventAutoHideAsync()
-  .then((result) =>
-    console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)
-  )
-  .catch(console.warn);
-
 const App = () => {
-  const [initialRoute, setInitialRoute] = useState("Login");
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
 
   useEffect(() => {
     const checkToken = async () => {
-      const userToken = await AsyncStorage.getItem("userToken");
-      if (userToken) {
-        setInitialRoute("Login");
-      }
+      const token = await AsyncStorage.getItem('userToken');
+      setUserToken(token);
+      setIsLoading(false);
       await SplashScreen.hideAsync();
     };
 
     checkToken();
   }, []);
 
+  if (isLoading) {
+    return null; // O puedes mostrar una pantalla de carga
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={initialRoute}
+        initialRouteName={userToken ? 'Home' : 'Login'}
         screenOptions={{
           headerShown: false,
         }}
