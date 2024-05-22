@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: 130,
   },
   cantidadGente: {
-    backgroundColor: "blue",
+    backgroundColor: "black",
     paddingHorizontal: 7,
     borderRadius: 23,
     position: "absolute",

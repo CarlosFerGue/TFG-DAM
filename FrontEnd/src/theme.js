@@ -13,7 +13,7 @@ const theme = {
         inputText: 20,
     },
     fonts: {
-       lobster2: 'Lobster Two Regular, sans-serif'
+
     },
     fontWeights: {
         normal: '400',

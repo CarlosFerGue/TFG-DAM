@@ -16,30 +16,30 @@ import theme from "../theme";
 const PassOlvidada = ({ navigation }) => {
   return (
     <Background>
-        <View style={styles.container}>
-          <Image
-            style={styles.logo}
-            source={require("../../assets/MyEventz.png")}
-            resizeMode="contain"
-          />
+      <View style={styles.container}>
+        <Image
+          style={styles.logo}
+          source={require("../../assets/MyEventz.png")}
+          resizeMode="contain"
+        />
 
-          <Text style={styles.bienvenido}>Recuperación de contraseñas</Text>
+        <Text style={styles.bienvenido}>Recuperación de contraseñas</Text>
 
-          <Text style={styles.inputText}>Introduce tu correo electrónico</Text>
-          <TextInput
-            style={styles.inputs}
-            placeholder="unprofessional@svalero.com"
-            placeholderTextColor="#ccc"
-          />
+        <Text style={styles.inputText}>Introduce tu correo electrónico</Text>
+        <TextInput
+          style={styles.inputs}
+          placeholder="unprofessional@svalero.com"
+          placeholderTextColor="#ccc"
+        />
 
-          <TouchableOpacity style={styles.button} onPress={validateForm}>
-            <Text style={styles.buttonText}>Enviar correo</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={validateForm}>
+          <Text style={styles.buttonText}>Enviar correo</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.volverInicio}>Volver a Inicio de sesión</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.volverInicio}>Volver a Inicio de sesión</Text>
+        </TouchableOpacity>
+      </View>
     </Background>
   );
 };
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textAlign: "center",
     bottom: "14%",
-    fontFamily: "Lobster Two Regular",
+    fontFamily: " Two Regular",
   },
   inputText: {
     fontSize: 20,

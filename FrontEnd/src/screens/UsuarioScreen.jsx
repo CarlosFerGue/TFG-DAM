@@ -87,7 +87,8 @@ const Usuario = ({ navigation, route }) => {
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
-          {usuarioJson.nombre} {usuarioJson.apel1} {usuarioJson.apel2}
+          {usuarioJson.nombre} {usuarioJson.apel1}
+          {usuarioJson.apel2 ? "\n" + usuarioJson.apel2 : ""}
         </Text>
         <Text style={styles.user}>@{usuarioJson.usuario}</Text>
 
@@ -175,6 +176,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     height: "100%",
     width: "100%",
+    
   },
   imagen: {
     width: 100,
@@ -187,6 +189,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     bottom: 100,
     left: 120,
+    fontWeight: "bold",
   },
   user: {
     fontSize: 15,
@@ -214,7 +217,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   categoriaCard: {
-    width: "45%",
     marginBottom: 20,
   },
   listaCategorias: {

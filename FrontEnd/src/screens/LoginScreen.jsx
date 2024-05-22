@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
-import * as Font from "../../assets/fonts/LobsterRegular.ttf";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -123,7 +122,6 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     textAlign: "center",
     bottom: "14%",
-    fontFamily: Font.LobsterRegular,
   },
   subtitulo: {
     fontSize: 20,

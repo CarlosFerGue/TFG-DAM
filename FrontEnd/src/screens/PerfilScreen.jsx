@@ -87,9 +87,26 @@ const Usuario = ({ navigation, route }) => {
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
-          {usuarioJson.nombre} {usuarioJson.apel1} {usuarioJson.apel2}
+          {usuarioJson.nombre} {usuarioJson.apel1}
+          {usuarioJson.apel2 ? "\n" + usuarioJson.apel2 : ""}
         </Text>
         <Text style={styles.user}>@{usuarioJson.usuario}</Text>
+
+        <View style={styles.opcionesPerfil}>
+          <TouchableOpacity
+            style={styles.editarPerfil}
+            onPress={() => navigation.editarPerfil()}
+          >
+            <Text style={styles.buttonText}>Editar perfil </Text><Ionicons name="create-outline" size={24} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.cerrarSesion}
+            onPress={() => navigation.cerrarSesion()}
+          >
+             <Text style={styles.buttonText}>Cerrar Sesion </Text><Ionicons name="exit-outline" size={24} color="red" />
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
         <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
@@ -187,12 +204,44 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     bottom: 100,
     left: 120,
+    fontWeight: "bold",
   },
   user: {
     fontSize: 15,
     color: theme.colors.white,
     left: 120,
     bottom: 100,
+  },
+  opcionesPerfil: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    bottom: 75,
+    fontWeight: "bold",
+  },
+  editarPerfil: {
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    fontWeight: "bold",
+    flexDirection: "row",
+    paddingHorizontal: 15,
+  },
+  buttonText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 15,
+    marginRight: 5,
+  },
+  cerrarSesion: {
+    backgroundColor: theme.colors.secondary,  
+    borderRadius: 10,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    flexDirection: "row",
+    paddingHorizontal: 15,
   },
   cabecera: {
     fontSize: 20,
@@ -214,7 +263,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   categoriaCard: {
-    width: "45%",
     marginBottom: 20,
   },
   listaCategorias: {
