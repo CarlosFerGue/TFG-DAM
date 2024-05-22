@@ -26,13 +26,13 @@ SplashScreen.preventAutoHideAsync()
   .catch(console.warn);
 
 const App = () => {
-  const [initialRoute, setInitialRoute] = useState("Perfil");
+  const [initialRoute, setInitialRoute] = useState("Login");
 
   useEffect(() => {
     const checkToken = async () => {
       const userToken = await AsyncStorage.getItem("userToken");
       if (userToken) {
-        setInitialRoute("Perfil");
+        setInitialRoute("Login");
       }
       await SplashScreen.hideAsync();
     };
