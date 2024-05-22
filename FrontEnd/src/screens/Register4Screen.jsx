@@ -26,6 +26,9 @@ const Register4 = ({ route, navigation }) => {
       if (json.success) {
         alert('Email verified successfully!');
         await AsyncStorage.setItem('userToken', json.token);
+        console.log('User token:', json.token);
+        const storedToken = await AsyncStorage.getItem('userToken');
+        console.log('Stored token:', storedToken);
         navigation.navigate('Home');
       } else {
         alert('Failed to verify code. Please check the code and try again.');
