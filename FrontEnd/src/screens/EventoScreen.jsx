@@ -24,9 +24,15 @@ const EventoScreen = ({ navigation, route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://myeventz.es/usuarios/find_all");
+        // Fetch event data (including participants)
+        const response = await fetch(
+          `https://myeventz.es/eventos/load_evento_info/${id_evento}`
+        );
         const data = await response.json();
-        setusuarios(data);
+        setevento(data);
+
+        // Extract participants from the fetched data
+        setusuarios(data.participantes);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -34,10 +40,6 @@ const EventoScreen = ({ navigation, route }) => {
 
     fetchData();
   }, []);
-
-  const navigateToUsuario = () => {
-    navigation.navigate("Usuario");
-  };
 
   const [evento, setevento] = useState([]);
   useEffect(() => {
@@ -55,6 +57,10 @@ const EventoScreen = ({ navigation, route }) => {
 
     fetchData();
   }, []);
+
+  const navigateToUsuario = (id_usuario) => {
+    navigation.navigate("Usuario", { id_usuario });
+  };
 
   return (
     <Background>
@@ -99,7 +105,7 @@ const EventoScreen = ({ navigation, route }) => {
               style={styles.MapUbicacion}
               initialRegion={{
                 latitude: 37.783333,
-                longitude: -0.893333,
+                longitude: 32.893333,
                 latitudeDelta: 0.05,
                 longitudeDelta: 0.05,
               }}
@@ -108,16 +114,23 @@ const EventoScreen = ({ navigation, route }) => {
 
           <Text style={styles.cabecera}>Participantes:</Text>
           <View style={styles.participantes}>
-            <FlatList
-              data={usuarios}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={navigateToUsuario}>
-                  <UsuariosTarjeta item={item} />
-                </TouchableOpacity>
-              )}
-              bounces={true}
-              keyExtractor={(item) => item.id}
-            />
+            {usuarios.length > 0 ? (
+              <FlatList
+                data={usuarios}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => navigateToUsuario(item.id_usuario)}>
+                    <UsuariosTarjeta item={item} />
+                  </TouchableOpacity>
+                )}
+                bounces={true}
+                keyExtractor={(item) => item.id_usuario} 
+              />
+            ) : (
+              <Text style={styles.textoCabecera}>
+                No hay participantes registrados aún.
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>

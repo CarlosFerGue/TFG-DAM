@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import {
   View,
@@ -9,14 +9,42 @@ import {
   TouchableOpacity,
   validateForm,
   ScrollView,
-  useState
 } from "react-native";
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
 import * as Font from "../../assets/fonts/LobsterRegular.ttf";
 
-
 const Login = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [error, setError] = useState(null); // State for error message
+
+  const handleLogin = async () => {
+    setIsLoading(true); // Set loading indicator to true
+    setError(null); // Clear any previous errors
+
+    try {
+      const response = await fetch(`https://myeventz.es/usuarios/login/[${username}]&[${password}]`);
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful
+        console.log("Login successful:", data);
+        navigation.navigate("Perfil", { id_usuario: data.id_usuario });
+      } else {
+        // Login failed
+        setError("Credenciales incorrectas. Inténtalo de nuevo.");
+        console.error("Login failed:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("Ha ocurrido un error. Inténtalo más tarde.");
+    } finally {
+      setIsLoading(false); // Set loading indicator to false
+    }
+  };
+
   return (
     <Background>
       <ScrollView>
@@ -28,15 +56,15 @@ const Login = ({ navigation }) => {
           />
 
           <Text style={styles.bienvenido}>¡Bienvenid@!</Text>
-          <Text style={styles.subtitulo}>
-            Tu portal de actividades y experiencias en Zaragoza.
-          </Text>
+          <Text style={styles.subtitulo}>Tu portal de actividades y experiencias en Zaragoza.</Text>
 
           <Text style={styles.inputText}>Nombre de usuario</Text>
           <TextInput
             style={styles.inputs}
             placeholder="Ingresa tu nombre de usuario"
             placeholderTextColor="#ccc"
+            value={username}
+            onChangeText={setUsername}
           />
 
           <Text style={styles.inputText}>Contraseña</Text>
@@ -45,23 +73,25 @@ const Login = ({ navigation }) => {
             placeholder="Ingresa tu contraseña"
             placeholderTextColor="#ccc"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
 
-          <TouchableOpacity
-            style={styles.crearcuenta}
-            onPress={() => navigation.navigate("PassOlvidada")}
-          >
+          {error && <Text style={styles.errorText}>{error}</Text>}
+
+          <TouchableOpacity style={styles.crearcuenta} onPress={() => navigation.navigate("PassOlvidada")}>
             <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={validateForm}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          <TouchableOpacity style={styles.button} disabled={isLoading} onPress={handleLogin}>
+            {isLoading ? (
+              <Text style={styles.buttonText}>Cargando...</Text>
+            ) : (
+              <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.crearcuenta}
-            onPress={() => navigation.navigate("Register1")}
-          >
+          <TouchableOpacity style={styles.crearcuenta} onPress={() => navigation.navigate("Register1")}>
             <Text style={styles.crearcuenta}>Crear Una Nueva Cuenta</Text>
           </TouchableOpacity>
         </View>
@@ -76,6 +106,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: "5%",
     display: "flex",
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
   },
   logo: {
     width: "100%",
