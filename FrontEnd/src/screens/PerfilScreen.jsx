@@ -25,37 +25,38 @@ const Perfil = ({ navigation }) => {
 
   console.log("token perfil:", token);
 
-  // Estado para la información del usuario
-  const [usuario, setUsuario] = useState({});
-  const [hobbies, setHobbies] = useState([]);
-  const [eventosPopulares, setEventosPopulares] = useState([]);
-
-  // Función para cerrar sesión
-  const cerrarSesion = async () => {
-    await AsyncStorage.removeItem("userToken");
+  // Funcion para cerrar sesion
+  const cerrarSesion = () => {
+    AsyncStorage.removeItem("userToken");
     navigation.navigate("Login");
   };
 
-  // Fetch para obtener la información del usuario
+  //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //Informacion del usuario
+
+  const [usuarios, setusuarios] = useState([]);
   useEffect(() => {
-    const fetchUsuario = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
           `https://myeventz.es/usuarios/find_by_id/${token}`
         );
         const data = await response.json();
-        setUsuario(data[0]); // Asume que el JSON es un array con un único objeto
+        setusuarios(data);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchUsuario();
-  }, [token]);
+    fetchData();
+  }, []);
 
-  // Fetch para obtener los hobbies
+  //Hobbies
+
+  const [hobbies, setHobbies] = useState([]);
   useEffect(() => {
-    const fetchHobbies = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
           `https://myeventz.es/usuarios/hobbies/${token}`
@@ -63,26 +64,28 @@ const Perfil = ({ navigation }) => {
         const data = await response.json();
         setHobbies(data);
       } catch (error) {
-        console.error("Error fetching hobbies:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchHobbies();
-  }, [token]);
+    fetchData();
+  }, []);
 
-  // Fetch para obtener los eventos populares
+  //Fetch para coger los eventos///////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const [eventosPoupulares, seteventosPoupulares] = useState([]);
   useEffect(() => {
-    const fetchEventosPopulares = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch("https://myeventz.es/eventos/popular");
         const data = await response.json();
-        setEventosPopulares(data);
+        seteventosPoupulares(data);
       } catch (error) {
-        console.error("Error fetching popular events:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchEventosPopulares();
+    fetchData();
   }, []);
 
   const navigateToEvento = (id_evento) => {
@@ -97,10 +100,10 @@ const Perfil = ({ navigation }) => {
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
-          {usuario.nombre} {usuario.apel1}
-          {usuario.apel2 ? "\n" + usuario.apel2 : ""}
+          {usuarios.nombre} {usuarios.apel1}
+          {usuarios.apel2 ? "\n" + usuarios.apel2 : ""}
         </Text>
-        <Text style={styles.user}>@{usuario.usuario}</Text>
+        <Text style={styles.user}>@{usuarios.usuario}</Text>
 
         <View style={styles.opcionesPerfil}>
           <TouchableOpacity
@@ -111,31 +114,38 @@ const Perfil = ({ navigation }) => {
             <Ionicons name="create-outline" size={24} color="black" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.cerrarSesion} onPress={cerrarSesion}>
+          <TouchableOpacity
+            style={styles.cerrarSesion}
+            onPress={() => cerrarSesion()}
+          >
             <Text style={styles.buttonText}>Cerrar Sesion </Text>
             <Ionicons name="exit-outline" size={24} color="red" />
           </TouchableOpacity>
         </View>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
-        <Text style={styles.biografiaCuerpo}>{usuario.bio}</Text>
+        <Text style={styles.biografiaCuerpo}>{usuarios.bio}</Text>
 
-        {hobbies.length > 0 && (
+        {hobbies.length > 0 && ( // Check if there are categories
           <View style={styles.categorias}>
             <View style={styles.listaCategorias}>
               {hobbies.map((item) => (
-                <View key={item.id} style={styles.categoriaCard}>
+                <View
+                  key={item.id}
+                  onPress={() => navigation.addCategoria(item.categoria)}
+                  style={styles.categoriaCard}
+                >
                   <CategoriasTarjeta categoria={item} />
                 </View>
               ))}
             </View>
           </View>
         )}
-
         <Text style={styles.cabecera}>Mis eventos:</Text>
+
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPopulares}
+            data={eventosPoupulares}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -145,14 +155,15 @@ const Perfil = ({ navigation }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
           />
         </View>
 
         <Text style={styles.cabecera}>Participaciones:</Text>
+
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPopulares}
+            data={eventosPoupulares}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -162,7 +173,7 @@ const Perfil = ({ navigation }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
           />
         </View>
 
@@ -171,8 +182,8 @@ const Perfil = ({ navigation }) => {
           {hobbies.length > 0 ? (
             hobbies.map((red) => (
               <Ionicons
-                key={red.id} // Suponiendo que 'red' tiene un 'id'
-                name={`logo-${red.categoria}`} // Ajusta el nombre del icono según tus datos
+                key={red}
+                name={`logo-${red}`}
                 size={24}
                 color="white"
               />
