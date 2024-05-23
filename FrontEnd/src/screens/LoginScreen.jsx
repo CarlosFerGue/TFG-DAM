@@ -13,38 +13,58 @@ import {
 import Constants from "expo-constants"; // Asegúrate de importar Constants si lo estás utilizando
 import theme from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
-  const [error, setError] = useState(null); // State for error message
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userToken, setUserToken] = useState(null); // State to hold token
+
+  useEffect(() => {
+    const retrieveToken = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem("userToken");
+        setUserToken(storedToken);
+      } catch (error) {
+        console.error("Error retrieving token from AsyncStorage:", error);
+      }
+    };
+
+    retrieveToken();
+  }, []); // Empty dependency array to run only once on component mount
 
   const handleLogin = async () => {
-    setIsLoading(true); // Set loading indicator to true
-    setError(null); // Clear any previous errors
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch(`https://myeventz.es/usuarios/login/[${username}]&[${password}]`);
-      const data = await response.json();
+      const response = await axios.get(
+        `https://myeventz.es/usuarios/login/[${username}]&[${password}]`
+      );
 
-      if (response.ok) {
-        // Login successfulo
-        console.log("Login successful:", data.tken);
-        AsyncStorage.setItem("userToken", data.token);
-        navigation.navigate("Perfil", { id_usuario: data.token });
+      const json = response.data;
+      if (json.token) {
+        // Check for existence of 'token' property
+        console.log("Login successful:", json.token);
+        await AsyncStorage.setItem("userToken", json.token);
+        setUserToken(json.token); // Update state for immediate access
+        navigation.navigate("Perfil", { token: json.token });
+
       } else {
-        // Login failed
         setError("Credenciales incorrectas. Inténtalo de nuevo.");
-        console.error("Login failed:", data);
+        console.error("Login failed:", json);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("Ha ocurrido un error. Inténtalo más tarde.");
     } finally {
-      setIsLoading(false); // Set loading indicator to false
+      setIsLoading(false);
     }
   };
+
 
   return (
     <Background>
@@ -57,7 +77,9 @@ const Login = ({ navigation }) => {
           />
 
           <Text style={styles.bienvenido}>¡Bienvenid@!</Text>
-          <Text style={styles.subtitulo}>Tu portal de actividades y experiencias en Zaragoza.</Text>
+          <Text style={styles.subtitulo}>
+            Tu portal de actividades y experiencias en Zaragoza.
+          </Text>
 
           <Text style={styles.inputText}>Nombre de usuario</Text>
           <TextInput
@@ -80,11 +102,18 @@ const Login = ({ navigation }) => {
 
           {error && <Text style={styles.errorText}>{error}</Text>}
 
-          <TouchableOpacity style={styles.crearcuenta} onPress={() => navigation.navigate("PassOlvidada")}>
+          <TouchableOpacity
+            style={styles.crearcuenta}
+            onPress={() => navigation.navigate("PassOlvidada")}
+          >
             <Text style={styles.olvidona}>¿Has olvidado tu contraseña?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} disabled={isLoading} onPress={handleLogin}>
+          <TouchableOpacity
+            style={styles.button}
+            disabled={isLoading}
+            onPress={handleLogin}
+          >
             {isLoading ? (
               <Text style={styles.buttonText}>Cargando...</Text>
             ) : (
@@ -92,7 +121,10 @@ const Login = ({ navigation }) => {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.crearcuenta} onPress={() => navigation.navigate("Register1")}>
+          <TouchableOpacity
+            style={styles.crearcuenta}
+            onPress={() => navigation.navigate("Register1")}
+          >
             <Text style={styles.crearcuenta}>Crear Una Nueva Cuenta</Text>
           </TouchableOpacity>
         </View>

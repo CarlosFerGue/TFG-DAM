@@ -16,6 +16,7 @@ import Register4 from "./src/screens/Register4Screen.jsx";
 import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
 import Usuario from "./src/screens/UsuarioScreen.jsx";
 import Perfil from "./src/screens/PerfilScreen.jsx";
+import EditarPerfil from "./src/screens/EditarPerfilScreen.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +42,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={userToken ? 'Home' : 'Login'}
+        initialRouteName={userToken ? 'Login' : 'Home'}
         screenOptions={{
           headerShown: false,
         }}
@@ -58,6 +59,8 @@ const App = () => {
         <Stack.Screen name="BuscarUsuarios" component={BuscarUsuarios} />
         <Stack.Screen name="Usuario" component={Usuario} />
         <Stack.Screen name="Perfil" component={Perfil} />
+        <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

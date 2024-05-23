@@ -66,7 +66,7 @@ const Usuario = ({ navigation, route }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id/${id_usuario}`
+          `https://myeventz.es/usuarios/find_by_id_REAL/${id_usuario}`
         );
         const data = await response.json();
         setUsuarioInfo(data);

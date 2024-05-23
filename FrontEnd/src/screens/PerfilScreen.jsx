@@ -16,68 +16,78 @@ import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
-const Usuario = ({ navigation, route }) => {
-  const navigateToEvento = (id_evento) => {
-    navigation.navigate("Evento", { id_evento });
+const Perfil = ({ navigation }) => {
+  const route = useRoute();
+  const { token } = route.params;
+
+  console.log("token perfil:", token);
+
+  // Estado para la información del usuario
+  const [usuario, setUsuario] = useState({});
+  const [hobbies, setHobbies] = useState([]);
+  const [eventosPopulares, setEventosPopulares] = useState([]);
+
+  // Función para cerrar sesión
+  const cerrarSesion = async () => {
+    await AsyncStorage.removeItem("userToken");
+    navigation.navigate("Login");
   };
 
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  // Fetch para obtener la información del usuario
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsuario = async () => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id/${token}`
+        );
+        const data = await response.json();
+        setUsuario(data[0]); // Asume que el JSON es un array con un único objeto
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUsuario();
+  }, [token]);
+
+  // Fetch para obtener los hobbies
+  useEffect(() => {
+    const fetchHobbies = async () => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/hobbies/${token}`
+        );
+        const data = await response.json();
+        setHobbies(data);
+      } catch (error) {
+        console.error("Error fetching hobbies:", error);
+      }
+    };
+
+    fetchHobbies();
+  }, [token]);
+
+  // Fetch para obtener los eventos populares
+  useEffect(() => {
+    const fetchEventosPopulares = async () => {
       try {
         const response = await fetch("https://myeventz.es/eventos/popular");
         const data = await response.json();
-        seteventosPoupulares(data);
+        setEventosPopulares(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching popular events:", error);
       }
     };
 
-    fetchData();
+    fetchEventosPopulares();
   }, []);
 
-  const [categoriasJson, setCategoriasJson] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/hobbies/${id_usuario}`
-        );
-        const data = await response.json();
-        setCategoriasJson(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  //console.log(categoriasJson);
-
-  const { id_usuario } = route.params;
-
-  const [usuarioJson, setUsuarioInfo] = useState({});
-  const [redesSociales, setRedesSociales] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id/${id_usuario}`
-        );
-        const data = await response.json();
-        setUsuarioInfo(data);
-        setRedesSociales(data.redesSociales || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const navigateToEvento = (id_evento) => {
+    navigation.navigate("Evento", { id_evento });
+  };
 
   return (
     <Background>
@@ -87,50 +97,45 @@ const Usuario = ({ navigation, route }) => {
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
-          {usuarioJson.nombre} {usuarioJson.apel1}
-          {usuarioJson.apel2 ? "\n" + usuarioJson.apel2 : ""}
+          {usuario.nombre} {usuario.apel1}
+          {usuario.apel2 ? "\n" + usuario.apel2 : ""}
         </Text>
-        <Text style={styles.user}>@{usuarioJson.usuario}</Text>
+        <Text style={styles.user}>@{usuario.usuario}</Text>
 
         <View style={styles.opcionesPerfil}>
           <TouchableOpacity
             style={styles.editarPerfil}
-            onPress={() => navigation.editarPerfil()}
+            onPress={() => navigation.navigate("EditarPerfil")}
           >
-            <Text style={styles.buttonText}>Editar perfil </Text><Ionicons name="create-outline" size={24} color="black" />
+            <Text style={styles.buttonText}>Editar perfil </Text>
+            <Ionicons name="create-outline" size={24} color="black" />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.cerrarSesion}
-            onPress={() => navigation.cerrarSesion()}
-          >
-             <Text style={styles.buttonText}>Cerrar Sesion </Text><Ionicons name="exit-outline" size={24} color="red" />
+          <TouchableOpacity style={styles.cerrarSesion} onPress={cerrarSesion}>
+            <Text style={styles.buttonText}>Cerrar Sesion </Text>
+            <Ionicons name="exit-outline" size={24} color="red" />
           </TouchableOpacity>
         </View>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
-        <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
+        <Text style={styles.biografiaCuerpo}>{usuario.bio}</Text>
 
-        {categoriasJson.length > 0 && ( // Check if there are categories
+        {hobbies.length > 0 && (
           <View style={styles.categorias}>
             <View style={styles.listaCategorias}>
-              {categoriasJson.map((item) => (
-                <View
-                  key={item.id}
-                  onPress={() => navigation.addCategoria(item.categoria)}
-                  style={styles.categoriaCard}
-                >
+              {hobbies.map((item) => (
+                <View key={item.id} style={styles.categoriaCard}>
                   <CategoriasTarjeta categoria={item} />
                 </View>
               ))}
             </View>
           </View>
         )}
-        <Text style={styles.cabecera}>Mis eventos:</Text>
 
+        <Text style={styles.cabecera}>Mis eventos:</Text>
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosPopulares}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -140,15 +145,14 @@ const Usuario = ({ navigation, route }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
           />
         </View>
 
         <Text style={styles.cabecera}>Participaciones:</Text>
-
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosPopulares}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -158,17 +162,17 @@ const Usuario = ({ navigation, route }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
           />
         </View>
 
         <Text style={styles.redes}>Mis redes sociales</Text>
         <View style={styles.redesIconos}>
-          {redesSociales.length > 0 ? (
-            redesSociales.map((red) => (
+          {hobbies.length > 0 ? (
+            hobbies.map((red) => (
               <Ionicons
-                key={red}
-                name={`logo-${red}`}
+                key={red.id} // Suponiendo que 'red' tiene un 'id'
+                name={`logo-${red.categoria}`} // Ajusta el nombre del icono según tus datos
                 size={24}
                 color="white"
               />
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   cerrarSesion: {
-    backgroundColor: theme.colors.secondary,  
+    backgroundColor: theme.colors.secondary,
     borderRadius: 10,
     backgroundColor: "white",
     alignItems: "center",
@@ -295,4 +299,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Usuario;
+export default Perfil;
