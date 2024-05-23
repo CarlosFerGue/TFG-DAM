@@ -24,12 +24,14 @@ const Perfil = ({ navigation }) => {
   const { token } = route.params;
   const { id_usuario } = route.params;
 
-  console.log("token perfil:", token);
-
   // Funcion para cerrar sesion
   const cerrarSesion = () => {
     AsyncStorage.removeItem("userToken");
     navigation.navigate("Login");
+  };
+
+  const editarPerfil = () => {
+    navigation.navigate("EditarPerfil", { id_usuario: id_usuario });
   };
 
   //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,9 +56,6 @@ const Perfil = ({ navigation }) => {
     fetchData();
   }, []);
 
-  console.log("ksfjaskh" , usuarioJson);
-
-
   //Hobbies
 
   const [hobbies, setHobbies] = useState([]);
@@ -75,8 +74,6 @@ const Perfil = ({ navigation }) => {
 
     fetchData();
   }, []);
-
-  console.log("pupupupupupup:", hobbies);
 
   //Fetch para coger los eventos///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +112,7 @@ const Perfil = ({ navigation }) => {
         <View style={styles.opcionesPerfil}>
           <TouchableOpacity
             style={styles.editarPerfil}
-            onPress={() => navigation.navigate("EditarPerfil")}
+            onPress={() => editarPerfil()}
           >
             <Text style={styles.buttonText}>Editar perfil </Text>
             <Ionicons name="create-outline" size={24} color="black" />

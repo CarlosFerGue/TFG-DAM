@@ -18,11 +18,13 @@ import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const EditarUsuario = async({ navigation, route }) => {
-  const token = await AsyncStorage.getItem("userToken");
+const EditarUsuario = async({ navigation }) => {
+  const route = useRoute();
+  const { id_usuario } = route.params;
+  
   return (
     <Background>
-      <Text style={styles.container}>{token}</Text> 
+      <Text styles={styles.etes}>{id_usuario}</Text> 
       <NavBar />
     </Background>
   );
@@ -36,6 +38,11 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     color: "white",
+  },
+  etes: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
   },
   imagen: {
     width: 100,
