@@ -34,24 +34,32 @@ const Perfil = ({ navigation }) => {
   //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //Informacion del usuario
-
-  const [usuarios, setusuarios] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [error, setError] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           `https://myeventz.es/usuarios/find_by_id/${token}`
         );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
         const data = await response.json();
-        setusuarios(data);
+        setUsuarios(data);
       } catch (error) {
+        setError(error);
         console.error("Error fetching data:", error);
       }
     };
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
 
-    fetchData();
-  }, []);
-
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   //Hobbies
 
   const [hobbies, setHobbies] = useState([]);
