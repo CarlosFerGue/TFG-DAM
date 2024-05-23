@@ -22,6 +22,7 @@ import { useRoute } from "@react-navigation/native";
 const Perfil = ({ navigation }) => {
   const route = useRoute();
   const { token } = route.params;
+  const { id_usuario } = route.params;
 
   console.log("token perfil:", token);
 
@@ -33,33 +34,29 @@ const Perfil = ({ navigation }) => {
 
   //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //Informacion del usuario
-  const [usuarios, setUsuarios] = useState([]);
-  const [error, setError] = useState(null);
+  const [usuarioJson, setUsuarioInfo] = useState({});
+  const [redesSociales, setRedesSociales] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id/${token}`
+          `https://myeventz.es/usuarios/find_by_id_REAL/${id_usuario}`
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
         const data = await response.json();
-        setUsuarios(data);
+        setUsuarioInfo(data);
+        setRedesSociales(data.redesSociales || []);
       } catch (error) {
-        setError(error);
         console.error("Error fetching data:", error);
       }
     };
-    if (token) {
-      fetchData();
-    }
-  }, [token]);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+    fetchData();
+  }, []);
+
+  console.log("ksfjaskh" , usuarioJson);
+
+
   //Hobbies
 
   const [hobbies, setHobbies] = useState([]);
@@ -78,6 +75,8 @@ const Perfil = ({ navigation }) => {
 
     fetchData();
   }, []);
+
+  console.log("pupupupupupup:", hobbies);
 
   //Fetch para coger los eventos///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -108,10 +107,10 @@ const Perfil = ({ navigation }) => {
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
-          {usuarios.nombre} {usuarios.apel1}
-          {usuarios.apel2 ? "\n" + usuarios.apel2 : ""}
+          {usuarioJson.nombre} {usuarioJson.apel1}
+          {usuarioJson.apel2 ? "\n" + usuarioJson.apel2 : ""}
         </Text>
-        <Text style={styles.user}>@{usuarios.usuario}</Text>
+        <Text style={styles.user}>@{usuarioJson.usuario}</Text>
 
         <View style={styles.opcionesPerfil}>
           <TouchableOpacity
@@ -132,7 +131,7 @@ const Perfil = ({ navigation }) => {
         </View>
 
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
-        <Text style={styles.biografiaCuerpo}>{usuarios.bio}</Text>
+        <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
 
         {hobbies.length > 0 && ( // Check if there are categories
           <View style={styles.categorias}>
@@ -186,7 +185,7 @@ const Perfil = ({ navigation }) => {
         </View>
 
         <Text style={styles.redes}>Mis redes sociales</Text>
-        <View style={styles.redesIconos}>
+        {/* <View style={styles.redesIconos}>
           {hobbies.length > 0 ? (
             hobbies.map((red) => (
               <Ionicons
@@ -201,7 +200,7 @@ const Perfil = ({ navigation }) => {
               Este usuario no tiene ninguna red social asociada
             </Text>
           )}
-        </View>
+        </View> */}
       </ScrollView>
       <NavBar />
     </Background>

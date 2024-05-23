@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
         console.log("Login successful:", json.token);
         await AsyncStorage.setItem("userToken", json.token);
         setUserToken(json.token); // Update state for immediate access
-        navigation.navigate("Perfil", { token: json.token });
+        navigation.navigate("Perfil", { token: json.token, id_usuario: json.id_usuario });
 
       } else {
         setError("Credenciales incorrectas. Inténtalo de nuevo.");

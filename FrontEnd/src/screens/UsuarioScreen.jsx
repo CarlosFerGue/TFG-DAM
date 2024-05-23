@@ -79,6 +79,8 @@ const Usuario = ({ navigation, route }) => {
     fetchData();
   }, []);
 
+  console.log("jajajjaajajja" , usuarioJson);
+
   return (
     <Background>
       <ScrollView style={styles.container}>
