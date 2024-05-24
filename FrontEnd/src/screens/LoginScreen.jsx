@@ -48,10 +48,12 @@ const Login = ({ navigation }) => {
       const json = response.data;
       if (json.token) {
         // Check for existence of 'token' property
-        console.log("Login successful:", json.token);
-        await AsyncStorage.setItem("userToken", json.token);
-        setUserToken(json.token); // Update state for immediate access
-        navigation.navigate("Perfil", { token: json.token, id_usuario: json.id_usuario });
+        await AsyncStorage.setItem('userToken', json.token);
+        console.log('User token:', json.token);
+        const storedToken = await AsyncStorage.getItem('userToken');
+        console.log('Stored token:', storedToken);
+        navigation.navigate('Home');
+        //navigation.navigate("Perfil", { token: json.token, id_usuario: json.id_usuario });
 
       } else {
         setError("Credenciales incorrectas. Inténtalo de nuevo.");

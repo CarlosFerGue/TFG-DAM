@@ -11,19 +11,19 @@ const Register4 = ({ route, navigation }) => {
   const [code, setCode] = useState('');
 
   const verifyEmailCode = async () => {
-    //Esto realmente deberia ir en el json.success o mejor aun en el backend, pero es la que hay :/
-    //---------------------------------------------
-    uploadImage(registrationData.profileImageUri);
-    //---------------------------------------------
+    const registrationDataWithProfileImageUrl = {...registrationData, profileImageUrl };
     const email = registrationData.email;
+    console.log(registrationDataWithProfileImageUrl);
+    console.log(profileImageUrl)
     try {
-      const response = await axios.post('https://myeventz.es/verify_code', { email, code }, {
+      const response = await axios.post('https://myeventz.es/verify_code', { email, code, registrationDataWithProfileImageUrl }, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       const json = response.data;
       if (json.success) {
+        uploadImage(registrationData.profileImageUri);
         alert('Email verified successfully!');
         await AsyncStorage.setItem('userToken', json.token);
         console.log('User token:', json.token);
@@ -40,19 +40,32 @@ const Register4 = ({ route, navigation }) => {
   };
 
   const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const storageRef = ref(storage, `profileImages/${new Date().toISOString()}`);
-    uploadBytes(storageRef, blob).then((snapshot) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `profileImages/${new Date().toISOString()}`);
+      const snapshot = await uploadBytes(storageRef, blob);
       console.log('Imagen subida con éxito');
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        console.log('URL de la imagen:', downloadURL);
-        setProfileImageUrl(downloadURL);
-      });
-    }).catch((error) => {
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('URL de la imagen:', downloadURL);
+      setProfileImageUrl(downloadURL);
+      const token = await AsyncStorage.getItem('userToken'); // Esperar correctamente por el token
+      if (!token) {
+        throw new Error('No se encontró el token de usuario en AsyncStorage');
+      }
+  
+      await axios.post('https://myeventz.es/update_profile_image', { profileImageUrl: downloadURL, token }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Perfil actualizado con la nueva URL de la imagen');
+    } catch (error) {
       console.error('Error al subir la imagen:', error);
-    });
+    }
   };
+  
 
   return (
     <View style={styles.container}>

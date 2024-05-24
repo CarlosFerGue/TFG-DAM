@@ -17,16 +17,18 @@ import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
 import Usuario from "./src/screens/UsuarioScreen.jsx";
 import Perfil from "./src/screens/PerfilScreen.jsx";
 import EditarPerfil from "./src/screens/EditarPerfilScreen.jsx";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userToken, setUserToken] = useState('');
 
   useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('userToken');
+      console.log('User token desde app:', token);
       setUserToken(token);
       setIsLoading(false);
       await SplashScreen.hideAsync();
@@ -39,10 +41,17 @@ const App = () => {
     return null; // O puedes mostrar una pantalla de carga
   }
 
+  const getUserId = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+    const response = await axios.get(`https://myeventz.es/usuarios/load_profile/${token}`);
+    const userId = response.data.id_usuario;
+    return userId;
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={userToken ? 'Login' : 'Home'}
+        initialRouteName={userToken ? 'Home' : 'Login'}
         screenOptions={{
           headerShown: false,
         }}
@@ -53,7 +62,7 @@ const App = () => {
         <Stack.Screen name="Register3" component={Register3} />
         <Stack.Screen name="Register4" component={Register4} />
         <Stack.Screen name="PassOlvidada" component={PassOlvidada} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} initialParams={{ getUserId }} />
         <Stack.Screen name="Categorias" component={Categorias} />
         <Stack.Screen name="Evento" component={Evento} />
         <Stack.Screen name="BuscarUsuarios" component={BuscarUsuarios} />
