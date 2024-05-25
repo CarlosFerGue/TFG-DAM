@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     padding: 12,
-    marginBottom: 40,
+    marginBottom: 60,
   },
   inputContainer: {
     flexDirection: "row",

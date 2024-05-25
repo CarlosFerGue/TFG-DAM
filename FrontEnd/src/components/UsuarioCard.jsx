@@ -2,9 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 const UsuarioCard = ({ item }) => {
+  console.log(item.img_url);
   return (
     <View style={styles.UserContainer}>
-      <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
+      <Image 
+       source={{
+        uri: item.img_url,
+      }}
+      style={styles.imagen} />
       <Text style={styles.nombreTexto}>
         {item.nombre_com} {item.nombre} {item.apel1} {item.apel2}{" "}
       </Text>
