@@ -31,8 +31,9 @@ const Perfil = ({ navigation }) => {
   };
 
   const editarPerfil = () => {
-    navigation.navigate("EditarPerfil", { id_usuario: id_usuario });
+    navigation.navigate("EditarPerfil" , { id_usuario: id_usuario });
   };
+
 
   //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -135,7 +136,7 @@ const Perfil = ({ navigation }) => {
             <View style={styles.listaCategorias}>
               {hobbies.map((item) => (
                 <View
-                  key={item.id}
+                  keyExtractor={item.id_categoria}
                   onPress={() => navigation.addCategoria(item.categoria)}
                   style={styles.categoriaCard}
                 >
@@ -159,7 +160,7 @@ const Perfil = ({ navigation }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id_evento}
           />
         </View>
 
@@ -177,7 +178,7 @@ const Perfil = ({ navigation }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id_evento}
           />
         </View>
 
