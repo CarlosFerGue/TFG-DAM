@@ -82,7 +82,7 @@ const Home = ({ navigation }) => {
             )}
             horizontal
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id_evento}
           />
         </View>
 
@@ -99,7 +99,7 @@ const Home = ({ navigation }) => {
               </TouchableOpacity>
             )}
             bounces={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id_evento}
           />
         </View>
       </View>
