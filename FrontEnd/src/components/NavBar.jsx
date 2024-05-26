@@ -1,16 +1,13 @@
-import React from "react";
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Asegúrate de importar esto si estás utilizando React Navigation
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const NavBar = ({ navigate }) => {
+  const [id_usuario, setUserId] = useState(null);
   const navigation = useNavigation(); // Obtener el objeto de navegación
+  const [usuarioJson, setUsuarioInfo] = useState({});
 
   // Función para manejar la navegación a diferentes pantallas
   const navigateToScreen = (screenName) => {
@@ -20,6 +17,36 @@ const NavBar = ({ navigate }) => {
   const navigateToUsuario = (id_usuario) => {
     navigation.navigate("Perfil", { id_usuario });
   };
+  //Recuperamos el id_usuario
+
+  // Recuperar userId desde AsyncStorage y obtener datos del usuario
+  useEffect(() => {
+    const fetchUserData = async (userId) => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+        );
+        const data = await response.json();
+        setUsuarioInfo(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    const retrieveUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem("userId");
+        if (storedUserId) {
+          setUserId(storedUserId);
+          fetchUserData(storedUserId);
+        }
+      } catch (error) {
+        console.error("Error retrieving userId from AsyncStorage:", error);
+      }
+    };
+
+    retrieveUserId();
+  }, []);
 
   return (
     <View style={styles.background}>
@@ -54,7 +81,9 @@ const NavBar = ({ navigate }) => {
         style={styles.iconContainer}
       >
         <Image
-          source={require("../../assets/foczy.png")}
+          source={{
+            uri: usuarioJson.img_url,
+          }}
           style={styles.perfil}
         />
       </TouchableOpacity>
