@@ -22,30 +22,32 @@ const Home = ({ navigation }) => {
     navigation.navigate("Evento", { id_evento });
   };
 
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  const [eventosPopulares, setEventosPopulares] = useState([]);
+  const [eventosRecientes, setEventosRecientes] = useState([]);
+  const [searchText, setSearchText] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("https://myeventz.es/eventos/popular");
         const data = await response.json();
-        seteventosPoupulares(data);
+        //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
+        setEventosPopulares(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        //console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
 
-  const [eventosRecientes, seteventosRecientes] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://myeventz.es/eventos/close_events"
-        );
+        const response = await fetch("https://myeventz.es/eventos/close_events");
         const data = await response.json();
-        seteventosRecientes(data);
+        console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
+        setEventosRecientes(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -53,6 +55,14 @@ const Home = ({ navigation }) => {
 
     fetchData();
   }, []);
+
+  const filteredPopulares = eventosPopulares.filter(
+    (evento) => evento.titulo && evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const filteredRecientes = eventosRecientes.filter(
+    (evento) => evento.titulo && evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <Background>
@@ -62,6 +72,8 @@ const Home = ({ navigation }) => {
             style={styles.inputs}
             placeholder="Buscar eventos..."
             placeholderTextColor="#ccc"
+            onChangeText={(text) => setSearchText(text)}
+            value={searchText}
           />
           <TouchableOpacity style={styles.searchIconContainer}>
             <Ionicons name="search" size={24} color="white" />
@@ -72,7 +84,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.subtitulo}>Eventos populares:</Text>
         <View style={styles.sliderH}>
           <FlatList
-            data={eventosPoupulares}
+            data={filteredPopulares}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -83,6 +95,7 @@ const Home = ({ navigation }) => {
             horizontal
             bounces={true}
             keyExtractor={(item) => item.id_evento}
+            ListEmptyComponent={<Text style={styles.emptyText}>No se encontraron eventos populares.</Text>}
           />
         </View>
 
@@ -90,7 +103,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
         <View style={styles.sliderV}>
           <FlatList
-            data={eventosRecientes}
+            data={filteredRecientes}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -100,6 +113,7 @@ const Home = ({ navigation }) => {
             )}
             bounces={true}
             keyExtractor={(item) => item.id_evento}
+            ListEmptyComponent={<Text style={styles.emptyText}>No se encontraron publicaciones recientes.</Text>}
           />
         </View>
       </View>
@@ -121,7 +135,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 2,
     borderColor: "white",
-    top: -30,
   },
   sliderH: {
     flex: 0.25,
@@ -186,6 +199,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  emptyText: {
+    color: "white",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

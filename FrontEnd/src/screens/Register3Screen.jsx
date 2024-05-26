@@ -61,18 +61,20 @@ const Register3 = ({ route, navigation }) => {
       />
       
       <View style={styles.hobbiesContainer}>
-        {hobbies.filter(hobby => hobby.categoria.toLowerCase().includes(searchText.toLowerCase())).map(hobby => (
-          <TouchableOpacity
-            key={hobby.id_categoria}
-            style={[
-              styles.hobbyTag,
-              selectedHobbies.includes(hobby.id_categoria) && styles.selectedHobbyTag
-            ]}
-            onPress={() => toggleHobbySelection(hobby)}
-          >
-            <Text style={styles.hobbyText}>{hobby.categoria}</Text>
-          </TouchableOpacity>
-        ))}
+        <ScrollView contentContainerStyle={styles.hobbiesScroll}>
+          {hobbies.filter(hobby => hobby.categoria.toLowerCase().includes(searchText.toLowerCase())).map(hobby => (
+            <TouchableOpacity
+              key={hobby.id_categoria}
+              style={[
+                styles.hobbyTag,
+                selectedHobbies.includes(hobby.id_categoria) && styles.selectedHobbyTag
+              ]}
+              onPress={() => toggleHobbySelection(hobby)}
+            >
+              <Text style={styles.hobbyText}>{hobby.categoria}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
       
       <TouchableOpacity style={styles.button} onPress={() => {
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   logo: {
-    width: "115%",
+    width: "100%",
     maxHeight: "20%",
     marginBottom: -10,
   },
@@ -127,6 +129,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   hobbiesContainer: {
+    height: 310, // Altura fija para el contenedor de hobbies
+    width: "100%",
+    backgroundColor: "#333",
+    borderRadius: 15,
+    padding: 10,
+    marginVertical: 10,
+    borderWidth: 2,
+    borderColor: "#5f5fc4",
+  },
+  hobbiesScroll: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",

@@ -28,25 +28,25 @@ const NavBar = ({ navigate }) => {
         style={styles.iconContainer}
       >
         {/* <Image source={require('./ruta/al/Icono1.svg')} style={styles.icon} /> */}
-        <Ionicons name="home" size={24} color="white" />
+        <Ionicons name="home" size={30} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("Categorias")}
         style={styles.iconContainer}
       >
-        <Ionicons name="pricetags" size={24} color="white" />
+        <Ionicons name="pricetags" size={30} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("AnadirEvento")}
         style={styles.iconContainer}
       >
-        <Ionicons name="add-circle" size={24} color="white" />
+        <Ionicons name="add-circle" size={30} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("BuscarUsuarios")}
         style={styles.iconContainer}
       >
-        <Ionicons name="person-add" size={24} color="white" />
+        <Ionicons name="person-add" size={30} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         //onPress={() => navigation.navigate("Perfil")}
@@ -65,7 +65,7 @@ const NavBar = ({ navigate }) => {
 const styles = StyleSheet.create({
   background: {
     width: "100%",
-    height: 40,
+    height: 60,
     backgroundColor: "#100916",
     position: "absolute",
     bottom: 0,
@@ -80,13 +80,13 @@ const styles = StyleSheet.create({
     alignItems: "center", // Centra el ícono dentro del contenedor
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
   },
   perfil: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 30,
+    height: 30,
+    borderRadius: 16,
     borderWidth: 2,
     borderColor: "white",
   },

@@ -97,6 +97,7 @@ const Perfil = ({ navigation }) => {
 
   const cerrarSesion = () => {
     AsyncStorage.removeItem("userToken");
+    AsyncStorage.removeItem("userId");
     navigation.navigate("Login");
   };
 
