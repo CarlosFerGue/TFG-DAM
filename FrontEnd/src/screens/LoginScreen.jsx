@@ -21,6 +21,7 @@ const Login = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userToken, setUserToken] = useState(null); // State to hold token
+  
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -50,14 +51,14 @@ const Login = ({ navigation }) => {
         await AsyncStorage.setItem("userToken", json.token);
         await AsyncStorage.setItem("userId", json.id_usuario.toString());
 
-        console.log("User token:", json.token);
-        console.log("User id: ", json.id_usuario);
+        //console.log("User token:", json.token);
+        //console.log("User id: ", json.id_usuario);
 
         const storedToken = await AsyncStorage.getItem("userToken");
-        console.log("Stored token:", storedToken);
+       //console.log("Stored token:", storedToken);
         
         const storedUserId = await AsyncStorage.getItem("userId");
-        console.log("Stored user id:", storedUserId);
+        //console.log("Stored user id:", storedUserId);
 
 
         navigation.navigate("Home");

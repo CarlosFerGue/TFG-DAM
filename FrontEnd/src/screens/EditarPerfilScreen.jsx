@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-
 import {
   View,
   StyleSheet,
@@ -15,7 +14,7 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import CategoriasTarjeta from "../components/Categorias";
 import { useRoute } from "@react-navigation/native";
-import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditarPerfil = ({ navigation }) => {
   const route = useRoute();
@@ -31,12 +30,14 @@ const EditarPerfil = ({ navigation }) => {
   const [x, setX] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [id_usuario, setUserId] = useState(null);
+  const [categoriasJson, setCategoriasJson] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async (userId) => {
       try {
         const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id_REAL/2`
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
         );
         const data = await response.json();
         setUsuarioInfo(data);
@@ -50,17 +51,27 @@ const EditarPerfil = ({ navigation }) => {
         setFb(data.fb);
         setX(data.x);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
 
-    fetchData();
+    const retrieveUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem("userId");
+        if (storedUserId) {
+          setUserId(storedUserId);
+          fetchUserData(storedUserId);
+        }
+      } catch (error) {
+        console.error("Error retrieving userId from AsyncStorage:", error);
+      }
+    };
+
+    retrieveUserId();
   }, []);
 
-  const [categoriasJson, setCategoriasJson] = useState([]);
-
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategorias = async () => {
       try {
         const response = await fetch("https://myeventz.es/categorias/find_all");
         const data = await response.json();
@@ -70,31 +81,16 @@ const EditarPerfil = ({ navigation }) => {
       }
     };
 
-    fetchData();
+    fetchCategorias();
   }, []);
 
   const enviarDatos = async () => {
     setIsLoading(true);
     setError(null);
 
-    const datosActualizados = {
-      id: usuarioJson.id,
-      nombre,
-      apel1,
-      apel2,
-      bio,
-      img_url,
-      tt,
-      ig,
-      fb,
-      x,
-    };
-
     try {
-      const response = await await fetch(
-        `https://myeventz.es/usuarios/edit/[${id}]&[${nombre}]&[${apel1}]&[${apel2}]&[${bio}]&[${img_url}]&[${tt}]&[${ig}]&[${fb}]&[${x}]`,
-        datosActualizados
-      );
+      const url = `https://myeventz.es/usuarios/edit/[${id_usuario}]&[${nombre}]&[${apel1}]&[${apel2}]&[${bio}]&[${img_url}]&[${tt}]&[${ig}]&[${fb}]&[${x}]`;
+      const response = await fetch(url);
 
       if (response.status === 200) {
         setIsLoading(false);
@@ -129,12 +125,7 @@ const EditarPerfil = ({ navigation }) => {
 
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
-          <Image
-            source={{
-              uri: usuarioJson.img_url,
-            }}
-            style={styles.imagen}
-          />
+          <Image source={{ uri: usuarioJson.img_url }} style={styles.imagen} />
 
           <Text style={[styles.TextClicableM, { marginBottom: 35 }]}>
             Cambiar imagen de perfil
@@ -214,7 +205,7 @@ const EditarPerfil = ({ navigation }) => {
                 <View style={styles.listaCategorias}>
                   {categoriasJson.map((item) => (
                     <TouchableOpacity
-                      key={item.id}
+                      key={item.id_categoria}
                       onPress={() => navigation.addCategoria(item.categoria)}
                       style={styles.categoriaCard}
                     >
