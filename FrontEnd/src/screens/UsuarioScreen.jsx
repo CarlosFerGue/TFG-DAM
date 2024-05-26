@@ -85,7 +85,9 @@ const Usuario = ({ navigation, route }) => {
     <Background>
       <ScrollView style={styles.container}>
         <Image
-          source={require("../../assets/foczy.png")}
+          source={{
+            uri: usuarioJson.img_url,
+          }}
           style={styles.imagen}
         />
         <Text style={styles.nombre}>

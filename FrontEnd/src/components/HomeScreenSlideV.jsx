@@ -12,9 +12,11 @@ export default HomeScreenSlideV = ({ item }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={item.img}
+        source={{
+          uri: item.img_url,
+        }}
         style={[StyleSheet.absoluteFill, styles.image]}
-        resizeMode="contain"
+        resizeMode="cover"
       />
       <View style={styles.textoInferior}>
         <Text style={styles.title}>{item.titulo}</Text>
@@ -63,5 +65,6 @@ const styles = StyleSheet.create({
     width: undefined,
     height: undefined,
     borderRadius: 35,
+    ...StyleSheet.absoluteFillObject,
   },
 });

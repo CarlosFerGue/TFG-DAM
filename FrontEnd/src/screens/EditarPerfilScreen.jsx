@@ -15,10 +15,22 @@ import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import CategoriasTarjeta from "../components/Categorias";
 import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const EditarPerfil = ({ navigation }) => {
   const route = useRoute();
   const [usuarioJson, setUsuarioInfo] = useState({});
+  const [nombre, setNombre] = useState("");
+  const [apel1, setApel1] = useState("");
+  const [apel2, setApel2] = useState("");
+  const [bio, setBio] = useState("");
+  const [img_url, setImgUrl] = useState("");
+  const [tt, setTt] = useState("");
+  const [ig, setIg] = useState("");
+  const [fb, setFb] = useState("");
+  const [x, setX] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +40,15 @@ const EditarPerfil = ({ navigation }) => {
         );
         const data = await response.json();
         setUsuarioInfo(data);
+        setNombre(data.nombre);
+        setApel1(data.apel1);
+        setApel2(data.apel2);
+        setBio(data.bio);
+        setImgUrl(data.img_url);
+        setTt(data.tt);
+        setIg(data.ig);
+        setFb(data.fb);
+        setX(data.x);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -52,6 +73,42 @@ const EditarPerfil = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const enviarDatos = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    const datosActualizados = {
+      id: usuarioJson.id,
+      nombre,
+      apel1,
+      apel2,
+      bio,
+      img_url,
+      tt,
+      ig,
+      fb,
+      x,
+    };
+
+    try {
+      const response = await await fetch(
+        `https://myeventz.es/usuarios/edit/[${id}]&[${nombre}]&[${apel1}]&[${apel2}]&[${bio}]&[${img_url}]&[${tt}]&[${ig}]&[${fb}]&[${x}]`,
+        datosActualizados
+      );
+
+      if (response.status === 200) {
+        setIsLoading(false);
+        navigation.goBack();
+      } else {
+        setIsLoading(false);
+        setError("Error al actualizar los datos. Inténtalo de nuevo.");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError("Error al actualizar los datos. Inténtalo de nuevo.");
+    }
+  };
+
   return (
     <Background>
       <View style={styles.guardar}>
@@ -63,10 +120,7 @@ const EditarPerfil = ({ navigation }) => {
           <Text style={styles.TextClicableB}>Cancelar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.guardarBoton}
-          onPress={() => navigation.guardar()}
-        >
+        <TouchableOpacity style={styles.guardarBoton} onPress={enviarDatos}>
           <Text style={[styles.TextClicableB, { paddingHorizontal: 20 }]}>
             GUARDAR
           </Text>
@@ -76,7 +130,9 @@ const EditarPerfil = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
           <Image
-            source={require("../../assets/foczy.png")}
+            source={{
+              uri: usuarioJson.img_url,
+            }}
             style={styles.imagen}
           />
 
@@ -89,7 +145,8 @@ const EditarPerfil = ({ navigation }) => {
               <Text style={styles.titulo}>Nombre</Text>
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.nombre}
+                value={nombre}
+                onChangeText={setNombre}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -100,7 +157,8 @@ const EditarPerfil = ({ navigation }) => {
               <Text style={styles.titulo}>Apellido 1</Text>
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.apel1}
+                value={apel1}
+                onChangeText={setApel1}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -111,7 +169,8 @@ const EditarPerfil = ({ navigation }) => {
               <Text style={styles.titulo}>Apellido 2</Text>
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.apel2}
+                value={apel2}
+                onChangeText={setApel2}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -125,7 +184,8 @@ const EditarPerfil = ({ navigation }) => {
                   styles.inputs,
                   { height: 100, textAlignVertical: "top" },
                 ]}
-                placeholder={usuarioJson.bio}
+                value={bio}
+                onChangeText={setBio}
                 placeholderTextColor="#ccc"
                 multiline={true}
               />
@@ -137,12 +197,12 @@ const EditarPerfil = ({ navigation }) => {
               Muestra tus hobbies e intereses
             </Text>
 
-            <TextInput
-              style={styles.inputs}
-              placeholder="Buscar hobbies..."
-              placeholderTextColor="#ccc"
-            />
             <TouchableOpacity style={styles.searchIconContainer}>
+              <TextInput
+                style={styles.inputHobbies}
+                placeholder="Buscar hobbies..."
+                placeholderTextColor="#ccc"
+              />
               <Ionicons name="search" size={24} color="white" />
             </TouchableOpacity>
 
@@ -166,14 +226,17 @@ const EditarPerfil = ({ navigation }) => {
             </View>
           </View>
 
-          <Text style={[styles.cabecera]}>Tus Redes sociales</Text>
+          <Text style={[styles.cabecera, { marginBottom: 15, fontSize: 35 }]}>
+            Tus Redes sociales
+          </Text>
 
           <View style={styles.opcionesPerfil}>
             <View style={styles.auxContainer}>
               <Ionicons name="logo-tiktok" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.tt}
+                value={tt}
+                onChangeText={setTt}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -184,7 +247,8 @@ const EditarPerfil = ({ navigation }) => {
               <Ionicons name="logo-instagram" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.ig}
+                value={ig}
+                onChangeText={setIg}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -192,10 +256,11 @@ const EditarPerfil = ({ navigation }) => {
 
           <View style={styles.opcionesPerfil}>
             <View style={styles.auxContainer}>
-            <Ionicons name="logo-facebook" size={24} color="white" />
+              <Ionicons name="logo-facebook" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.fb}
+                value={fb}
+                onChangeText={setFb}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -203,10 +268,11 @@ const EditarPerfil = ({ navigation }) => {
 
           <View style={styles.opcionesPerfil}>
             <View style={styles.auxContainer}>
-              <Text style={styles.titulo}>{""} X</Text>
+              <Text style={styles.titulo}>X</Text>
               <TextInput
                 style={styles.inputs}
-                placeholder={usuarioJson.x}
+                value={x}
+                onChangeText={setX}
                 placeholderTextColor="#ccc"
               />
             </View>
@@ -333,14 +399,24 @@ const styles = StyleSheet.create({
   containerAux2: {
     width: "100%",
     height: "100%",
-
     borderRadius: 15,
     padding: 10,
   },
   searchIconContainer: {
-    position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 30,
     right: 10,
     top: 12,
+  },
+  inputHobbies: {
+    width: "80%",
+    color: "white",
+    height: 50,
+    padding: 8,
+    fontSize: 17,
+    borderBottomColor: "white",
+    borderWidth: 2,
   },
 });
 

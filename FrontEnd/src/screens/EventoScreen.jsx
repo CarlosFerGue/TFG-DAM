@@ -62,9 +62,11 @@ const EventoScreen = ({ navigation, route }) => {
     navigation.navigate("Usuario", { id_usuario });
   };
 
+  console.log(usuarios);
+
   return (
     <Background>
-      <Image source={require("../../assets/foczy.png")} style={styles.imagen} />
+      <Image source={{ uri: evento.img_url }} style={styles.imagen} resizeMode="cover" />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <Image
@@ -74,7 +76,7 @@ const EventoScreen = ({ navigation, route }) => {
 
           <View style={styles.infoImportante}>
             <Image
-              source={require("../../assets/foczy.png")}
+              source={{ uri: evento.organizador?.img_url }}
               style={styles.profile}
             />
             <Text style={styles.nombre}>{evento.titulo}</Text>
@@ -141,10 +143,9 @@ const EventoScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   imagen: {
-    width: "100%",
-    maxHeight: "100%",
-    position: "absolute",
-    top: -90,
+    ...StyleSheet.absoluteFillObject,
+    width: undefined,
+    height: 200,
   },
   scrollViewContent: {
     marginTop: Constants.statusBarHeight + 120,

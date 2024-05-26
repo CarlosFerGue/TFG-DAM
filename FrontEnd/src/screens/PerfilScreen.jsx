@@ -21,51 +21,55 @@ import { useRoute } from "@react-navigation/native";
 
 const Perfil = ({ navigation }) => {
   const route = useRoute();
-  const { token } = route.params;
-  const { id_usuario } = route.params;
-
-  // Funcion para cerrar sesion
-  const cerrarSesion = () => {
-    AsyncStorage.removeItem("userToken");
-    navigation.navigate("Login");
-  };
-
-  const editarPerfil = () => {
-    navigation.navigate("EditarPerfil" , { id_usuario: id_usuario });
-  };
-
-
-  //Fetch para coger la info del usuario////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  const [token, setUserToken] = useState(null);
+  const [id_usuario, setUserId] = useState(null);
   const [usuarioJson, setUsuarioInfo] = useState({});
   const [redesSociales, setRedesSociales] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [eventosPoupulares, seteventosPoupulares] = useState([]);
 
+  // Recuperar userId desde AsyncStorage y obtener datos del usuario
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async (userId) => {
       try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id_REAL/${id_usuario}`
-        );
+        const response = await fetch(`https://myeventz.es/usuarios/find_by_id_REAL/${userId}`);
         const data = await response.json();
         setUsuarioInfo(data);
         setRedesSociales(data.redesSociales || []);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
 
-    fetchData();
+    const retrieveUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          setUserId(storedUserId);
+          fetchUserData(storedUserId);
+        }
+      } catch (error) {
+        console.error('Error retrieving userId from AsyncStorage:', error);
+      }
+    };
+
+    retrieveUserId();
   }, []);
 
-  //Hobbies
+  const retrieveToken = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem('userToken');
+      setUserToken(storedToken);
+    } catch (error) {
+      console.error('Error retrieving token from AsyncStorage:', error);
+    }
+  };
 
-  const [hobbies, setHobbies] = useState([]);
+  // Obtener hobbies del usuario
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchHobbies = async () => {
       try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/hobbies/${token}`
-        );
+        const response = await fetch(`https://myeventz.es/usuarios/hobbies/${token}`);
         const data = await response.json();
         setHobbies(data);
       } catch (error) {
@@ -73,14 +77,12 @@ const Perfil = ({ navigation }) => {
       }
     };
 
-    fetchData();
-  }, []);
+    fetchHobbies();
+  }, [token]);
 
-  //Fetch para coger los eventos///////////////////////////////////////////////////////////////////////////////////////////////////
-
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  // Obtener eventos populares
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchEventosPopulares = async () => {
       try {
         const response = await fetch("https://myeventz.es/eventos/popular");
         const data = await response.json();
@@ -90,8 +92,17 @@ const Perfil = ({ navigation }) => {
       }
     };
 
-    fetchData();
+    fetchEventosPopulares();
   }, []);
+
+  const cerrarSesion = () => {
+    AsyncStorage.removeItem("userToken");
+    navigation.navigate("Login");
+  };
+
+  const editarPerfil = () => {
+    navigation.navigate("EditarPerfil", { id_usuario: id_usuario });
+  };
 
   const navigateToEvento = (id_evento) => {
     navigation.navigate("Evento", { id_evento });
@@ -101,7 +112,9 @@ const Perfil = ({ navigation }) => {
     <Background>
       <ScrollView style={styles.container}>
         <Image
-          source={require("../../assets/foczy.png")}
+          source={{
+            uri: usuarioJson.img_url,
+          }}
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
@@ -113,7 +126,7 @@ const Perfil = ({ navigation }) => {
         <View style={styles.opcionesPerfil}>
           <TouchableOpacity
             style={styles.editarPerfil}
-            onPress={() => editarPerfil()}
+            onPress={editarPerfil}
           >
             <Text style={styles.buttonText}>Editar perfil </Text>
             <Ionicons name="create-outline" size={24} color="black" />
@@ -121,7 +134,7 @@ const Perfil = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.cerrarSesion}
-            onPress={() => cerrarSesion()}
+            onPress={cerrarSesion}
           >
             <Text style={styles.buttonText}>Cerrar Sesion </Text>
             <Ionicons name="exit-outline" size={24} color="red" />
@@ -136,7 +149,7 @@ const Perfil = ({ navigation }) => {
             <View style={styles.listaCategorias}>
               {hobbies.map((item) => (
                 <View
-                  keyExtractor={item.id_categoria}
+                  key={item.id_categoria}
                   onPress={() => navigation.addCategoria(item.categoria)}
                   style={styles.categoriaCard}
                 >

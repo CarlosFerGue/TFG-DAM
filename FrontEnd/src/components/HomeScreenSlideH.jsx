@@ -10,9 +10,11 @@ export default HomeScreenSlideH = ({ item }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={item.img}
+        source={{
+          uri: item.img_url,
+        }}
         style={[StyleSheet.absoluteFill, styles.image]}
-        resizeMode="contain"
+        resizeMode="cover"
       />
       <View style={styles.cantidadGente}>
         <View style={styles.puntoRojo} />
@@ -82,5 +84,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     left: "-26%",
+    ...StyleSheet.absoluteFillObject,
   },
 });

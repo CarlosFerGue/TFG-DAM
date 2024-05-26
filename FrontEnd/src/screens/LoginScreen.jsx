@@ -15,7 +15,6 @@ import theme from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -48,13 +47,21 @@ const Login = ({ navigation }) => {
       const json = response.data;
       if (json.token) {
         // Check for existence of 'token' property
-        await AsyncStorage.setItem('userToken', json.token);
-        console.log('User token:', json.token);
-        const storedToken = await AsyncStorage.getItem('userToken');
-        console.log('Stored token:', storedToken);
-        navigation.navigate('Home');
-        //navigation.navigate("Perfil", { token: json.token, id_usuario: json.id_usuario });
+        await AsyncStorage.setItem("userToken", json.token);
+        await AsyncStorage.setItem("userId", json.id_usuario.toString());
 
+        console.log("User token:", json.token);
+        console.log("User id: ", json.id_usuario);
+
+        const storedToken = await AsyncStorage.getItem("userToken");
+        console.log("Stored token:", storedToken);
+        
+        const storedUserId = await AsyncStorage.getItem("userId");
+        console.log("Stored user id:", storedUserId);
+
+
+        navigation.navigate("Home");
+        //navigation.navigate("Perfil", { token: json.token, id_usuario: json.id_usuario });
       } else {
         setError("Credenciales incorrectas. Inténtalo de nuevo.");
         console.error("Login failed:", json);
@@ -66,7 +73,6 @@ const Login = ({ navigation }) => {
       setIsLoading(false);
     }
   };
-
 
   return (
     <Background>
