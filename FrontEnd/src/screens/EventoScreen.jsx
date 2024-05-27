@@ -17,7 +17,43 @@ import Constants from "expo-constants";
 import MapView from "react-native-maps";
 import UsuariosTarjeta from "../components/UsuarioCard";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+
 const EventoScreen = ({ navigation, route }) => {
+  //Recuperamos la idUsuario del usuario que ha iniciado sesion//////////////////////////////////////////////////////////
+  const [userId, setUserId] = useState(null);
+  const [usuarioInfo, setUsuarioInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async (userId) => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+        );
+        const data = await response.json();
+        setUsuarioInfo(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    const retrieveUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem("userId");
+        if (storedUserId) {
+          setUserId(storedUserId);
+          fetchUserData(storedUserId);
+        }
+      } catch (error) {
+        console.error("Error retrieving userId from AsyncStorage:", error);
+      }
+    };
+
+    retrieveUserId();
+  }, []);
+
+  //Parte para recuperar la informacion del evento y sus participantes//////////////////////////////////////////////////////
   const { id_evento } = route.params;
   const [usuarios, setusuarios] = useState([]);
 
@@ -62,11 +98,53 @@ const EventoScreen = ({ navigation, route }) => {
     navigation.navigate("Usuario", { id_usuario });
   };
 
-  console.log(usuarios);
+  //Parte para inscribirse a un evento //////////////////////////////////////////////////////
+  const participar = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/participantes/apuntarse/[${id_evento}]&[${userId}]`
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  //Parte para desinscribirse a un evento //////////////////////////////////////////////////////
+  const desapuntarse = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/participantes/desapuntarse/[${id_evento}]&[${userId}]`
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <Background>
-      <Image source={{ uri: evento.img_url }} style={styles.imagen} resizeMode="cover" />
+      <Image
+        source={{ uri: evento.img_url }}
+        style={styles.imagen}
+        resizeMode="cover"
+      />
+      <TouchableOpacity style={styles.participar} onPress={participar}>
+        <Text style={styles.textoParticipar}>Participar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
+        <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
+        <Ionicons
+          name="close-circle"
+          size={24}
+          color="white"
+          style={{ top: 2 }}
+        />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <Image
@@ -121,12 +199,13 @@ const EventoScreen = ({ navigation, route }) => {
                 data={usuarios}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => navigateToUsuario(item.id_usuario)}>
+                    onPress={() => navigateToUsuario(item.id_usuario)}
+                  >
                     <UsuariosTarjeta item={item} />
                   </TouchableOpacity>
                 )}
                 bounces={true}
-                keyExtractor={(item) => item.id_usuario} 
+                keyExtractor={(item) => item.id_usuario}
               />
             ) : (
               <Text style={styles.textoCabecera}>
@@ -142,6 +221,44 @@ const EventoScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  participar: {
+    width: 220,
+    backgroundColor: "#6200ee",
+    padding: 14,
+    borderRadius: 20,
+    position: "absolute",
+    borderColor: "white",
+    borderWidth: 2,
+    bottom: 60,
+    zIndex: 1,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  textoParticipar: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  desapuntarse: {
+    width: 220,
+    backgroundColor: "black",
+    padding: 14,
+    borderRadius: 20,
+    position: "absolute",
+    borderColor: "white",
+    borderWidth: 2,
+    bottom: 60,
+    zIndex: 1,
+    alignSelf: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  textoDesapuntarse: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   imagen: {
     ...StyleSheet.absoluteFillObject,
     width: undefined,
@@ -153,7 +270,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   container: {
-    marginBottom: 100,
+    marginBottom: 140,
     paddingHorizontal: 20,
   },
   infoImportante: {

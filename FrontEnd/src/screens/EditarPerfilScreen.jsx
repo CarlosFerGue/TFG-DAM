@@ -87,11 +87,11 @@ const EditarPerfil = ({ navigation }) => {
   const enviarDatos = async () => {
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      const url = `https://myeventz.es/usuarios/edit/[${id_usuario}]&[${nombre}]&[${apel1}]&[${apel2}]&[${bio}]&[${img_url}]&[${tt}]&[${ig}]&[${fb}]&[${x}]`;
+      const url = `https://myeventz.es/usuarios/edit/?id=${id_usuario}&nombre=${encodeURIComponent(nombre)}&apel1=${encodeURIComponent(apel1)}&apel2=${encodeURIComponent(apel2)}&bio=${encodeURIComponent(bio)}&img_url=${encodeURIComponent(img_url)}&tt=${encodeURIComponent(tt)}&ig=${encodeURIComponent(ig)}&fb=${encodeURIComponent(fb)}&x=${encodeURIComponent(x)}`;
       const response = await fetch(url);
-
+  
       if (response.status === 200) {
         setIsLoading(false);
         navigation.goBack();
@@ -104,6 +104,7 @@ const EditarPerfil = ({ navigation }) => {
       setError("Error al actualizar los datos. Inténtalo de nuevo.");
     }
   };
+  
 
   return (
     <Background>

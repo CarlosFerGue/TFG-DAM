@@ -28,7 +28,7 @@ const PassOlvidada = ({ navigation }) => {
         <Text style={styles.inputText}>Introduce tu correo electrónico</Text>
         <TextInput
           style={styles.inputs}
-          placeholder="unprofessional@svalero.com"
+          placeholder="user@gmail.com"
           placeholderTextColor="#ccc"
         />
 
