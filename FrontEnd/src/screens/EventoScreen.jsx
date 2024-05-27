@@ -18,6 +18,7 @@ import MapView from "react-native-maps";
 import UsuariosTarjeta from "../components/UsuarioCard";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 const EventoScreen = ({ navigation, route }) => {
   //Recuperamos la idUsuario del usuario que ha iniciado sesion//////////////////////////////////////////////////////////
@@ -109,8 +110,19 @@ const EventoScreen = ({ navigation, route }) => {
       console.error("Error:", error);
     }
   };
-  
+
   //Parte para desinscribirse a un evento //////////////////////////////////////////////////////
+  const desapuntarse = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/participantes/desapuntarse/[${id_evento}]&[${userId}]`
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <Background>
@@ -119,12 +131,22 @@ const EventoScreen = ({ navigation, route }) => {
         style={styles.imagen}
         resizeMode="cover"
       />
+      <TouchableOpacity style={styles.participar} onPress={participar}>
+        <Text style={styles.textoParticipar}>Participar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
+        <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
+        <Ionicons
+          name="close-circle"
+          size={24}
+          color="white"
+          style={{ top: 2 }}
+        />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.participar} onPress={participar}>
-            <Text style={styles.textoParticipar}>Participar</Text>
-          </TouchableOpacity>
-
           <Image
             source={require("../../assets/bg.png")}
             style={styles.Background}
@@ -199,6 +221,44 @@ const EventoScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  participar: {
+    width: 220,
+    backgroundColor: "#6200ee",
+    padding: 14,
+    borderRadius: 20,
+    position: "absolute",
+    borderColor: "white",
+    borderWidth: 2,
+    bottom: 60,
+    zIndex: 1,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  textoParticipar: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  desapuntarse: {
+    width: 220,
+    backgroundColor: "black",
+    padding: 14,
+    borderRadius: 20,
+    position: "absolute",
+    borderColor: "white",
+    borderWidth: 2,
+    bottom: 60,
+    zIndex: 1,
+    alignSelf: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  textoDesapuntarse: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   imagen: {
     ...StyleSheet.absoluteFillObject,
     width: undefined,
@@ -210,7 +270,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   container: {
-    marginBottom: 100,
+    marginBottom: 140,
     paddingHorizontal: 20,
   },
   infoImportante: {
