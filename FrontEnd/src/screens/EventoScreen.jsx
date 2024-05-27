@@ -17,7 +17,42 @@ import Constants from "expo-constants";
 import MapView from "react-native-maps";
 import UsuariosTarjeta from "../components/UsuarioCard";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const EventoScreen = ({ navigation, route }) => {
+  //Recuperamos la idUsuario del usuario que ha iniciado sesion//////////////////////////////////////////////////////////
+  const [userId, setUserId] = useState(null);
+  const [usuarioInfo, setUsuarioInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async (userId) => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+        );
+        const data = await response.json();
+        setUsuarioInfo(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    const retrieveUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem("userId");
+        if (storedUserId) {
+          setUserId(storedUserId);
+          fetchUserData(storedUserId);
+        }
+      } catch (error) {
+        console.error("Error retrieving userId from AsyncStorage:", error);
+      }
+    };
+
+    retrieveUserId();
+  }, []);
+
+  //Parte para recuperar la informacion del evento y sus participantes//////////////////////////////////////////////////////
   const { id_evento } = route.params;
   const [usuarios, setusuarios] = useState([]);
 
@@ -62,13 +97,34 @@ const EventoScreen = ({ navigation, route }) => {
     navigation.navigate("Usuario", { id_usuario });
   };
 
-  console.log(usuarios);
+  //Parte para inscribirse a un evento //////////////////////////////////////////////////////
+  const participar = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/participantes/apuntarse/[${id_evento}]&[${userId}]`
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
+  //Parte para desinscribirse a un evento //////////////////////////////////////////////////////
 
   return (
     <Background>
-      <Image source={{ uri: evento.img_url }} style={styles.imagen} resizeMode="cover" />
+      <Image
+        source={{ uri: evento.img_url }}
+        style={styles.imagen}
+        resizeMode="cover"
+      />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
+          <TouchableOpacity style={styles.participar} onPress={participar}>
+            <Text style={styles.textoParticipar}>Participar</Text>
+          </TouchableOpacity>
+
           <Image
             source={require("../../assets/bg.png")}
             style={styles.Background}
@@ -121,12 +177,13 @@ const EventoScreen = ({ navigation, route }) => {
                 data={usuarios}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => navigateToUsuario(item.id_usuario)}>
+                    onPress={() => navigateToUsuario(item.id_usuario)}
+                  >
                     <UsuariosTarjeta item={item} />
                   </TouchableOpacity>
                 )}
                 bounces={true}
-                keyExtractor={(item) => item.id_usuario} 
+                keyExtractor={(item) => item.id_usuario}
               />
             ) : (
               <Text style={styles.textoCabecera}>

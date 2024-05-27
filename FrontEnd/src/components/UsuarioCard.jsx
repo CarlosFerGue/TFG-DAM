@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 const UsuarioCard = ({ item }) => {
-  console.log(item.img_url);
   return (
     <View style={styles.UserContainer}>
       <Image 
