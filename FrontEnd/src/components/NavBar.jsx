@@ -77,7 +77,7 @@ const NavBar = ({ navigate }) => {
       </TouchableOpacity>
       <TouchableOpacity
         //onPress={() => navigation.navigate("Perfil")}
-        onPress={() => navigateToUsuario(2)}
+        onPress={() => navigateToUsuario(id_usuario)}
         style={styles.iconContainer}
       >
         <Image

@@ -58,7 +58,7 @@ const Perfil = ({ navigation }) => {
         // Actualizar los estados
         setEventosPropios(organizados);
         setEventosInscrito(participados);
-        console.log("Eventos:", eventosPropios, eventosInscrito);
+
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -171,7 +171,7 @@ const Perfil = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosInscrito}
+            data={eventosPropios}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -189,7 +189,7 @@ const Perfil = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPropios}
+            data={eventosInscrito}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
     bottom: 100,
     left: 120,
     fontWeight: "bold",
+    marginBottom: 25,
   },
   user: {
     fontSize: 15,

@@ -17,24 +17,38 @@ import theme from "../theme";
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 
+
 const Usuario = ({ navigation, route }) => {
   const navigateToEvento = (id_evento) => {
     navigation.navigate("Evento", { id_evento });
   };
 
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  const [eventosPropios, setEventosPropios] = useState([]);
+  const [eventosInscrito, setEventosInscrito] = useState([]);
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchEventos = async (userId) => {
       try {
-        const response = await fetch("https://myeventz.es/eventos/popular");
+        const response = await fetch(
+          `https://myeventz.es/usuarios/load_profile/${userId}`
+        );
         const data = await response.json();
-        seteventosPoupulares(data);
+        
+        // Extraer los eventos organizados e inscritos
+        const organizados = data.organizados || [];
+        const participados = data.participados || [];
+  
+        // Actualizar los estados
+        setEventosPropios(organizados);
+        setEventosInscrito(participados);
+  
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData();
+    fetchEventos(id_usuario);
   }, []);
 
   const [categoriasJson, setCategoriasJson] = useState([]);
@@ -118,7 +132,7 @@ const Usuario = ({ navigation, route }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosPropios}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -136,7 +150,7 @@ const Usuario = ({ navigation, route }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosInscrito}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}

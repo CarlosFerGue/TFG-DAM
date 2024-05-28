@@ -94,7 +94,7 @@ const EditarPerfil = ({ navigation }) => {
   
       if (response.status === 200) {
         setIsLoading(false);
-        navigation.goBack();
+        navigation.navigate("Perfil", { id_usuario: id_usuario });
       } else {
         setIsLoading(false);
         setError("Error al actualizar los datos. Inténtalo de nuevo.");
