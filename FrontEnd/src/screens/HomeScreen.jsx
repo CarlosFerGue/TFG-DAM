@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
       try {
         const response = await fetch("https://myeventz.es/eventos/close_events");
         const data = await response.json();
-        console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
+        //console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
         setEventosRecientes(data);
       } catch (error) {
         console.error("Error fetching data:", error);

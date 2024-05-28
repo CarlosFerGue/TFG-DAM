@@ -16,15 +16,16 @@ import theme from "../theme";
 
 const CategoriasScreen = ({ navigation }) => {
   const [categoriasJson, setCategoriasJson] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredCategorias, setFilteredCategorias] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://myeventz.es/categorias/find_all"
-        );
+        const response = await fetch("https://myeventz.es/categorias/find_all");
         const data = await response.json();
         setCategoriasJson(data);
+        setFilteredCategorias(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -33,25 +34,32 @@ const CategoriasScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const filteredData = categoriasJson.filter((categoria) =>
+      categoria.categoria.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCategorias(filteredData);
+  }, [searchQuery, categoriasJson]);
+
   return (
     <Background>
-       <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputs}
-            placeholder="Buscar categorias..."
-            placeholderTextColor="#ccc"
-          />
-          <TouchableOpacity style={styles.searchIconContainer}>
-            <Ionicons name="search" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Buscar categorias..."
+          placeholderTextColor="#ccc"
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
+        />
+        <TouchableOpacity style={styles.searchIconContainer}>
+          <Ionicons name="search" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
       <ScrollView style={styles.container}>
-       
-
         <View style={styles.listaCategorias}>
-          {categoriasJson.map((item) => (
+          {filteredCategorias.map((item) => (
             <TouchableOpacity
-              key={item.id}
+              key={item.id_categoria}
               onPress={() => navigation.addCategoria(item.categoria)}
               style={styles.categoriaCard}
             >
@@ -69,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     padding: 12,
-    marginBottom: 40,
+    marginBottom: 60,
   },
   inputContainer: {
     flexDirection: "row",
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
   },
   categoriaCard: {
     marginBottom: 20,
-  }
+  },
 });
 
 export default CategoriasScreen;

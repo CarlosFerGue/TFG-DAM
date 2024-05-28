@@ -26,13 +26,16 @@ const Perfil = ({ navigation }) => {
   const [usuarioJson, setUsuarioInfo] = useState({});
   const [redesSociales, setRedesSociales] = useState([]);
   const [hobbies, setHobbies] = useState([]);
-  const [eventosPoupulares, seteventosPoupulares] = useState([]);
+  const [eventosPropios, setEventosPropios] = useState([]);
+  const [eventosInscrito, setEventosInscrito] = useState([]);
 
   // Recuperar userId desde AsyncStorage y obtener datos del usuario
   useEffect(() => {
     const fetchUserData = async (userId) => {
       try {
-        const response = await fetch(`https://myeventz.es/usuarios/find_by_id_REAL/${userId}`);
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+        );
         const data = await response.json();
         setUsuarioInfo(data);
         setRedesSociales(data.redesSociales || []);
@@ -41,15 +44,37 @@ const Perfil = ({ navigation }) => {
       }
     };
 
+    const fetchEventos = async (userId) => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/load_profile/${userId}`
+        );
+        const data = await response.json();
+        
+        // Extraer los eventos organizados e inscritos
+        const organizados = data.organizados || [];
+        const participados = data.participados || [];
+  
+        // Actualizar los estados
+        setEventosPropios(organizados);
+        setEventosInscrito(participados);
+        console.log("Eventos:", eventosPropios, eventosInscrito);
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     const retrieveUserId = async () => {
       try {
-        const storedUserId = await AsyncStorage.getItem('userId');
+        const storedUserId = await AsyncStorage.getItem("userId");
         if (storedUserId) {
           setUserId(storedUserId);
           fetchUserData(storedUserId);
+          fetchEventos(storedUserId);
         }
       } catch (error) {
-        console.error('Error retrieving userId from AsyncStorage:', error);
+        console.error("Error retrieving userId from AsyncStorage:", error);
       }
     };
 
@@ -58,10 +83,10 @@ const Perfil = ({ navigation }) => {
 
   const retrieveToken = async () => {
     try {
-      const storedToken = await AsyncStorage.getItem('userToken');
+      const storedToken = await AsyncStorage.getItem("userToken");
       setUserToken(storedToken);
     } catch (error) {
-      console.error('Error retrieving token from AsyncStorage:', error);
+      console.error("Error retrieving token from AsyncStorage:", error);
     }
   };
 
@@ -69,7 +94,9 @@ const Perfil = ({ navigation }) => {
   useEffect(() => {
     const fetchHobbies = async () => {
       try {
-        const response = await fetch(`https://myeventz.es/usuarios/hobbies/${token}`);
+        const response = await fetch(
+          `https://myeventz.es/usuarios/hobbies/${token}`
+        );
         const data = await response.json();
         setHobbies(data);
       } catch (error) {
@@ -79,21 +106,7 @@ const Perfil = ({ navigation }) => {
 
     fetchHobbies();
   }, [token]);
-
-  // Obtener eventos populares
-  useEffect(() => {
-    const fetchEventosPopulares = async () => {
-      try {
-        const response = await fetch("https://myeventz.es/eventos/popular");
-        const data = await response.json();
-        seteventosPoupulares(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchEventosPopulares();
-  }, []);
+  useEffect(() => {}, []);
 
   const cerrarSesion = () => {
     AsyncStorage.removeItem("userToken");
@@ -125,18 +138,12 @@ const Perfil = ({ navigation }) => {
         <Text style={styles.user}>@{usuarioJson.usuario}</Text>
 
         <View style={styles.opcionesPerfil}>
-          <TouchableOpacity
-            style={styles.editarPerfil}
-            onPress={editarPerfil}
-          >
+          <TouchableOpacity style={styles.editarPerfil} onPress={editarPerfil}>
             <Text style={styles.buttonText}>Editar perfil </Text>
             <Ionicons name="create-outline" size={24} color="black" />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.cerrarSesion}
-            onPress={cerrarSesion}
-          >
+          <TouchableOpacity style={styles.cerrarSesion} onPress={cerrarSesion}>
             <Text style={styles.buttonText}>Cerrar Sesion </Text>
             <Ionicons name="exit-outline" size={24} color="red" />
           </TouchableOpacity>
@@ -164,7 +171,7 @@ const Perfil = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosInscrito}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
@@ -182,7 +189,7 @@ const Perfil = ({ navigation }) => {
 
         <View style={styles.eventos}>
           <FlatList
-            data={eventosPoupulares}
+            data={eventosPropios}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => navigateToEvento(item.id_evento)}
