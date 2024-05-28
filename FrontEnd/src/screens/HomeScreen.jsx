@@ -1,6 +1,7 @@
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   View,
@@ -26,35 +27,40 @@ const Home = ({ navigation }) => {
   const [eventosRecientes, setEventosRecientes] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://myeventz.es/eventos/popular");
-        const data = await response.json();
-        //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
-        setEventosPopulares(data);
-      } catch (error) {
-        //console.error("Error fetching data:", error);
-      }
-    };
+  const fetchData1 = async () => {
+    try {
+      const response = await fetch("https://myeventz.es/eventos/popular");
+      const data = await response.json();
+      //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
+      setEventosPopulares(data);
+    } catch (error) {
+      //console.error("Error fetching data:", error);
+    }
+  };
 
-    fetchData();
+  const fetchData2 = async () => {
+    try {
+      const response = await fetch("https://myeventz.es/eventos/close_events");
+      const data = await response.json();
+      console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
+      setEventosRecientes(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData1();
+    fetchData2()
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://myeventz.es/eventos/close_events");
-        const data = await response.json();
-        console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
-        setEventosRecientes(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      console.log("Se ha cambiado el foco al HomeScreen");
+      fetchData1();
+      fetchData2();
+    }, [])
+  );
 
   const filteredPopulares = eventosPopulares.filter(
     (evento) => evento.titulo && evento.titulo.toLowerCase().includes(searchText.toLowerCase())
