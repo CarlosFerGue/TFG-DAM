@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import {
@@ -18,6 +18,7 @@ import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
+import { useFocusEffect } from '@react-navigation/native';
 
 const Perfil = ({ navigation }) => {
   const route = useRoute();
@@ -29,57 +30,60 @@ const Perfil = ({ navigation }) => {
   const [eventosPropios, setEventosPropios] = useState([]);
   const [eventosInscrito, setEventosInscrito] = useState([]);
 
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+      );
+      const data = await response.json();
+      setUsuarioInfo(data);
+      setRedesSociales(data.redesSociales || []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const fetchEventos = async (userId) => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/usuarios/load_profile/${userId}`
+      );
+      const data = await response.json();
+      
+      // Extraer los eventos organizados e inscritos
+      const organizados = data.organizados || [];
+      const participados = data.participados || [];
+
+      // Actualizar los estados
+      setEventosPropios(organizados);
+      setEventosInscrito(participados);
+
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const retrieveUserId = async () => {
+    try {
+      const storedUserId = await AsyncStorage.getItem("userId");
+      if (storedUserId) {
+        setUserId(storedUserId);
+        fetchUserData(storedUserId);
+        fetchEventos(storedUserId);
+      }
+    } catch (error) {
+      console.error("Error retrieving userId from AsyncStorage:", error);
+    }
+  };
+
   // Recuperar userId desde AsyncStorage y obtener datos del usuario
-  useEffect(() => {
-    const fetchUserData = async (userId) => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
-        );
-        const data = await response.json();
-        setUsuarioInfo(data);
-        setRedesSociales(data.redesSociales || []);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    const fetchEventos = async (userId) => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/load_profile/${userId}`
-        );
-        const data = await response.json();
-        
-        // Extraer los eventos organizados e inscritos
-        const organizados = data.organizados || [];
-        const participados = data.participados || [];
-  
-        // Actualizar los estados
-        setEventosPropios(organizados);
-        setEventosInscrito(participados);
-
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const retrieveUserId = async () => {
-      try {
-        const storedUserId = await AsyncStorage.getItem("userId");
-        if (storedUserId) {
-          setUserId(storedUserId);
-          fetchUserData(storedUserId);
-          fetchEventos(storedUserId);
-        }
-      } catch (error) {
-        console.error("Error retrieving userId from AsyncStorage:", error);
-      }
-    };
-
-    retrieveUserId();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      retrieveUserId();
+    }, [])
+  );
 
   const retrieveToken = async () => {
     try {
