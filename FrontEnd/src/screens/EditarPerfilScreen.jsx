@@ -258,7 +258,7 @@ const EditarPerfil = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.opcionesPerfil}>
+          <View style={[styles.opcionesPerfil, { marginBottom: 35 }]}>
             <View style={styles.auxContainer}>
               <Text style={styles.titulo}>X</Text>
               <TextInput

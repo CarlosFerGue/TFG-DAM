@@ -5,9 +5,8 @@ import NavBar from "../components/NavBar";
 import {
   View,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   Text,
+  TouchableOpacity,
   ScrollView,
   Image,
   FlatList,
@@ -21,7 +20,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 const EventoScreen = ({ navigation, route }) => {
-  //Recuperamos la idUsuario del usuario que ha iniciado sesion//////////////////////////////////////////////////////////
   const [userId, setUserId] = useState(null);
   const [usuarioInfo, setUsuarioInfo] = useState(null);
 
@@ -53,75 +51,67 @@ const EventoScreen = ({ navigation, route }) => {
     retrieveUserId();
   }, []);
 
-  //Parte para recuperar la informacion del evento y sus participantes//////////////////////////////////////////////////////
   const { id_evento } = route.params;
-  const [usuarios, setusuarios] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [evento, setEvento] = useState({});
+  const [apuntado, setApuntado] = useState(null);
+
+  const participantes = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/eventos/load_evento_info/${id_evento}`
+      );
+      const data = await response.json();
+      setEvento(data);
+      setUsuarios(data.participantes);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const comprobarApuntado = async () => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/participantes/apuntado/[${id_evento}]&[${userId}]`
+      );
+      const data = await response.json();
+      setApuntado(data === 0 ? false : true);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch event data (including participants)
-        const response = await fetch(
-          `https://myeventz.es/eventos/load_evento_info/${id_evento}`
-        );
-        const data = await response.json();
-        setevento(data);
+    participantes();
+    comprobarApuntado();
+  }, [userId]);
 
-        // Extract participants from the fetched data
-        setusuarios(data.participantes);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const participar = async () => {
+    try {
+      await fetch(
+        `https://myeventz.es/participantes/apuntarse/[${id_evento}]&[${userId}]`
+      );
+      await participantes();
+      await comprobarApuntado();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
-
-  const [evento, setevento] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/eventos/load_evento/${id_evento}` // Use id_evento from props
-        );
-        const data = await response.json();
-        setevento(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const desapuntarse = async () => {
+    try {
+      await fetch(
+        `https://myeventz.es/participantes/desapuntarse/[${id_evento}]&[${userId}]`
+      );
+      await participantes();
+      await comprobarApuntado();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const navigateToUsuario = (id_usuario) => {
     navigation.navigate("Usuario", { id_usuario });
-  };
-
-  //Parte para inscribirse a un evento //////////////////////////////////////////////////////
-  const participar = async () => {
-    try {
-      const response = await fetch(
-        `https://myeventz.es/participantes/apuntarse/[${id_evento}]&[${userId}]`
-      );
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  //Parte para desinscribirse a un evento //////////////////////////////////////////////////////
-  const desapuntarse = async () => {
-    try {
-      const response = await fetch(
-        `https://myeventz.es/participantes/desapuntarse/[${id_evento}]&[${userId}]`
-      );
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   return (
@@ -131,19 +121,23 @@ const EventoScreen = ({ navigation, route }) => {
         style={styles.imagen}
         resizeMode="cover"
       />
-      <TouchableOpacity style={styles.participar} onPress={participar}>
-        <Text style={styles.textoParticipar}>Participar</Text>
-      </TouchableOpacity>
+      {apuntado === false && (
+        <TouchableOpacity style={styles.participar} onPress={participar}>
+          <Text style={styles.textoParticipar}>Participar</Text>
+        </TouchableOpacity>
+      )}
 
-      <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
-        <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
-        <Ionicons
-          name="close-circle"
-          size={24}
-          color="white"
-          style={{ top: 2 }}
-        />
-      </TouchableOpacity>
+      {apuntado === true && (
+        <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
+          <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
+          <Ionicons
+            name="close-circle"
+            size={24}
+            color="white"
+            style={{ top: 2 }}
+          />
+        </TouchableOpacity>
+      )}
 
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
@@ -229,14 +223,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderColor: "white",
     borderWidth: 2,
-    bottom: 60,
+    bottom: 70,
     zIndex: 1,
     alignSelf: "center",
     alignItems: "center",
   },
   textoParticipar: {
     color: "white",
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
   },
   desapuntarse: {
@@ -247,7 +241,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderColor: "white",
     borderWidth: 2,
-    bottom: 60,
+    bottom: 70,
     zIndex: 1,
     alignSelf: "center",
     alignItems: "center",
@@ -256,7 +250,7 @@ const styles = StyleSheet.create({
   },
   textoDesapuntarse: {
     color: "white",
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
   },
   imagen: {
@@ -346,7 +340,7 @@ const styles = StyleSheet.create({
   participantes: {
     width: "100%",
     borderRadius: 20,
-    marginBottom: 50,
+    marginBottom: 90,
     top: -20,
   },
 });
