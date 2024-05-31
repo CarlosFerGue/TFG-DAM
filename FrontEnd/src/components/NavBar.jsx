@@ -64,7 +64,7 @@ const NavBar = ({ navigate }) => {
         <Ionicons name="pricetags" size={30} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("AnadirEvento")}
+        onPress={() => navigation.navigate("CrearEvento")}
         style={styles.iconContainer}
       >
         <Ionicons name="add-circle" size={30} color="white" />

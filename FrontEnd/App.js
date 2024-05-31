@@ -17,6 +17,8 @@ import BuscarUsuarios from "./src/screens/BuscarUsuariosScreen.jsx";
 import Usuario from "./src/screens/UsuarioScreen.jsx";
 import Perfil from "./src/screens/PerfilScreen.jsx";
 import EditarPerfil from "./src/screens/EditarPerfilScreen.jsx";
+import CrearEvento from "./src/screens/CrearEventoScreen.jsx";
+
 import axios from "axios";
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +71,7 @@ const App = () => {
         <Stack.Screen name="Usuario" component={Usuario} />
         <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+        <Stack.Screen name="CrearEvento" component={CrearEvento} />
 
       </Stack.Navigator>
     </NavigationContainer>

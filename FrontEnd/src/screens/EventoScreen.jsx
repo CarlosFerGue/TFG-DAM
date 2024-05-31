@@ -186,7 +186,7 @@ const EventoScreen = ({ navigation, route }) => {
             />
           </View>
 
-          <Text style={styles.cabecera}>Participantes:</Text>
+          <Text style={styles.cabecera}>Participantes ({usuarios.length} de {evento.participantesMax}):</Text>
           <View style={styles.participantes}>
             {usuarios.length > 0 ? (
               <FlatList
