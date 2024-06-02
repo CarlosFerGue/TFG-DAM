@@ -57,7 +57,7 @@ const Home = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log("Se ha cambiado el foco al HomeScreen");
+      //console.log("Se ha cambiado el foco al HomeScreen");
       fetchData1();
       fetchData2();
     }, [])

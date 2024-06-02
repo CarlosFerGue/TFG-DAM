@@ -447,9 +447,8 @@ const styles = StyleSheet.create({
   searchIconContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 10,
     right: 10,
-    top: 12,
   },
   inputHobbies: {
     width: "80%",
