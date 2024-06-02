@@ -56,8 +56,8 @@ const Perfil = ({ navigation }) => {
       const participados = data.participados || [];
 
       // Actualizar los estados
-      setEventosPropios(organizados);
-      setEventosInscrito(participados);
+      setEventosPropios(participados);
+      setEventosInscrito(organizados);
 
 
     } catch (error) {
