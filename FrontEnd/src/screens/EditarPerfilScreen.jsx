@@ -15,6 +15,10 @@ import { Ionicons } from "@expo/vector-icons";
 import CategoriasTarjeta from "../components/Categorias";
 import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebaseConfig";
+import axios from "axios";
 
 const EditarPerfil = ({ navigation }) => {
   const route = useRoute();
@@ -32,6 +36,52 @@ const EditarPerfil = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [id_usuario, setUserId] = useState(null);
   const [categoriasJson, setCategoriasJson] = useState([]);
+
+  const uploadImage = async (uri) => {
+    try {
+      console.log('Subiendo imagen...');
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `profileImages/${new Date().toISOString()}`);
+      const snapshot = await uploadBytes(storageRef, blob);
+      console.log('Imagen subida con éxito');
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('URL de la imagen:', downloadURL);
+      const token = await AsyncStorage.getItem('userToken'); // Esperar correctamente por el token
+      if (!token) {
+        throw new Error('No se encontró el token de usuario en AsyncStorage');
+      }
+  
+      await axios.post('https://myeventz.es/update_profile_image', { profileImageUrl: downloadURL, token }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Perfil actualizado con la nueva URL de la imagen');
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+    }
+  };
+
+  const pickImage = async () => {
+    // Pide permiso para acceder a la galería de fotos
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Lo siento, necesitamos permisos de cámara para hacer esto!');
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.cancelled) {
+      uploadImage(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async (userId) => {
@@ -128,7 +178,7 @@ const EditarPerfil = ({ navigation }) => {
         <View style={styles.container2}>
           <Image source={{ uri: usuarioJson.img_url }} style={styles.imagen} />
 
-          <Text style={[styles.TextClicableM, { marginBottom: 35 }]}>
+          <Text style={[styles.TextClicableM, { marginBottom: 35 }]} onPress={pickImage}>
             Cambiar imagen de perfil
           </Text>
 
