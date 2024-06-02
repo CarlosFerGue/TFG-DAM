@@ -18,9 +18,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebaseConfig";
+import axios from "axios";
 
 const CrearEvento = ({ navigation }) => {
   const [id_usuario, setUserId] = useState(null);
+  const [eventImg, setEventImg] = useState(null);
+  const [eventUri, setEventUri] = useState('');
   const [formData, setFormData] = useState({
     id_usuario: null,
     titulo: "",
@@ -33,6 +39,42 @@ const CrearEvento = ({ navigation }) => {
     participantesMax: 0,
     img_url: "",
   });
+
+  const uploadImage = async (uri) => {
+    try {
+      console.log('Subiendo imagen...');
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `eventsImages/${new Date().toISOString()}`);
+      const snapshot = await uploadBytes(storageRef, blob);
+      console.log('Imagen subida con éxito');
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('URL de la imagen:', downloadURL);
+      setEventImg(downloadURL);
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+    }
+  };
+
+  const pickImage = async () => {
+    // Pide permiso para acceder a la galería de fotos
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Lo siento, necesitamos permisos de cámara para hacer esto!');
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.cancelled) {
+      setEventUri(result.assets[0].uri);
+      //uploadImage(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
     const retrieveUserId = async () => {
@@ -54,6 +96,7 @@ const CrearEvento = ({ navigation }) => {
   }, []);
 
   const enviarEvento = async () => {
+    await uploadImage(eventUri);
     try {
       // Verificar que todos los campos requeridos estén completos
       // if (
@@ -70,6 +113,7 @@ const CrearEvento = ({ navigation }) => {
       // Convertir los campos numéricos a números
       const dataToSend = {
         ...formData,
+        img_url: eventImg,
         edad_min: Number(formData.edad_min),
         edad_max: Number(formData.edad_max),
         participantesMax: Number(formData.participantesMax),
@@ -268,6 +312,7 @@ const CrearEvento = ({ navigation }) => {
               size={30}
               color="white"
               style={{ left: 10, textDecorationLine: "none" }}
+              onPress={pickImage}
             />
           </View>
 
