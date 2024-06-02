@@ -85,6 +85,7 @@ const CrearEvento = ({ navigation }) => {
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
       console.log("Datos enviados: ", JSON.stringify(dataToSend));
+      navigation.navigate("Perfil", { id_usuario: id_usuario });
     } catch (error) {
       console.error("Error al enviar el evento:", error);
     }
