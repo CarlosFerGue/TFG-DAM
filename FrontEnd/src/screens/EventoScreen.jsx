@@ -178,8 +178,8 @@ const EventoScreen = ({ navigation, route }) => {
             <MapView
               style={styles.MapUbicacion}
               initialRegion={{
-                latitude: 37.783333,
-                longitude: 32.893333,
+                latitude: 41.644460,
+                longitude: -0.887270,
                 latitudeDelta: 0.05,
                 longitudeDelta: 0.05,
               }}
