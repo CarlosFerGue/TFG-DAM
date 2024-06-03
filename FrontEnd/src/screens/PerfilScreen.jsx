@@ -18,7 +18,7 @@ import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 const Perfil = ({ navigation }) => {
   const route = useRoute();
@@ -30,7 +30,6 @@ const Perfil = ({ navigation }) => {
   const [eventosPropios, setEventosPropios] = useState([]);
   const [eventosInscrito, setEventosInscrito] = useState([]);
 
-
   const fetchUserData = async (userId) => {
     try {
       const response = await fetch(
@@ -39,6 +38,7 @@ const Perfil = ({ navigation }) => {
       const data = await response.json();
       setUsuarioInfo(data);
       setRedesSociales(data.redesSociales || []);
+      console.log("Redes Sociales:", data.redesSociales);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -50,7 +50,9 @@ const Perfil = ({ navigation }) => {
         `https://myeventz.es/usuarios/load_profile/${userId}`
       );
       const data = await response.json();
-      
+
+      //console.log("Eventos:", data);
+
       // Extraer los eventos organizados e inscritos
       const organizados = data.organizados || [];
       const participados = data.participados || [];
@@ -59,7 +61,8 @@ const Perfil = ({ navigation }) => {
       setEventosPropios(participados);
       setEventosInscrito(organizados);
 
-
+      // console.log("Eventos organizados:", organizados);
+      // console.log("Eventos inscritos:", participados);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -85,23 +88,15 @@ const Perfil = ({ navigation }) => {
     }, [])
   );
 
-  const retrieveToken = async () => {
-    try {
-      const storedToken = await AsyncStorage.getItem("userToken");
-      setUserToken(storedToken);
-    } catch (error) {
-      console.error("Error retrieving token from AsyncStorage:", error);
-    }
-  };
-
   // Obtener hobbies del usuario
   useEffect(() => {
     const fetchHobbies = async () => {
       try {
         const response = await fetch(
-          `https://myeventz.es/usuarios/hobbies/${token}`
+          `https://myeventz.es/usuarios/hobbies/${id_usuario}`
         );
         const data = await response.json();
+        //console.log("Hobbies:", data);
         setHobbies(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -109,8 +104,7 @@ const Perfil = ({ navigation }) => {
     };
 
     fetchHobbies();
-  }, [token]);
-  useEffect(() => {}, []);
+  }, [id_usuario]);
 
   const cerrarSesion = () => {
     AsyncStorage.removeItem("userToken");
@@ -156,7 +150,7 @@ const Perfil = ({ navigation }) => {
         <Text style={styles.cabecera}>Biografía e intereses:</Text>
         <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
 
-        {hobbies.length > 0 && ( // Check if there are categories
+        {hobbies.length > 0 && (
           <View style={styles.categorias}>
             <View style={styles.listaCategorias}>
               {hobbies.map((item) => (
@@ -174,37 +168,49 @@ const Perfil = ({ navigation }) => {
         <Text style={styles.cabecera}>Mis eventos:</Text>
 
         <View style={styles.eventos}>
-          <FlatList
-            data={eventosPropios}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigateToEvento(item.id_evento)}
-              >
-                <HomeScreenSlideH item={item} />
-              </TouchableOpacity>
-            )}
-            horizontal
-            bounces={true}
-            keyExtractor={(item) => item.id_evento}
-          />
+          {eventosPropios[0] === 0 ? (
+            <Text style={styles.noEventosText}>
+              No has publicado ningun evento aún.
+            </Text>
+          ) : (
+            <FlatList
+              data={eventosPropios}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => navigateToEvento(item.id_evento)}
+                >
+                  <HomeScreenSlideH item={item} />
+                </TouchableOpacity>
+              )}
+              horizontal
+              bounces={true}
+              keyExtractor={(item) => item.id_evento?.toString()}
+            />
+          )}
         </View>
 
         <Text style={styles.cabecera}>Participaciones:</Text>
 
         <View style={styles.eventos}>
-          <FlatList
-            data={eventosInscrito}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigateToEvento(item.id_evento)}
-              >
-                <HomeScreenSlideH item={item} />
-              </TouchableOpacity>
-            )}
-            horizontal
-            bounces={true}
-            keyExtractor={(item) => item.id_evento}
-          />
+          {eventosInscrito[0] === 0 ? (
+            <Text style={styles.noEventosText}>
+              No estas suscrito a ningun evento aún.
+            </Text>
+          ) : (
+            <FlatList
+              data={eventosInscrito}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => navigateToEvento(item.id_evento)}
+                >
+                  <HomeScreenSlideH item={item} />
+                </TouchableOpacity>
+              )}
+              horizontal
+              bounces={true}
+              keyExtractor={(item) => item.id_evento?.toString()}
+            />
+          )}
         </View>
 
         <Text style={styles.redes}>Mis redes sociales</Text>
@@ -307,6 +313,12 @@ const styles = StyleSheet.create({
     bottom: 50,
     width: "100%",
     marginVertical: 10,
+  },
+  noEventosText: {
+    fontSize: 15,
+    color: "#ccc",
+    textAlign: "center",
+    marginTop: 10,
   },
   categoriaCard: {
     marginBottom: 20,

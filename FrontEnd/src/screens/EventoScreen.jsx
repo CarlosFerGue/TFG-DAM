@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native"; // Importar useFocusEffect
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
-
 import {
   View,
   StyleSheet,
@@ -11,31 +11,21 @@ import {
   Image,
   FlatList,
 } from "react-native";
-
 import Constants from "expo-constants";
 import MapView from "react-native-maps";
 import UsuariosTarjeta from "../components/UsuarioCard";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 const EventoScreen = ({ navigation, route }) => {
   const [userId, setUserId] = useState(null);
   const [usuarioInfo, setUsuarioInfo] = useState(null);
+  const [usuarios, setUsuarios] = useState([]);
+  const [evento, setEvento] = useState({});
+  const [apuntado, setApuntado] = useState(null);
+  const { id_evento } = route.params;
 
   useEffect(() => {
-    const fetchUserData = async (userId) => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
-        );
-        const data = await response.json();
-        setUsuarioInfo(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     const retrieveUserId = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem("userId");
@@ -48,13 +38,46 @@ const EventoScreen = ({ navigation, route }) => {
       }
     };
 
+    const fetchUserData = async (userId) => {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/usuarios/find_by_id_REAL/${userId}`
+        );
+        const data = await response.json();
+        setUsuarioInfo(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     retrieveUserId();
   }, []);
 
-  const { id_evento } = route.params;
-  const [usuarios, setUsuarios] = useState([]);
-  const [evento, setEvento] = useState({});
-  const [apuntado, setApuntado] = useState(null);
+  useEffect(() => {
+    if (userId) {
+      participantes();
+    }
+  }, [userId]);
+
+  const verificarApuntado = async () => {
+    if (userId) {
+      try {
+        const response = await fetch(
+          `https://myeventz.es/participantes/apuntado/${id_evento}&${userId}`
+        );
+        const data = await response.json();
+        setApuntado(data.length > 0 && data[0]["COUNT(*)"] !== 0);
+      } catch (error) {
+        console.error("Error al comprobar apuntado:", error);
+      }
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      verificarApuntado();
+    }, [userId, id_evento])
+  );
 
   const participantes = async () => {
     try {
@@ -69,30 +92,13 @@ const EventoScreen = ({ navigation, route }) => {
     }
   };
 
-  const comprobarApuntado = async () => {
-    try {
-      const response = await fetch(
-        `https://myeventz.es/participantes/apuntado/[${id_evento}]&[${userId}]`
-      );
-      const data = await response.json();
-      setApuntado(data === 0 ? false : true);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    participantes();
-    comprobarApuntado();
-  }, [userId]);
-
   const participar = async () => {
     try {
       await fetch(
         `https://myeventz.es/participantes/apuntarse/[${id_evento}]&[${userId}]`
       );
       await participantes();
-      await comprobarApuntado();
+      await verificarApuntado(); // Verificar apuntado después de apuntarse
     } catch (error) {
       console.error("Error:", error);
     }
@@ -104,7 +110,7 @@ const EventoScreen = ({ navigation, route }) => {
         `https://myeventz.es/participantes/desapuntarse/[${id_evento}]&[${userId}]`
       );
       await participantes();
-      await comprobarApuntado();
+      await verificarApuntado(); // Verificar apuntado después de desapuntarse
     } catch (error) {
       console.error("Error:", error);
     }
@@ -121,13 +127,11 @@ const EventoScreen = ({ navigation, route }) => {
         style={styles.imagen}
         resizeMode="cover"
       />
-      {apuntado === false && (
+      {apuntado === false ? (
         <TouchableOpacity style={styles.participar} onPress={participar}>
           <Text style={styles.textoParticipar}>Participar</Text>
         </TouchableOpacity>
-      )}
-
-      {apuntado === true && (
+      ) : (
         <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
           <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
           <Ionicons
@@ -178,15 +182,17 @@ const EventoScreen = ({ navigation, route }) => {
             <MapView
               style={styles.MapUbicacion}
               initialRegion={{
-                latitude: 41.644460,
-                longitude: -0.887270,
+                latitude: 41.64446,
+                longitude: -0.88727,
                 latitudeDelta: 0.05,
                 longitudeDelta: 0.05,
               }}
             />
           </View>
 
-          <Text style={styles.cabecera}>Participantes ({usuarios.length} de {evento.participantesMax}):</Text>
+          <Text style={styles.cabecera}>
+            Participantes ({usuarios.length} de {evento.participantesMax}):
+          </Text>
           <View style={styles.participantes}>
             {usuarios.length > 0 ? (
               <FlatList
