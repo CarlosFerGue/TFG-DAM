@@ -20,6 +20,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 
+// Importa la imagen predeterminada localmente
+const defaultImage = require("../../assets/pfp.png");
+
 const Perfil = ({ navigation }) => {
   const route = useRoute();
   const [token, setUserToken] = useState(null);
@@ -37,8 +40,9 @@ const Perfil = ({ navigation }) => {
       );
       const data = await response.json();
       setUsuarioInfo(data);
-      setRedesSociales(data.redesSociales || []);
-      console.log("Redes Sociales:", data.redesSociales);
+      //console.log(data);
+      setRedesSociales(data.ig, data.fb, data.x, data.tt);
+      //console.log("Redes Sociales:", data.redesSociales);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -120,13 +124,17 @@ const Perfil = ({ navigation }) => {
     navigation.navigate("Evento", { id_evento });
   };
 
+ 
+
   return (
     <Background>
       <ScrollView style={styles.container}>
         <Image
-          source={{
-            uri: usuarioJson.img_url,
-          }}
+          source={
+            usuarioJson.img_url === null
+              ? defaultImage
+              : { uri: usuarioJson.img_url }
+          }
           style={styles.imagen}
         />
         <Text style={styles.nombre}>
@@ -253,7 +261,7 @@ const styles = StyleSheet.create({
   nombre: {
     fontSize: 25,
     color: theme.colors.white,
-    bottom: 100,
+    bottom: 90,
     left: 120,
     fontWeight: "bold",
     marginBottom: 25,
@@ -262,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: theme.colors.white,
     left: 120,
-    bottom: 100,
+    bottom: 110,
   },
   opcionesPerfil: {
     flexDirection: "row",

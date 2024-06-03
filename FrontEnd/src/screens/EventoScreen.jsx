@@ -24,6 +24,7 @@ const EventoScreen = ({ navigation, route }) => {
   const [evento, setEvento] = useState({});
   const [apuntado, setApuntado] = useState(null);
   const { id_evento } = route.params;
+  const [categoriasEvento, setCategorias] = useState([]);
 
   useEffect(() => {
     const retrieveUserId = async () => {
@@ -119,6 +120,20 @@ const EventoScreen = ({ navigation, route }) => {
   const navigateToUsuario = (id_usuario) => {
     navigation.navigate("Usuario", { id_usuario });
   };
+
+  //Recuperar las categorias de un evento
+  useEffect(() => {
+    const categorias = async () => {
+      try {
+        await fetch(`https://myeventz.es/eventos/load_categorias/${id_evento}`);
+        const data = await response.json();
+        setCategorias(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    categorias();
+  });
 
   return (
     <Background>

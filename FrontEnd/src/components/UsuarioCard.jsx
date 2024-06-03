@@ -1,14 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
+// Importa la imagen predeterminada localmente
+const defaultImage = require('../../assets/pfp.png');
+
 const UsuarioCard = ({ item }) => {
   return (
     <View style={styles.UserContainer}>
       <Image 
-       source={{
-        uri: item.img_url,
-      }}
-      style={styles.imagen} />
+        source={item.img_url ? { uri: item.img_url } : defaultImage}
+        style={styles.imagen} 
+      />
       <Text style={styles.nombreTexto}>
         {item.nombre_com} {item.nombre} {item.apel1} {item.apel2}{" "}
       </Text>
