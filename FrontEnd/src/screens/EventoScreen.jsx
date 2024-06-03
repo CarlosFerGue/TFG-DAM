@@ -123,17 +123,20 @@ const EventoScreen = ({ navigation, route }) => {
 
   //Recuperar las categorias de un evento
   useEffect(() => {
-    const categorias = async () => {
+    const fetchCategorias = async () => {
       try {
-        await fetch(`https://myeventz.es/eventos/load_categorias/${id_evento}`);
+        const response = await fetch(
+          `https://myeventz.es/eventos/load_categorias/${id_evento}`
+        );
         const data = await response.json();
+        console.log("Categorias:", data);
         setCategorias(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    categorias();
-  });
+    fetchCategorias();
+  }, [id_evento]);
 
   return (
     <Background>
@@ -174,7 +177,18 @@ const EventoScreen = ({ navigation, route }) => {
             <Text style={styles.fecha}>
               {evento.fecha} {evento.hora}
             </Text>
-            <View style={styles.categorias}></View>
+            <View style={styles.categorias}>
+              {/* Renderizar las categorías */}
+              {categoriasEvento.length > 0 ? (
+                categoriasEvento.map((categoria, index) => (
+                  <Text key={index} style={styles.categoria}>
+                    {categoria.categoria}
+                  </Text>
+                ))
+              ) : (
+                <Text style={styles.categoria}>No hay categorías disponibles.</Text>
+              )}
+            </View>
           </View>
 
           <Text style={styles.cabecera}>Descripción del evento:</Text>
@@ -312,7 +326,18 @@ const styles = StyleSheet.create({
   categorias: {
     display: "flex",
     width: "100%",
-    height: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  categoria: {
+    color: "white",
+    fontSize: 15,
+    marginHorizontal: 5,
+    backgroundColor: "#6200ee",
+    padding: 5,
+    borderRadius: 5,
+    
   },
   fecha: {
     color: "white",
