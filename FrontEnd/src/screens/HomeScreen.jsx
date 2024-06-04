@@ -102,7 +102,7 @@ const Home = ({ navigation }) => {
           evento.titulo.toLowerCase().includes(searchText.toLowerCase())
       )
     : eventosRecientes;
-    
+
   const handleRemoveFilter = async () => {
     // Clear category from AsyncStorage
     await AsyncStorage.removeItem("selectedCategory");
@@ -131,17 +131,19 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.categoryContainer}>
+        {category !== "" && (
           <TouchableOpacity
             style={styles.categoryButton}
             onPress={handleRemoveFilter}
           >
-            <Text style={styles.categoryText}>
-              <Ionicons name="close-circle" size={24} color="black" />
-              Eliminar filtro: {category}
-            </Text>
+            <Ionicons
+              name="close-circle"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.categoryText}>Eliminar filtro: {category}</Text>
           </TouchableOpacity>
-        </View>
+        )}
 
         {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
@@ -212,21 +214,23 @@ const styles = StyleSheet.create({
     bottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    height: 20,
+    padding: 5,
   },
   categoryText: {
     fontSize: 20,
     fontWeight: "bold",
-    paddingLeft: 5,
-    backgroundColor: "white",
-    borderRadius: 5,
-    alignContent: "center",
-    textAlign: "center",
-    justifyContent: "center",
-    padding: 5,
+    marginLeft: 10
   },
   categoryButton: {
     borderRadius: 5,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 10,
+    marginTop: 10,
   },
   sliderH: {
     flex: 0.25,
