@@ -14,7 +14,7 @@ import {
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
-import HomeScreenSlideH from "../components/HomeScreenSlideH";
+import HomeScreenSlideHP from "../components/HomeScreenSlideHP";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
@@ -186,7 +186,7 @@ const Perfil = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => navigateToEvento(item.id_evento)}
                 >
-                  <HomeScreenSlideH item={item} />
+                  <HomeScreenSlideHP item={item} />
                 </TouchableOpacity>
               )}
               horizontal
@@ -210,7 +210,7 @@ const Perfil = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => navigateToEvento(item.id_evento)}
                 >
-                  <HomeScreenSlideH item={item} />
+                  <HomeScreenSlideHP item={item} />
                 </TouchableOpacity>
               )}
               horizontal
