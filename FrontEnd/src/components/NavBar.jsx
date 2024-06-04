@@ -67,7 +67,7 @@ const NavBar = ({ navigate }) => {
         onPress={() => navigation.navigate("CrearEvento")}
         style={styles.iconContainer}
       >
-        <Ionicons name="add-circle" size={30} color="white" />
+        <Ionicons name="add-circle" size={35} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("BuscarUsuarios")}

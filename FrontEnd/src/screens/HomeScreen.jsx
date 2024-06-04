@@ -1,7 +1,7 @@
 import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import React, { useState, useEffect, useCallback } from "react";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 import {
   View,
@@ -18,7 +18,25 @@ import theme from "../theme";
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import HomeScreenSlideV from "../components/HomeScreenSlideV";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Home = ({ navigation }) => {
+  const [category, setCategory] = useState('');
+
+  const loadCategory = async () => {
+    try {
+      const value = await AsyncStorage.getItem('selectedCategory');
+      if (value !== null) {
+        setCategory(value);
+        console.log('Categoría:', value);
+      }
+    } catch (error) {
+      console.error('Error al leer la categoria:', error);
+    }
+  };
+
+
+
   const navigateToEvento = (id_evento) => {
     navigation.navigate("Evento", { id_evento });
   };
@@ -49,26 +67,24 @@ const Home = ({ navigation }) => {
     }
   };
 
-  //useEffect(() => {
-  //  console.log("Montando HomeScreen");
-  //  fetchData1();
-  //  fetchData2()
-  //}, []);
-
   useFocusEffect(
     useCallback(() => {
-      //console.log("Se ha cambiado el foco al HomeScreen");
       fetchData1();
       fetchData2();
+      loadCategory();
     }, [])
   );
 
   const filteredPopulares = eventosPopulares.filter(
-    (evento) => evento.titulo && evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+    (evento) =>
+      evento.titulo &&
+      evento.titulo.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const filteredRecientes = eventosRecientes.filter(
-    (evento) => evento.titulo && evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+    (evento) =>
+      evento.titulo &&
+      evento.titulo.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
@@ -102,7 +118,11 @@ const Home = ({ navigation }) => {
             horizontal
             bounces={true}
             keyExtractor={(item) => item.id_evento}
-            ListEmptyComponent={<Text style={styles.emptyText}>No se encontraron eventos populares.</Text>}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>
+                No se encontraron eventos populares.
+              </Text>
+            }
           />
         </View>
 
@@ -120,7 +140,11 @@ const Home = ({ navigation }) => {
             )}
             bounces={true}
             keyExtractor={(item) => item.id_evento}
-            ListEmptyComponent={<Text style={styles.emptyText}>No se encontraron publicaciones recientes.</Text>}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>
+                No se encontraron publicaciones recientes.
+              </Text>
+            }
           />
         </View>
       </View>
@@ -138,6 +162,7 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   inputContainer: {
+    bottom: 30,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 2,

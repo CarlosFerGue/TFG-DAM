@@ -7,12 +7,11 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Text,
   ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
-import theme from "../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CategoriasScreen = ({ navigation }) => {
   const [categoriasJson, setCategoriasJson] = useState([]);
@@ -41,6 +40,16 @@ const CategoriasScreen = ({ navigation }) => {
     setFilteredCategorias(filteredData);
   }, [searchQuery, categoriasJson]);
 
+  const saveCategory = async (category) => {
+    try {
+      await AsyncStorage.setItem("selectedCategory", category);
+      console.log("Categoria guardada:", category);
+      navigation.navigate("Home");
+    } catch (error) {
+      console.error("Error al guardar la categoria:", error);
+    }
+  };
+
   return (
     <Background>
       <View style={styles.inputContainer}>
@@ -60,7 +69,7 @@ const CategoriasScreen = ({ navigation }) => {
           {filteredCategorias.map((item) => (
             <TouchableOpacity
               key={item.id_categoria}
-              onPress={() => navigation.addCategoria(item.categoria)}
+              onPress={() => saveCategory(item.categoria)}
               style={styles.categoriaCard}
             >
               <CategoriasTarjeta categoria={item} />

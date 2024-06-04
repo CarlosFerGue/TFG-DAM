@@ -178,6 +178,7 @@ const CrearEvento = ({ navigation }) => {
             style={styles.inputs}
             placeholder="Título del evento..."
             placeholderTextColor="#ccc"
+            maxLength={23}
             onChangeText={(text) => setFormData({ ...formData, titulo: text })}
           />
 
@@ -307,7 +308,7 @@ const CrearEvento = ({ navigation }) => {
           </View>
 
           <View style={styles.auxContainer}>
-            <Text style={styles.textoClicable}>Añade una portada</Text>
+            <Text style={styles.textoClicable} onPress={pickImage}>Añade una portada</Text>
             <Ionicons
               name="image"
               size={30}
@@ -345,7 +346,7 @@ const CrearEvento = ({ navigation }) => {
                   {categoriasJson.map((item) => (
                     <TouchableOpacity
                       key={item.id_categoria}
-                      onPress={() => navigation.addCategoria(item.categoria)}
+                      //onPress={() => navigation.addCategoria(item.categoria)}
                       style={styles.categoriaCard}
                     >
                       <CategoriasTarjeta categoria={item} />

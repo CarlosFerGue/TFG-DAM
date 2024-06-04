@@ -257,7 +257,7 @@ const EditarPerfil = ({ navigation }) => {
                   {categoriasJson.map((item) => (
                     <TouchableOpacity
                       key={item.id_categoria}
-                      onPress={() => navigation.addCategoria(item.categoria)}
+                      //onPress={() => navigation.addCategoria(item.categoria)}
                       style={styles.categoriaCard}
                     >
                       <CategoriasTarjeta categoria={item} />
