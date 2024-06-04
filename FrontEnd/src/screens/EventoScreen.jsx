@@ -177,14 +177,15 @@ const EventoScreen = ({ navigation, route }) => {
             <Text style={styles.fecha}>
               {evento.fecha} {evento.hora}
             </Text>
+
             <View style={styles.categorias}>
-              {/* Renderizar las categorías */}
               {categoriasEvento.length > 0 ? (
                 categoriasEvento.map((categoria, index) => (
                   <Text key={index} style={styles.categoria}>
                     {categoria.categoria}
                   </Text>
                 ))
+
               ) : (
                 <Text style={styles.categoria}>No hay categorías disponibles.</Text>
               )}
@@ -329,6 +330,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 10,
   },
   categoria: {
     color: "white",
@@ -336,7 +340,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: "#6200ee",
     padding: 5,
-    borderRadius: 5,
+    borderRadius: 8,
     
   },
   fecha: {
