@@ -204,18 +204,11 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   inputContainer: {
-    bottom: 30,
+    bottom: 20,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 2,
     borderColor: "white",
-  },
-  categoryContainer: {
-    bottom: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    height: 20,
-    padding: 5,
   },
   categoryText: {
     fontSize: 20,
@@ -229,8 +222,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 5,
-    marginBottom: 10,
-    marginTop: 10,
   },
   sliderH: {
     flex: 0.25,
