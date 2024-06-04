@@ -8,25 +8,26 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  Alert,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
-import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
-import { useFocusEffect } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebaseConfig";
-import axios from "axios";
 
 const CrearEvento = ({ navigation }) => {
   const [id_usuario, setUserId] = useState(null);
   const [eventImg, setEventImg] = useState(null);
   const [eventUri, setEventUri] = useState('');
+  const [categoriasJson, setCategoriasJson] = useState([]);
+  const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [formData, setFormData] = useState({
     id_usuario: null,
     titulo: "",
@@ -38,26 +39,24 @@ const CrearEvento = ({ navigation }) => {
     ubicacion: "",
     participantesMax: 0,
     img_url: "",
+    categorias: [],
   });
 
   const uploadImage = async (uri) => {
     try {
-      console.log('Subiendo imagen...');
       const response = await fetch(uri);
       const blob = await response.blob();
       const storageRef = ref(storage, `eventsImages/${new Date().toISOString()}`);
       const snapshot = await uploadBytes(storageRef, blob);
-      console.log('Imagen subida con éxito');
       const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log('URL de la imagen:', downloadURL);
       setEventImg(downloadURL);
+      return downloadURL;
     } catch (error) {
       console.error('Error al subir la imagen:', error);
     }
   };
 
   const pickImage = async () => {
-    // Pide permiso para acceder a la galería de fotos
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Lo siento, necesitamos permisos de cámara para hacer esto!');
@@ -69,10 +68,9 @@ const CrearEvento = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.cancelled) {
       setEventUri(result.assets[0].uri);
-      //uploadImage(result.assets[0].uri);
     }
   };
 
@@ -86,7 +84,6 @@ const CrearEvento = ({ navigation }) => {
             ...prevFormData,
             id_usuario: storedUserId,
           }));
-          console.log("User ID:", storedUserId);
         }
       } catch (error) {
         console.error("Error retrieving userId from AsyncStorage:", error);
@@ -96,29 +93,16 @@ const CrearEvento = ({ navigation }) => {
   }, []);
 
   const enviarEvento = async () => {
-    await uploadImage(eventUri);
+    const imageUrl = await uploadImage(eventUri);
     try {
-      // Verificar que todos los campos requeridos estén completos
-      // if (
-      //   !formData.id_usuario ||
-      //   !formData.titulo ||
-      //   !formData.fecha ||
-      //   !formData.hora ||
-      //   !formData.descripcion ||
-      //   !formData.ubicacion
-      // ) {
-      //   console.error("Todos los campos son requeridos");
-      //   return;
-      // }
-      // Convertir los campos numéricos a números
       const dataToSend = {
         ...formData,
-        img_url: eventImg,
+        img_url: imageUrl,
         edad_min: Number(formData.edad_min),
         edad_max: Number(formData.edad_max),
         participantesMax: Number(formData.participantesMax),
+        categorias: categoriasSeleccionadas,
       };
-
       const response = await fetch("https://myeventz.es/eventos/add", {
         method: "POST",
         headers: {
@@ -135,8 +119,6 @@ const CrearEvento = ({ navigation }) => {
     }
   };
 
-  const [categoriasJson, setCategoriasJson] = useState([]);
-
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -149,6 +131,29 @@ const CrearEvento = ({ navigation }) => {
     };
     fetchCategorias();
   }, []);
+
+  const handleCategoriaPress = (categoria) => {
+    setCategoriasSeleccionadas((prev) => {
+      if (prev.includes(categoria)) {
+        return prev.filter((item) => item !== categoria);
+      } else {
+        if (prev.length < 5) {
+          return [...prev, categoria];
+        } else {
+          Alert.alert(
+            "Límite alcanzado",
+            "Solo puedes seleccionar hasta 5 categorías.",
+            [{ text: "Entendido" }]
+          );
+          return prev;
+        }
+      }
+    });
+  };
+
+  const filteredCategorias = categoriasJson.filter((item) =>
+    item.categoria.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -328,14 +333,16 @@ const CrearEvento = ({ navigation }) => {
               Seleccionar categorias:
             </Text>
 
-            <TouchableOpacity style={styles.searchIconContainer}>
+            <View style={styles.searchIconContainer}>
               <TextInput
                 style={styles.inputHobbies}
                 placeholder="Buscar categorias..."
                 placeholderTextColor="#ccc"
+                value={searchText}
+                onChangeText={setSearchText}
               />
               <Ionicons name="search" size={24} color="white" />
-            </TouchableOpacity>
+            </View>
 
             <View style={styles.contenedorCategorias}>
               <ScrollView
@@ -343,13 +350,16 @@ const CrearEvento = ({ navigation }) => {
                 nestedScrollEnabled={true}
               >
                 <View style={styles.listaCategorias}>
-                  {categoriasJson.map((item) => (
+                  {filteredCategorias.map((item) => (
                     <TouchableOpacity
                       key={item.id_categoria}
-                      //onPress={() => navigation.addCategoria(item.categoria)}
+                      onPress={() => handleCategoriaPress(item.categoria)}
                       style={styles.categoriaCard}
                     >
-                      <CategoriasTarjeta categoria={item} />
+                      <CategoriasTarjeta
+                        categoria={item}
+                        seleccionada={categoriasSeleccionadas.includes(item.categoria)}
+                      />
                     </TouchableOpacity>
                   ))}
                 </View>
