@@ -77,6 +77,7 @@ const EventoScreen = ({ navigation, route }) => {
   useFocusEffect(
     useCallback(() => {
       verificarApuntado();
+      fetchCategorias(id_evento);
     }, [userId, id_evento])
   );
 
@@ -122,21 +123,20 @@ const EventoScreen = ({ navigation, route }) => {
   };
 
   //Recuperar las categorias de un evento
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await fetch(
-          `https://myeventz.es/eventos/load_categorias/${id_evento}`
-        );
-        const data = await response.json();
-        console.log("Categorias:", data);
-        setCategorias(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchCategorias();
-  }, [id_evento]);
+
+  const fetchCategorias = async (id_evento) => {
+    try {
+      const response = await fetch(
+        `https://myeventz.es/eventos/load_categorias/${id_evento}`
+      );
+      console.log(`https://myeventz.es/eventos/load_categorias/${id_evento}`);
+      const data = await response.json();
+      console.log("Categorias:", data);
+      setCategorias(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <Background>
@@ -179,15 +179,16 @@ const EventoScreen = ({ navigation, route }) => {
             </Text>
 
             <View style={styles.categorias}>
-              {categoriasEvento.length > 0 ? (
+              {categoriasEvento[0] !== 0 ? (
                 categoriasEvento.map((categoria, index) => (
                   <Text key={index} style={styles.categoria}>
                     {categoria.categoria}
                   </Text>
                 ))
-
               ) : (
-                <Text style={styles.categoria}>No hay categorías disponibles.</Text>
+                <Text style={styles.categoria}>
+                  No hay categorías disponibles.
+                </Text>
               )}
             </View>
           </View>
@@ -341,7 +342,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#6200ee",
     padding: 5,
     borderRadius: 8,
-    
   },
   fecha: {
     color: "white",

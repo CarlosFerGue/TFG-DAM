@@ -79,6 +79,7 @@ const Perfil = ({ navigation }) => {
         setUserId(storedUserId);
         fetchUserData(storedUserId);
         fetchEventos(storedUserId);
+        fetchHobbies(storedUserId);
       }
     } catch (error) {
       console.error("Error retrieving userId from AsyncStorage:", error);
@@ -93,22 +94,20 @@ const Perfil = ({ navigation }) => {
   );
 
   // Obtener hobbies del usuario
-  useEffect(() => {
-    const fetchHobbies = async () => {
+    const fetchHobbies = async (userId) => {
       try {
         const response = await fetch(
-          `https://myeventz.es/usuarios/hobbies/${id_usuario}`
+          `https://myeventz.es/usuarios/hobbies/${userId}`
         );
         const data = await response.json();
-        //console.log("Hobbies:", data);
+        console.log("Hobbies:", data);
         setHobbies(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchHobbies();
-  }, [id_usuario]);
+
 
   const cerrarSesion = () => {
     AsyncStorage.removeItem("userToken");
