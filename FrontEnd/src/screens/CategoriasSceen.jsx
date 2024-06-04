@@ -40,11 +40,17 @@ const CategoriasScreen = ({ navigation }) => {
     setFilteredCategorias(filteredData);
   }, [searchQuery, categoriasJson]);
 
-  const saveCategory = async (category) => {
+  const saveCategory = async (id, category) => {
     try {
-      await AsyncStorage.setItem("selectedCategory", category);
-      console.log("Categoria guardada:", category);
-      navigation.navigate("Home");
+      // Ensure category is a string before saving
+      const categoryId = typeof id === "string" ? id : JSON.stringify(id);
+      const categoryName = category;
+
+      await AsyncStorage.setItem("selectedCategory", categoryId);
+      await AsyncStorage.setItem("selectedCategoryName", categoryName);
+      //console.log("Categoria 2:", categoryName);
+      //console.log("Categoria guardada:", categoryId);
+      navigation.navigate("Home"); // Assuming navigation is set up
     } catch (error) {
       console.error("Error al guardar la categoria:", error);
     }
@@ -69,7 +75,7 @@ const CategoriasScreen = ({ navigation }) => {
           {filteredCategorias.map((item) => (
             <TouchableOpacity
               key={item.id_categoria}
-              onPress={() => saveCategory(item.categoria)}
+              onPress={() => saveCategory(item.id_categoria, item.categoria)}
               style={styles.categoriaCard}
             >
               <CategoriasTarjeta categoria={item} />

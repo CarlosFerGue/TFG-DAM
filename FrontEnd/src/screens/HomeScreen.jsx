@@ -21,29 +21,41 @@ import HomeScreenSlideV from "../components/HomeScreenSlideV";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [eventosPopulares, setEventosPopulares] = useState([]);
+  const [eventosRecientes, setEventosRecientes] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const loadCategory = async () => {
     try {
-      const value = await AsyncStorage.getItem('selectedCategory');
-      if (value !== null) {
+      const valueId = await AsyncStorage.getItem("selectedCategory");
+      const value = await AsyncStorage.getItem("selectedCategoryName");
+
+      if (valueId !== null) {
         setCategory(value);
-        console.log('Categoría:', value);
+        try {
+          const response = await fetch(
+            `https://myeventz.es/eventos/find_by_category/${valueId}`
+          );
+          const data = await response.json();
+          //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
+          setEventosPopulares(data);
+          setEventosRecientes(data);
+          AsyncStorage.removeItem("selectedCategory");
+          AsyncStorage.removeItem("searchText");
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       }
     } catch (error) {
-      console.error('Error al leer la categoria:', error);
+      console.error("Error al leer la categoria:", error);
     }
   };
-
-
 
   const navigateToEvento = (id_evento) => {
     navigation.navigate("Evento", { id_evento });
   };
-
-  const [eventosPopulares, setEventosPopulares] = useState([]);
-  const [eventosRecientes, setEventosRecientes] = useState([]);
-  const [searchText, setSearchText] = useState("");
 
   const fetchData1 = async () => {
     try {
@@ -75,18 +87,34 @@ const Home = ({ navigation }) => {
     }, [])
   );
 
-  const filteredPopulares = eventosPopulares.filter(
-    (evento) =>
-      evento.titulo &&
-      evento.titulo.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredPopulares = isFiltered
+    ? eventosPopulares.filter(
+        (evento) =>
+          evento.titulo &&
+          evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : eventosPopulares;
 
-  const filteredRecientes = eventosRecientes.filter(
-    (evento) =>
-      evento.titulo &&
-      evento.titulo.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredRecientes = isFiltered
+    ? eventosRecientes.filter(
+        (evento) =>
+          evento.titulo &&
+          evento.titulo.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : eventosRecientes;
+    
+  const handleRemoveFilter = async () => {
+    // Clear category from AsyncStorage
+    await AsyncStorage.removeItem("selectedCategory");
 
+    // Reset category and filtered states
+    setCategory("");
+    setIsFiltered(false);
+
+    // Re-fetch data without filtering by category
+    fetchData1();
+    fetchData2();
+  };
   return (
     <Background>
       <View style={styles.container}>
@@ -100,6 +128,18 @@ const Home = ({ navigation }) => {
           />
           <TouchableOpacity style={styles.searchIconContainer}>
             <Ionicons name="search" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.categoryContainer}>
+          <TouchableOpacity
+            style={styles.categoryButton}
+            onPress={handleRemoveFilter}
+          >
+            <Text style={styles.categoryText}>
+              <Ionicons name="close-circle" size={24} color="black" />
+              Eliminar filtro: {category}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -167,6 +207,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 2,
     borderColor: "white",
+  },
+  categoryContainer: {
+    bottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  categoryText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 5,
+    backgroundColor: "white",
+    borderRadius: 5,
+    alignContent: "center",
+    textAlign: "center",
+    justifyContent: "center",
+    padding: 5,
+  },
+  categoryButton: {
+    borderRadius: 5,
+    backgroundColor: theme.colors.primary,
   },
   sliderH: {
     flex: 0.25,
