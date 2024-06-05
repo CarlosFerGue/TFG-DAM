@@ -100,7 +100,7 @@ const Perfil = ({ navigation }) => {
           `https://myeventz.es/usuarios/hobbies/${userId}`
         );
         const data = await response.json();
-        console.log("Hobbies:", data);
+        //console.log("Hobbies:", data);
         setHobbies(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -154,7 +154,7 @@ const Perfil = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.cabecera}>Biografía e intereses:</Text>
+        <Text style={[styles.cabecera, {left: 0}]}>Biografía e intereses:</Text>
         <Text style={styles.biografiaCuerpo}>{usuarioJson.bio}</Text>
 
         {hobbies.length > 0 && (
@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
     fontWeight: "bold",
     bottom: 50,
+    left: 20,
   },
   biografiaCuerpo: {
     fontSize: 15,
@@ -328,13 +329,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   categoriaCard: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   listaCategorias: {
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     bottom: 50,
   },
   redes: {

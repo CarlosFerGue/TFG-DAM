@@ -15,11 +15,11 @@ import { Ionicons } from "@expo/vector-icons";
 import theme from "../theme";
 import CategoriasTarjeta from "../components/Categorias";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRoute } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebaseConfig";
+
 
 const CrearEvento = ({ navigation }) => {
   const [id_usuario, setUserId] = useState(null);
@@ -367,7 +367,7 @@ const CrearEvento = ({ navigation }) => {
             </View>
 
             <TouchableOpacity style={styles.button} onPress={enviarEvento}>
-              <Text style={styles.buttonText}>¡Publicar evento!</Text>
+              <Text style={styles.buttonText}>¡PUBLICAR EVENTO!</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -469,14 +469,14 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     width: "100%",
-    backgroundColor: "#8000FF",
     height: 50,
     marginBottom: 30,
-    borderRadius: 15,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
     borderColor: "white",
-    borderWidth: 2,
+    borderWidth: 3,
+    backgroundColor: "#8000FF",
   },
   buttonText: {
     color: "white",

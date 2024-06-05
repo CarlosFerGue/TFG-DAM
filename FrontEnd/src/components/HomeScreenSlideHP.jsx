@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
   },
   textoInferior: {
-    backgroundColor: "rgba(98, 0, 238, 1)", // Fondo transparente
+    backgroundColor: "rgba(127, 0, 255, 1)", // Fondo transparente
     width: "100%",
     borderBottomEndRadius: 23,
     borderBottomStartRadius: 23,
@@ -70,12 +70,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
+    paddingTop: 2,
   },
   date: {
     fontSize: 16,
     color: "#fff",
-    marginBottom: 10,
+    marginBottom: 15,
     marginLeft: 5,
+    bottom: 3,
   },
   image: {
     flex: 1,

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   textoInferior: {
-    backgroundColor: "rgba(98, 0, 238, 1)",
+    backgroundColor: "rgba(127, 0, 255, 1)",
     width: "100%",
     borderBottomEndRadius: 23,
     borderBottomStartRadius: 23,

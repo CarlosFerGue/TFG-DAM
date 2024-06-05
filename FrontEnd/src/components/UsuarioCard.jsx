@@ -14,7 +14,7 @@ const UsuarioCard = ({ item }) => {
       <Text style={styles.nombreTexto}>
         {item.nombre_com} {item.nombre} {item.apel1} {item.apel2}{" "}
       </Text>
-      <Text style={styles.usuarioTexto}>{item.usuario}</Text>
+      <Text style={styles.usuarioTexto}>@{item.usuario}</Text>
     </View>
   );
 };
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   usuarioTexto: {
     color: "white",
-    marginLeft: 65,
+    marginLeft: 75,
   },
 });
 

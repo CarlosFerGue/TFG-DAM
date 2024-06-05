@@ -129,9 +129,8 @@ const EventoScreen = ({ navigation, route }) => {
       const response = await fetch(
         `https://myeventz.es/eventos/load_categorias/${id_evento}`
       );
-      console.log(`https://myeventz.es/eventos/load_categorias/${id_evento}`);
       const data = await response.json();
-      console.log("Categorias:", data);
+      //console.log("Categorias:", data);
       setCategorias(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -145,21 +144,24 @@ const EventoScreen = ({ navigation, route }) => {
         style={styles.imagen}
         resizeMode="cover"
       />
-      {apuntado === false ? (
-        <TouchableOpacity style={styles.participar} onPress={participar}>
-          <Text style={styles.textoParticipar}>Participar</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
-          <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
-          <Ionicons
-            name="close-circle"
-            size={24}
-            color="white"
-            style={{ top: 2 }}
-          />
-        </TouchableOpacity>
-      )}
+
+      {evento.id_usuario === userId ? (
+        apuntado === false ? (
+          <TouchableOpacity style={styles.participar} onPress={participar}>
+            <Text style={styles.textoParticipar}>Participar</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
+            <Text style={styles.textoDesapuntarse}>Desapuntarse </Text>
+            <Ionicons
+              name="close-circle"
+              size={24}
+              color="white"
+              style={{ top: 2 }}
+            />
+          </TouchableOpacity>
+        )
+      ) : null}
 
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
