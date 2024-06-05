@@ -137,6 +137,11 @@ const EventoScreen = ({ navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("dueño", evento.id_evento);
+    console.log("usuario", userId);
+  }, [userId, evento]);
+
   return (
     <Background>
       <Image
@@ -145,7 +150,7 @@ const EventoScreen = ({ navigation, route }) => {
         resizeMode="cover"
       />
 
-      {evento.id_usuario === userId ? (
+      {evento.id_usuario !== userId ? (
         apuntado === false ? (
           <TouchableOpacity style={styles.participar} onPress={participar}>
             <Text style={styles.textoParticipar}>Participar</Text>
@@ -161,7 +166,9 @@ const EventoScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
         )
-      ) : null}
+      ) : (
+        <></>
+      )}
 
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
