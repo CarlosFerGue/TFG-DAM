@@ -13,8 +13,8 @@ const CategoriasTarjeta = ({ categoria, seleccionada = false }) => {
 
 const styles = StyleSheet.create({
   categoriaContainer: {
-    backgroundColor: "#6200ee",
-    padding: 10,
+    backgroundColor: "#8000FF",
+    padding: 8,
     borderRadius: 17,
     marginRight: 10,
   },
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   },
   categoriaText: {
     color: "white",
+    fontSize: 18,
     textAlign: "center",
   },
   textoSeleccionado: {

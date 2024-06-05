@@ -274,7 +274,7 @@ const EditarPerfil = ({ navigation }) => {
           </Text>
 
           <View style={styles.opcionesPerfil}>
-            <View style={styles.auxContainer}>
+            <View style={styles.auxContainerRedes}>
               <Ionicons name="logo-tiktok" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
@@ -286,7 +286,7 @@ const EditarPerfil = ({ navigation }) => {
           </View>
 
           <View style={styles.opcionesPerfil}>
-            <View style={styles.auxContainer}>
+            <View style={styles.auxContainerRedes}>
               <Ionicons name="logo-instagram" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
@@ -298,7 +298,7 @@ const EditarPerfil = ({ navigation }) => {
           </View>
 
           <View style={styles.opcionesPerfil}>
-            <View style={styles.auxContainer}>
+            <View style={styles.auxContainerRedes}>
               <Ionicons name="logo-facebook" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
@@ -310,8 +310,8 @@ const EditarPerfil = ({ navigation }) => {
           </View>
 
           <View style={[styles.opcionesPerfil, { marginBottom: 35 }]}>
-            <View style={styles.auxContainer}>
-              <Text style={styles.titulo}>X</Text>
+            <View style={styles.auxContainerRedes}>
+            <Ionicons name="logo-twitter" size={24} color="white" />
               <TextInput
                 style={styles.inputs}
                 value={x}
@@ -410,6 +410,11 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  auxContainerRedes: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   hobbies: {
     width: "100%",

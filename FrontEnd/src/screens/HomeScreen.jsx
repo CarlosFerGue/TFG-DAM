@@ -2,7 +2,6 @@ import Background from "../components/Background";
 import NavBar from "../components/NavBar";
 import React, { useState, useEffect, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-
 import {
   View,
   Text,
@@ -14,10 +13,8 @@ import {
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons"; // Importa el ícono de la lupa desde Ionicons
 import theme from "../theme";
-
 import HomeScreenSlideH from "../components/HomeScreenSlideH";
 import HomeScreenSlideV from "../components/HomeScreenSlideV";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
@@ -39,7 +36,6 @@ const Home = ({ navigation }) => {
             `https://myeventz.es/eventos/find_by_category/${valueId}`
           );
           const data = await response.json();
-          //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
           setEventosPopulares(data);
           setEventosRecientes(data);
           AsyncStorage.removeItem("selectedCategory");
@@ -61,7 +57,6 @@ const Home = ({ navigation }) => {
     try {
       const response = await fetch("https://myeventz.es/eventos/popular");
       const data = await response.json();
-      //console.log("Populares:", data); // Verifica que los datos se están obteniendo correctamente
       setEventosPopulares(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -72,7 +67,6 @@ const Home = ({ navigation }) => {
     try {
       const response = await fetch("https://myeventz.es/eventos/close_events");
       const data = await response.json();
-      //console.log("Recientes:", data); // Verifica que los datos se están obteniendo correctamente
       setEventosRecientes(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -86,6 +80,10 @@ const Home = ({ navigation }) => {
       loadCategory();
     }, [])
   );
+
+  useEffect(() => {
+    setIsFiltered(searchText.length > 0);
+  }, [searchText]);
 
   const filteredPopulares = isFiltered
     ? eventosPopulares.filter(
@@ -104,19 +102,16 @@ const Home = ({ navigation }) => {
     : eventosRecientes;
 
   const handleRemoveFilter = async () => {
-    // Clear category from AsyncStorage
     await AsyncStorage.removeItem("selectedCategory");
-
-    // Reset category and filtered states
     setCategory("");
     setIsFiltered(false);
-
-    // Re-fetch data without filtering by category
     fetchData1();
     fetchData2();
   };
+
   return (
     <Background>
+      
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -141,19 +136,19 @@ const Home = ({ navigation }) => {
               size={24}
               color="black"
             />
-            <Text style={styles.categoryText}>Eliminar filtro: {category}</Text>
+            <Text style={styles.categoryText}>
+              Eliminar filtro:
+              <Text style={styles.categoryName}> {category}</Text>
+            </Text>
           </TouchableOpacity>
         )}
 
-        {/* Slider horizontal de Eventos populares */}
         <Text style={styles.subtitulo}>Eventos populares:</Text>
         <View style={styles.sliderH}>
           <FlatList
             data={filteredPopulares}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigateToEvento(item.id_evento)}
-              >
+              <TouchableOpacity onPress={() => navigateToEvento(item.id_evento)}>
                 <HomeScreenSlideH item={item} />
               </TouchableOpacity>
             )}
@@ -168,15 +163,12 @@ const Home = ({ navigation }) => {
           />
         </View>
 
-        {/* Slider vertical de Publicaciones recientes */}
         <Text style={styles.subtitulo2}>Publicaciones recientes:</Text>
         <View style={styles.sliderV}>
           <FlatList
             data={filteredRecientes}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigateToEvento(item.id_evento)}
-              >
+              <TouchableOpacity onPress={() => navigateToEvento(item.id_evento)}>
                 <HomeScreenSlideV item={item} />
               </TouchableOpacity>
             )}
@@ -190,7 +182,6 @@ const Home = ({ navigation }) => {
           />
         </View>
       </View>
-      {/* Aqui metemos la navBar que sera un componente externo */}
       <NavBar />
     </Background>
   );
@@ -204,7 +195,7 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   inputContainer: {
-    bottom: 20,
+    bottom: 25,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 2,
@@ -212,16 +203,21 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 20,
+    marginLeft: 7
+  },
+  categoryName: {
+    fontSize: 20,
+    marginLeft: 30,
     fontWeight: "bold",
-    marginLeft: 10
   },
   categoryButton: {
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 5,
+    bottom: 10,
   },
   sliderH: {
     flex: 0.25,
@@ -233,14 +229,13 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 60,
   },
   subtitulo: {
     fontSize: 25,
     fontWeight: "bold",
     color: theme.colors.white,
     paddingLeft: 5,
-    top: 4,
   },
   subtitulo2: {
     fontSize: 25,
