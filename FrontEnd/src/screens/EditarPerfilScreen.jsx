@@ -140,6 +140,7 @@ const EditarPerfil = ({ navigation }) => {
   
     try {
       const url = `https://myeventz.es/usuarios/edit/?id=${id_usuario}&nombre=${encodeURIComponent(nombre)}&apel1=${encodeURIComponent(apel1)}&apel2=${encodeURIComponent(apel2)}&bio=${encodeURIComponent(bio)}&img_url=${encodeURIComponent(img_url)}&tt=${encodeURIComponent(tt)}&ig=${encodeURIComponent(ig)}&fb=${encodeURIComponent(fb)}&x=${encodeURIComponent(x)}`;
+      //alert(url);
       const response = await fetch(url);
   
       if (response.status === 200) {
