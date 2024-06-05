@@ -79,6 +79,7 @@ const EventoScreen = ({ navigation, route }) => {
     useCallback(() => {
       verificarApuntado();
       fetchCategorias(id_evento);
+      participantes();
     }, [userId, id_evento])
   );
 
@@ -151,7 +152,7 @@ const EventoScreen = ({ navigation, route }) => {
       {userId != evento.id_usuario ? (
         apuntado === false ? (
           <TouchableOpacity style={styles.participar} onPress={participar}>
-            <Text style={styles.textoParticipar}>Participar {evento.id_usuario} {userId}</Text>
+            <Text style={styles.textoParticipar}>Participar</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
