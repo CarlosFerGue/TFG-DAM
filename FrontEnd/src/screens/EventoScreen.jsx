@@ -18,7 +18,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 const EventoScreen = ({ navigation, route }) => {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [organizadorId, setOrganizadorId] = useState(null);
   const [usuarioInfo, setUsuarioInfo] = useState(null);
   const [usuarios, setUsuarios] = useState([]);
   const [evento, setEvento] = useState({});
@@ -89,6 +90,7 @@ const EventoScreen = ({ navigation, route }) => {
       const data = await response.json();
       setEvento(data);
       setUsuarios(data.participantes);
+      setOrganizadorId(data.id_usuario);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -137,10 +139,6 @@ const EventoScreen = ({ navigation, route }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("dueño", evento.id_evento);
-    console.log("usuario", userId);
-  }, [userId, evento]);
 
   return (
     <Background>
@@ -150,10 +148,10 @@ const EventoScreen = ({ navigation, route }) => {
         resizeMode="cover"
       />
 
-      {evento.id_usuario !== userId ? (
+      {userId != evento.id_usuario ? (
         apuntado === false ? (
           <TouchableOpacity style={styles.participar} onPress={participar}>
-            <Text style={styles.textoParticipar}>Participar</Text>
+            <Text style={styles.textoParticipar}>Participar {evento.id_usuario} {userId}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity style={styles.desapuntarse} onPress={desapuntarse}>
